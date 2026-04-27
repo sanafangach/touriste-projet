@@ -9,6 +9,9 @@ import Languages from "./components/pages/languages";
 import Login from "./components/pages/login";
 import Saved from "./components/pages/saved";
 
+import Chatbot from './components/Chatbot/Chatbot';
+
+
 function App() {
   return (
     <Router>
@@ -22,7 +25,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/saved" element={<Saved />} />
       </Routes>
+      <Chatbot />
     </Router>
+
   );
 }
 
