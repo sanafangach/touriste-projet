@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/home.css";
+import PopularDestination from "./section"
 
 import img1 from "../../assets/img1.jpg";
 import img2 from "../../assets/img2.jpeg";
@@ -12,12 +13,12 @@ function Home() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const slider = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 3000);
+  const interval = setInterval(() => {
+    setCurrent((prev) => (prev + 1) % images.length);
+  }, 3000);
 
-    return () => clearInterval(slider);
-  }, []);
+  return () => clearInterval(interval);
+}, [images.length]);
 
   return (
     <div className="home">
@@ -35,7 +36,7 @@ function Home() {
           </Link>
         </div>
       </div>
-
+      <PopularDestination />
     </div>
   );
 }
