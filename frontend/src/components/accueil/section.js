@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import "../css/section.css";
 
 import img1 from "../../assets/taghazot.png";
@@ -51,7 +52,7 @@ function PopularDestination() {
 
         {/* VIEW ALL BUTTON LINK */}
         <Link to="/destination" className="view-btn">
-          View All
+          View All <ArrowRight size={18} className="arrow-icon" />
         </Link>
       </div>
 
@@ -60,13 +61,19 @@ function PopularDestination() {
         {places.map((item) => (
           <Link
             to={item.link}
-            className="popular-card"
+            className="popular-card group"
             key={item.id}
-            style={{ backgroundImage: `url(${item.image})` }}
           >
-            <div className="overlay">
-              <h3>{item.place}</h3>
-              <p>{item.city}</p>
+            <div className="card-bg" style={{ backgroundImage: `url(${item.image})` }}></div>
+            <div className="card-overlay">
+              <div className="card-content">
+                <h3>{item.place}</h3>
+                <p>{item.city}</p>
+                <div className="card-hover-indicator">
+                  <span>Explore</span>
+                  <ArrowRight size={16} />
+                </div>
+              </div>
             </div>
           </Link>
         ))}
