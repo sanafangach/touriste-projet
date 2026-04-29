@@ -26,10 +26,8 @@ function Menu() {
 
   const handleLanguageChange = (newLang) => {
     setLang(newLang);
-    localStorage.setItem("app-language", newLang);
   };
 
-  // 🔥 Définition des liens avec ordre selon la langue
   const getNavLinks = () => {
     const links = [
       { to: "/", icon: <Home size={18} />, label: t("home") },
@@ -38,8 +36,6 @@ function Menu() {
       { to: "/languages", icon: <Globe size={18} />, label: t("languages") },
       { to: "/pack", icon: <Box size={18} />, label: t("pack") },
     ];
-
-    // En arabe, on inverse l'ordre pour que "الباقات" soit à droite
     return isRTL ? links.reverse() : links;
   };
 
@@ -47,31 +43,26 @@ function Menu() {
 
   return (
     <nav className={`menu ${scrolled ? "scrolled" : ""} ${isRTL ? "rtl" : ""}`}>
-      {/* LOGO */}
       <div className="menu-left">
         <Link to="/">
           <img src={logo} alt="logo" className="logo" />
         </Link>
       </div>
 
-      {/* MOBILE BUTTON */}
       <div className="mobile-icon" onClick={() => setMobile(!mobile)}>
         {mobile ? <X size={28} /> : <MenuIcon size={28} />}
       </div>
 
-      {/* LINKS */}
       <ul className={mobile ? "menu-links active" : "menu-links"}>
         {navLinks.map((link, index) => (
           <li key={index}>
             <Link to={link.to}>
               {isRTL ? (
-                // En arabe: texte d'abord, puis icône
                 <>
                   <span className="link-text">{link.label}</span>
                   <span className="link-icon">{link.icon}</span>
                 </>
               ) : (
-                // En FR/EN: icône d'abord, puis texte
                 <>
                   <span className="link-icon">{link.icon}</span>
                   <span className="link-text">{link.label}</span>
@@ -82,7 +73,6 @@ function Menu() {
         ))}
       </ul>
 
-      {/* RIGHT SIDE */}
       <div className="menu-right">
         <button
           onClick={() => setOpen(!open)}
