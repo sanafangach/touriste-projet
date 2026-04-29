@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import "../css/home.css";
 import PopularDestination from "./section"
+import AboutSite from "./sectiondescription"
+import PopularActivities from "./sectionactivite"
 
 import img1 from "../../assets/img1.jpg";
 import img2 from "../../assets/img2.jpeg";
@@ -56,6 +58,8 @@ function Home() {
       </div>
       
       <PopularDestination />
+      <AboutSite />
+      <PopularActivities />
     </div>
   );
 }

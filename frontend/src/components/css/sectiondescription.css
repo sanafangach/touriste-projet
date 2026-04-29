@@ -1,0 +1,152 @@
+/* ===============================
+   ABOUT SITE SECTION - MODERN UI
+================================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+.about-site{
+  width:100%;
+  padding:90px 7%;
+  background:linear-gradient(135deg,#f8f9fc,#eef2f7);
+  font-family:'Poppins', sans-serif;
+}
+
+/* CONTAINER */
+.about-container{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:45px;
+  align-items:center;
+}
+
+/* ================= LEFT ================= */
+
+.about-mini{
+  color:#ff7a00;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+.about-left h2{
+  font-size:42px;
+  line-height:1.25;
+  color:#111;
+  margin-bottom:20px;
+  font-weight:700;
+}
+
+.about-text{
+  color:#555;
+  font-size:16px;
+  line-height:1.9;
+  margin-bottom:18px;
+}
+
+/* BUTTON */
+.about-btn{
+  margin-top:10px;
+  padding:14px 28px;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+
+  background:linear-gradient(135deg,#ff7a00,#ff5100);
+  color:white;
+
+  font-size:15px;
+  font-weight:600;
+
+  transition:0.3s ease;
+  box-shadow:0 10px 25px rgba(255,122,0,0.25);
+}
+
+.about-btn:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 30px rgba(255,122,0,0.35);
+}
+
+/* ================= RIGHT ================= */
+
+.about-right{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:22px;
+}
+
+/* BOX */
+.info-box{
+  background:white;
+  padding:30px 20px;
+  border-radius:22px;
+  text-align:center;
+
+  box-shadow:0 12px 30px rgba(0,0,0,0.06);
+  transition:0.3s ease;
+}
+
+.info-box:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 40px rgba(0,0,0,0.10);
+}
+
+.info-box h3{
+  font-size:34px;
+  color:#ff7a00;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.info-box p{
+  font-size:15px;
+  color:#555;
+  font-weight:500;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1100px){
+
+  .about-container{
+    grid-template-columns:1fr;
+  }
+
+  .about-left h2{
+    font-size:36px;
+  }
+}
+
+@media(max-width:768px){
+
+  .about-site{
+    padding:70px 5%;
+  }
+
+  .about-left h2{
+    font-size:30px;
+  }
+
+  .about-right{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:550px){
+
+  .about-right{
+    grid-template-columns:1fr;
+  }
+
+  .about-left h2{
+    font-size:26px;
+  }
+
+  .about-text{
+    font-size:15px;
+  }
+}
