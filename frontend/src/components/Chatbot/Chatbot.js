@@ -14,6 +14,7 @@ const BubbleDotsIcon = () => (
 const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -188,30 +189,47 @@ const Chatbot = () => {
   };
 
   // ENTER KEY
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") handleSend();
-  };
+const handleKeyPress = (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault(); // مهم 🔥
+    if (!isTyping) {
+      handleSend();
+    }
+  }
+};
 
   // QUICK BUTTONS
-  const handleQuick = (text) => {
-    const userMessage = {
-      id: Date.now(),
-      text,
-      isBot: false,
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, userMessage]);
-    setIsTyping(true);
+      const handleQuick = (text) => {
+        if (isLocked) return; // ❌ منع الضغط المتكرر
 
-    const botReply = getBotResponse(text);
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now() + 1, text: botReply, isBot: true, timestamp: new Date() },
-      ]);
-      setIsTyping(false);
-    }, 700);
-  };
+        setIsLocked(true); // 🔒 قفل
+
+        const userMessage = {
+          id: Date.now(),
+          text,
+          isBot: false,
+          timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, userMessage]);
+        setIsTyping(true);
+
+        const botReply = getBotResponse(text);
+
+        setTimeout(() => {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now() + 1,
+              text: botReply,
+              isBot: true,
+              timestamp: new Date(),
+            },
+          ]);
+          setIsTyping(false);
+          setIsLocked(false); // 🔓 فتح
+        }, 700);
+      };
 
   // CLEAR CHAT
   const clearChat = () => {
@@ -311,7 +329,8 @@ const Chatbot = () => {
               onKeyDown={handleKeyPress}
               placeholder="Écrire un message..."
             />
-            <button onClick={handleSend}>
+            
+            <button onClick={handleSend} disabled={isTyping}>
               <Send size={16} />
             </button>
           </div>
