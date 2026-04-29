@@ -10,7 +10,7 @@ function Menu() {
   const [dark, setDark] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [lang, setLang] = useState("FR"); // Default language
+  const [lang, setLang] = useState("EN"); // Default language
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,7 +44,7 @@ function Menu() {
         <li><Link to="/"><Home size={18} /> Home</Link></li>
         <li><Link to="/card"><Box size={18} /> Card</Link></li>
         <li><Link to="/destination"><Map size={18} /> Destination</Link></li>
-        <li><Link to="/languages"><Globe size={18} /> Languages</Link></li>
+        <li><Link to="/languages"><Globe size={18} /> learning darija</Link></li>
         <li><Link to="/pack"><Box size={18} /> Pack</Link></li>
       </ul>
 
