@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { LanguageProvider} from "./components/accueil/LanguageContext"
+
 
 import Menu from "./components/accueil/Menu";
 import Home from "./components/accueil/home";
@@ -13,6 +15,7 @@ import Chatbot from "./components/Chatbot/Chatbot";
 function App() {
   return (
     <>
+      <LanguageProvider>
       <Menu />
 
       <Routes>
@@ -25,6 +28,7 @@ function App() {
       </Routes>
 
       <Chatbot />
+    </LanguageProvider>
     </>
   );
 }
