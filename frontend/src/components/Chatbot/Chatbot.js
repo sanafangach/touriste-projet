@@ -1,24 +1,33 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
-import './Chatbot.css';
+import React, { useState, useRef, useEffect } from "react";
+import { MessageCircle, X, Send, Bot, User } from "lucide-react";
+import "./Chatbot.css";
 
 const Chatbot = () => {
+  const [isTyping, setIsTyping] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Bonjour ! 👋 Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?",
+      text:
+        "Bonjour ! 👋 Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?",
       isBot: true,
       timestamp: new Date(),
     },
   ]);
-  const [inputValue, setInputValue] = useState('');
+
+  const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef(null);
 
-  const getBotResponse = (userMessage) => {
-  const msg = userMessage.toLowerCase();
+  // 🔥 AUTO SCROLL (correct place)
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-  // 👋 Salutations
+  // 🤖 BOT RESPONSE
+  const getBotResponse = (userMessage) => {
+    const msg = userMessage.toLowerCase();
+
+     // 👋 Salutations
   if (
     msg.includes('bonjour') ||
     msg.includes('salut') ||
@@ -39,9 +48,8 @@ const Chatbot = () => {
 
   // 📍 Marrakech
   if (msg.includes('marrakech')) {
-    return "Marrakech est une ville magnifique ! Ne manquez pas :contentReference[oaicite:0]{index=0}, les souks et les jardins 🌴";
+    return "Marrakech est une ville magnifique ! Ne manquez pas la place Jemaa el-Fna, les souks et les jardins 🌴";
   }
-
   // 🏖️ Agadir
   if (msg.includes('agadir')) {
     return "Agadir est parfaite pour la plage et le surf 🏄‍♂️☀️";
@@ -176,42 +184,59 @@ const Chatbot = () => {
   // ❓ Fallback
   return "Je peux vous aider avec : villes, hôtels, activités, packs, langues ou navigation 🧭😊";
 };
-
+  // 📤 SEND MESSAGE
   const handleSend = () => {
     if (!inputValue.trim()) return;
 
     const userMessage = {
-      id: messages.length + 1,
+      id: Date.now(),
       text: inputValue,
       isBot: false,
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInputValue('');
+    setInputValue("");
+    setIsTyping(true);
+
+    const botReply = getBotResponse(inputValue);
 
     setTimeout(() => {
-      const botResponse = {
-        id: messages.length + 2,
-        text: getBotResponse(userMessage.text),
+      const botMessage = {
+        id: Date.now() + 1,
+        text: botReply,
         isBot: true,
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, botResponse]);
-    }, 1000);
+
+      setMessages((prev) => [...prev, botMessage]);
+      setIsTyping(false);
+    }, 600);
   };
 
+  // ⌨️ ENTER KEY
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSend();
-    }
+    if (e.key === "Enter") handleSend();
   };
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages]);
+  // ⚡ QUICK BUTTONS
+  const handleQuick = (text) => {
+    setInputValue(text);
+    setTimeout(() => handleSend(), 0);
+  };
+
+  // 🧹 CLEAR CHAT
+  const clearChat = () => {
+    setMessages([
+      {
+        id: 1,
+        text:
+          "Bonjour ! 👋 Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?",
+        isBot: true,
+        timestamp: new Date(),
+      },
+    ]);
+  };
 
   return (
     <div className="chatbot-container">
@@ -223,32 +248,74 @@ const Chatbot = () => {
 
       {isOpen && (
         <div className="chatbot-window">
+          {/* HEADER */}
           <div className="chatbot-header">
-            <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <Bot size={20} /> Assistant
             </div>
-            <button onClick={() => setIsOpen(false)}>
-              <X size={20} />
-            </button>
+
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button onClick={clearChat} className="chatbot-clear">
+                Clear
+              </button>
+              <button onClick={() => setIsOpen(false)}>
+                <X size={20} />
+              </button>
+            </div>
           </div>
 
-          <div className="chatbot-messages">
-            {messages.map((msg) => (
-              <div key={msg.id} className={msg.isBot ? 'bot' : 'user'}>
-                {msg.isBot ? <Bot size={16} /> : <User size={16} />}
+          {/* MESSAGES */}
+                  <div className="chatbot-messages">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`chatbot-message ${msg.isBot ? "bot" : "user"}`}
+            >
+              {msg.isBot ? <Bot size={16} /> : <User size={16} />}
+              <div className="chatbot-message-content">
                 <p>{msg.text}</p>
               </div>
-            ))}
-            <div ref={messagesEndRef} />
+            </div>
+          ))}
+
+          {/* ✅ TYPING INDICATOR (important: داخل messages) */}
+          {isTyping && (
+            <div className="chatbot-message bot typing">
+              <div className="chatbot-message-avatar">
+                <Bot size={16} />
+              </div>
+
+              <div className="typing-bubble">
+                <span className="dot"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+          {/* QUICK BUTTONS */}
+          <div className="chatbot-suggestions">
+            <button onClick={() => handleQuick("Marrakech")}>
+              Marrakech
+            </button>
+            <button onClick={() => handleQuick("hotel")}>Hôtels</button>
+            <button onClick={() => handleQuick("activité")}>
+              Activités
+            </button>
+            <button onClick={() => handleQuick("prix")}>Prix</button>
           </div>
 
+          {/* INPUT */}
           <div className="chatbot-input">
             <input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
               placeholder="Écrire..."
             />
+
             <button onClick={handleSend}>
               <Send size={18} />
             </button>
