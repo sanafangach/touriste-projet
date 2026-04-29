@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
+import { useLanguage } from "./LanguageContext"; // 🔥 Import
 import "../css/home.css";
 import PopularDestination from "./section"
 import AboutSite from "./sectiondescription"
@@ -13,22 +14,21 @@ import img3 from "../../assets/img3.webp";
 import img4 from "../../assets/img4.webp";
 
 function Home() {
+  const { t } = useLanguage(); // 🔥 Utilisation du contexte
   const images = [img1, img2, img3, img4];
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-  const interval = setInterval(() => {
-    setCurrent((prev) => (prev + 1) % images.length);
-  }, 4000); // Increased time slightly for the zoom effect to be more visible
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % images.length);
+    }, 4000);
 
-  return () => clearInterval(interval);
-}, [images.length]);
+    return () => clearInterval(interval);
+  }, [images.length]);
 
   return (
     <div className="home">
-
       <div className="hero">
-        {/* Background Image with Zoom effect */}
         <div 
           className="hero-bg"
           style={{ 
@@ -38,15 +38,14 @@ function Home() {
         ></div>
 
         <div className="overlay">
-          <h1 key={`title-${current}`} className="slide-up">Discover Beautiful Destinations</h1>
-          <p key={`desc-${current}`} className="slide-up-delay">Travel, Explore and Live unforgettable moments</p>
+          <h1 key={`title-${current}`} className="slide-up">{t("heroTitle")}</h1>
+          <p key={`desc-${current}`} className="slide-up-delay">{t("heroSubtitle")}</p>
 
           <Link to="/destination" className="slide-up-delay-2">
-            <button className="hero-btn">Explore Now</button>
+            <button className="hero-btn">{t("exploreBtn")}</button>
           </Link>
         </div>
 
-        {/* Bottom Hover Indicator */}
         <div 
           className="scroll-indicator" 
           onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}

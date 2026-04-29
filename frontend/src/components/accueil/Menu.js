@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Settings, Moon, Sun, Menu as MenuIcon, X, Bookmark, LogIn, Home, Map, Globe, Box } from "lucide-react";
+import { useLanguage } from "./LanguageContext";
 
 import "../css/Menu.css";
 import logo from "../../assets/logo1.png";
@@ -10,12 +11,10 @@ function Menu() {
   const [dark, setDark] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [lang, setLang] = useState("EN"); // Default language
+  const { lang, setLang, t, isRTL } = useLanguage();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -25,8 +24,29 @@ function Menu() {
     document.body.classList.toggle("dark");
   };
 
+  const handleLanguageChange = (newLang) => {
+    setLang(newLang);
+    localStorage.setItem("app-language", newLang);
+  };
+
+  // 🔥 Définition des liens avec ordre selon la langue
+  const getNavLinks = () => {
+    const links = [
+      { to: "/", icon: <Home size={18} />, label: t("home") },
+      { to: "/card", icon: <Box size={18} />, label: t("card") },
+      { to: "/destination", icon: <Map size={18} />, label: t("destination") },
+      { to: "/languages", icon: <Globe size={18} />, label: t("languages") },
+      { to: "/pack", icon: <Box size={18} />, label: t("pack") },
+    ];
+
+    // En arabe, on inverse l'ordre pour que "الباقات" soit à droite
+    return isRTL ? links.reverse() : links;
+  };
+
+  const navLinks = getNavLinks();
+
   return (
-    <nav className={`menu ${scrolled ? "scrolled" : ""}`}>
+    <nav className={`menu ${scrolled ? "scrolled" : ""} ${isRTL ? "rtl" : ""}`}>
       {/* LOGO */}
       <div className="menu-left">
         <Link to="/">
@@ -41,16 +61,29 @@ function Menu() {
 
       {/* LINKS */}
       <ul className={mobile ? "menu-links active" : "menu-links"}>
-        <li><Link to="/"><Home size={18} /> Home</Link></li>
-        <li><Link to="/card"><Box size={18} /> Card</Link></li>
-        <li><Link to="/destination"><Map size={18} /> Destination</Link></li>
-        <li><Link to="/languages"><Globe size={18} /> learning darija</Link></li>
-        <li><Link to="/pack"><Box size={18} /> Pack</Link></li>
+        {navLinks.map((link, index) => (
+          <li key={index}>
+            <Link to={link.to}>
+              {isRTL ? (
+                // En arabe: texte d'abord, puis icône
+                <>
+                  <span className="link-text">{link.label}</span>
+                  <span className="link-icon">{link.icon}</span>
+                </>
+              ) : (
+                // En FR/EN: icône d'abord, puis texte
+                <>
+                  <span className="link-icon">{link.icon}</span>
+                  <span className="link-text">{link.label}</span>
+                </>
+              )}
+            </Link>
+          </li>
+        ))}
       </ul>
 
       {/* RIGHT SIDE */}
       <div className="menu-right">
-        {/* SETTINGS */}
         <button
           onClick={() => setOpen(!open)}
           className={`settings-btn ${open ? "active" : ""}`}
@@ -59,36 +92,35 @@ function Menu() {
         </button>
 
         {open && (
-          <div className="dropdown">
-            {/* LANGUAGE BAR */}
-            <div className="dropdown-header">Translation</div>
+          <div className={`dropdown ${isRTL ? "dropdown-rtl" : ""}`}>
+            <div className="dropdown-header">{t("translation")}</div>
             <div className="language-bar">
               <button 
                 className={`lang-btn ${lang === "AR" ? "active" : ""}`}
-                onClick={() => setLang("AR")}
+                onClick={() => handleLanguageChange("AR")}
               >AR</button>
               <button 
                 className={`lang-btn ${lang === "FR" ? "active" : ""}`}
-                onClick={() => setLang("FR")}
+                onClick={() => handleLanguageChange("FR")}
               >FR</button>
               <button 
                 className={`lang-btn ${lang === "EN" ? "active" : ""}`}
-                onClick={() => setLang("EN")}
+                onClick={() => handleLanguageChange("EN")}
               >EN</button>
             </div>
             
             <div className="dropdown-divider"></div>
 
-            <div className="dropdown-header">Settings</div>
+            <div className="dropdown-header">{t("settings")}</div>
             <Link to="/saved" className="dropdown-item" onClick={() => setOpen(false)}>
-              <Bookmark size={18} /> <span>Saved</span>
+              <Bookmark size={18} /> <span>{t("saved")}</span>
             </Link>
             <Link to="/login" className="dropdown-item" onClick={() => setOpen(false)}>
-              <LogIn size={18} /> <span>Login</span>
+              <LogIn size={18} /> <span>{t("login")}</span>
             </Link>
             <div className="dropdown-item" onClick={toggleTheme}>
               {dark ? <Sun size={18} /> : <Moon size={18} />}
-              <span>{dark ? "Light Mode" : "Dark Mode"}</span>
+              <span>{dark ? t("lightMode") : t("darkMode")}</span>
             </div>
           </div>
         )}
