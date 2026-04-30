@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "./LanguageContext"; // 🔥 Import
 import "../css/home.css";
@@ -17,6 +17,14 @@ function Home() {
   const { t } = useLanguage(); // 🔥 Utilisation du contexte
   const images = [img1, img2, img3, img4];
   const [current, setCurrent] = useState(0);
+  const location = useLocation();
+  //lorsque tu clique sur le lient home la page doit parti au depart
+  useEffect(() => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+    }, [location]);
 
   useEffect(() => {
     const interval = setInterval(() => {
