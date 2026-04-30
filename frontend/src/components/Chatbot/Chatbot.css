@@ -393,68 +393,68 @@
 /* =========================
    DARK MODE
 ========================= */
-body.dark .chatbot-window {
+.dark .chatbot-window {
   background: #1f2937;
   border-color: rgba(255, 255, 255, 0.08);
 }
 
-body.dark .chatbot-messages {
+.dark .chatbot-messages {
   background: #111827;
 }
 
-body.dark .chatbot-message.bot .chatbot-message-content {
+.dark .chatbot-message.bot .chatbot-message-content {
   background: #374151;
   color: #f9fafb;
   border-color: #4b5563;
 }
 
-body.dark .chatbot-message.user .chatbot-message-content {
+.dark .chatbot-message.user .chatbot-message-content {
   background: #f97316;
   color: white;
 }
 
-body.dark .chatbot-message.user .chatbot-message-avatar {
+.dark .chatbot-message.user .chatbot-message-avatar {
   background: #374151;
   color: #9ca3af;
 }
 
-body.dark .chatbot-input {
+.dark .chatbot-input {
   background: #1f2937;
   border-color: rgba(255, 255, 255, 0.06);
 }
 
-body.dark .chatbot-input input {
+.dark .chatbot-input input {
   background: #374151;
   color: #f9fafb;
   border-color: #4b5563;
 }
 
-body.dark .chatbot-input input::placeholder {
+.dark .chatbot-input input::placeholder {
   color: #6b7280;
 }
 
-body.dark .chatbot-suggestions {
+.dark .chatbot-suggestions {
   background: #1f2937;
   border-color: rgba(255, 255, 255, 0.06);
 }
 
-body.dark .chatbot-suggestions button {
+.dark .chatbot-suggestions button {
   background: #374151;
   color: #d1d5db;
   border-color: #4b5563;
 }
 
-body.dark .chatbot-suggestions button:hover {
+.dark .chatbot-suggestions button:hover {
   background: #f97316;
   color: white;
   border-color: #f97316;
 }
 
-body.dark .typing-bubble {
+.dark .typing-bubble {
   background: #374151;
   border-color: #4b5563;
 }
 
-body.dark .typing-bubble .dot {
+.dark .typing-bubble .dot {
   background: #fb923c;
 }

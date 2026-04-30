@@ -10,7 +10,7 @@ function LearningSection() {
     FR: {
       title: "Apprenez le Darija & le Tifinagh",
       subtitle: "Commencez avec des expressions marocaines simples et l'alphabet",
-      darijaTitle: "🇲🇦 Exemples de Darija",
+      darijaTitle: "    Exemples de Darija",
       darijaExamples: `Salam = Bonjour
 Labas? = Comment ça va?
 Shukran = Merci
@@ -19,7 +19,7 @@ Afak = S'il vous plaît
 Smah lia = Pardon
 Zwin = Beau/Belle
 Nss = Oublier`,
-      tifinaghTitle: "🔤 Exemples de Tifinagh",
+      tifinaghTitle: " Exemples de Tifinagh",
       tifinaghExamples: `ⴰⵎⴰⵣⵉⵖ = Amazigh (Homme berbère)
 ⴰⵎⴰⵏ = Aman (eau)
 ⵜⴰⵎⴰⵣⵉⵔⵜ = Tamazirt (Pays)
@@ -34,7 +34,7 @@ Nss = Oublier`,
     EN: {
       title: "Learn Darija & Tifinagh",
       subtitle: "Start with simple Moroccan expressions and alphabet",
-      darijaTitle: "🇲🇦 Darija Examples",
+      darijaTitle: " Darija Examples",
       darijaExamples: `Salam = Hello
 Labas? = How are you?
 Shukran = Thank you
@@ -43,7 +43,7 @@ Afak = Please
 Smah lia = Sorry
 Zwin = Beautiful
 Nss = Forget`,
-      tifinaghTitle: "🔤 Tifinagh Examples",
+      tifinaghTitle: " Tifinagh Examples",
       tifinaghExamples: `ⴰⵎⴰⵣⵉⵖ = Amazigh (Berber man)
 ⴰⵎⴰⵏ = Aman (water)
 ⵜⴰⵎⴰⵣⵉⵔⵜ = Tamazirt (Country)
@@ -67,7 +67,7 @@ Nss = Forget`,
 سمح ليا = آسف
 زوين = جميل
 نسّ = نسيان`,
-      tifinaghTitle: "🔤 أمثلة التيفيناغ",
+      tifinaghTitle: " أمثلة التيفيناغ",
       tifinaghExamples: `ⴰⵎⴰⵣⵉⵖ = أمازيغي
 ⴰⵎⴰⵏ = ماء
 ⵜⴰⵎⴰⵣⵉⵔⵜ = تامازيرت (البلد)

@@ -12,11 +12,12 @@ body{
   font-family:'Inter', 'Poppins', sans-serif;
 }
 
-body.dark .popular-section {
+/* ================= DARK MODE ================= */
+.dark .popular-section {
   background: #0f0f0f;
 }
 
-body.dark .popular-header h2 {
+.dark .popular-header h2 {
   color: white;
 }
 
@@ -54,6 +55,7 @@ body.dark .popular-header h2 {
   font-weight:800;
   color:#111;
   letter-spacing: -1px;
+  transition: color 0.4s ease;
 }
 
 /* VIEW ALL BUTTON (LINK STYLE) */
@@ -109,7 +111,6 @@ body.dark .popular-header h2 {
   cursor:pointer;
   text-decoration:none;
   box-shadow:0 10px 30px rgba(0,0,0,0.06);
-  /* The beautiful hover rotation/scale base */
   transform-style: preserve-3d;
   perspective: 1000px;
 }

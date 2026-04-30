@@ -92,7 +92,6 @@ const translations = {
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  // 🔥 Récupérer la langue sauvegardée ou utiliser FR par défaut
   const [lang, setLang] = useState(() => {
     const savedLang = localStorage.getItem("app-language");
     return savedLang || "FR";
@@ -101,7 +100,6 @@ export const LanguageProvider = ({ children }) => {
   const t = (key) => translations[lang][key] || key;
   const isRTL = lang === "AR";
 
-  // 🔥 Sauvegarder la langue quand elle change
   useEffect(() => {
     localStorage.setItem("app-language", lang);
   }, [lang]);
