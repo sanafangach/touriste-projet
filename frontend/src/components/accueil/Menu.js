@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useRef  } from "react";
 import { Link } from "react-router-dom";
 import { Settings, Moon, Sun, Menu as MenuIcon, X, Bookmark, LogIn, Home, Map, Globe, Box } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
@@ -7,21 +7,51 @@ import "../css/Menu.css";
 import logo from "../../assets/logo1.png";
 
 function Menu() {
+  const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(() => {
+    const savedDark = localStorage.getItem("app-dark-mode");
+    return savedDark === "true";
+  });
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { lang, setLang, t, isRTL } = useLanguage();
+
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+//hadik settings li fl menu ila clicite ela ay haja thiyd eahadik useref o dropdownRef dyalha lfog
+      useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target)
+        ) {
+          setOpen(false);
+        }
+      };
 
+      document.addEventListener("mousedown", handleClickOutside);
+
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
   const toggleTheme = () => {
-    setDark(!dark);
-    document.body.classList.toggle("dark");
+    const newDark = !dark;
+    setDark(newDark);
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem("app-dark-mode", newDark);
   };
 
   const handleLanguageChange = (newLang) => {
@@ -75,14 +105,20 @@ function Menu() {
 
       <div className="menu-right">
         <button
-          onClick={() => setOpen(!open)}
+            onClick={(e) => { 
+              e.stopPropagation();
+              setOpen(!open);
+            }}
           className={`settings-btn ${open ? "active" : ""}`}
         >
           <Settings size={20} className={open ? "spin" : ""} />
         </button>
 
         {open && (
-          <div className={`dropdown ${isRTL ? "dropdown-rtl" : ""}`}>
+          <div 
+            ref={dropdownRef}
+            className={`dropdown ${isRTL ? "dropdown-rtl" : ""}`}
+          >
             <div className="dropdown-header">{t("translation")}</div>
             <div className="language-bar">
               <button 

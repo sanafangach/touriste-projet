@@ -12,7 +12,7 @@ body{
 }
 
 /* DARK MODE */
-body.dark{
+.dark body{
   background:#0a0a0a;
   color:white;
 }
@@ -48,7 +48,7 @@ body.dark{
 }
 
 .menu.scrolled .logo {
-  filter: brightness(0); /* Make logo black on light background */
+  filter: brightness(0);
 }
 
 .menu.scrolled .menu-links li a {
@@ -70,20 +70,20 @@ body.dark{
 }
 
 /* DARK MODE MENU */
-body.dark .menu{
+.dark .menu{
   background:rgba(0,0,0,0.45);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-body.dark .menu.scrolled {
+.dark .menu.scrolled {
   background: rgba(20, 20, 20, 0.85);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-body.dark .menu.scrolled .logo {
-  filter: brightness(1); /* Keep logo white in dark mode */
+.dark .menu.scrolled .logo {
+  filter: brightness(1);
 }
-body.dark .menu.scrolled .menu-links li a,
-body.dark .menu.scrolled .mobile-icon,
-body.dark .menu.scrolled .settings-btn {
+.dark .menu.scrolled .menu-links li a,
+.dark .menu.scrolled .mobile-icon,
+.dark .menu.scrolled .settings-btn {
   color: white;
 }
 
@@ -205,10 +205,32 @@ body.dark .menu.scrolled .settings-btn {
   transform-origin: top right;
 }
 
-body.dark .dropdown{
-  background:rgba(20, 20, 20, 0.9);
+.dark .dropdown{
+  background:rgba(20, 20, 20, 0.95);
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow:0 20px 40px rgba(0,0,0,0.5);
+}
+
+.dark .dropdown-header {
+  color: #888;
+}
+
+.dark .dropdown-divider {
+  background: rgba(255,255,255,0.1);
+}
+
+.dark .lang-btn {
+  border-color: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #ccc;
+}
+
+.dark .dropdown-item{
+  color: #eee;
+}
+
+.dark .dropdown-item:hover{
+  background: rgba(255, 122, 0, 0.15);
 }
 
 .dropdown-header {
@@ -224,10 +246,6 @@ body.dark .dropdown{
   height: 1px;
   background: rgba(0,0,0,0.05);
   margin: 6px 0;
-}
-
-body.dark .dropdown-divider {
-  background: rgba(255,255,255,0.05);
 }
 
 /* LANGUAGE BAR */
@@ -249,12 +267,6 @@ body.dark .dropdown-divider {
   font-weight: 600;
   color: #555;
   transition: all 0.3s ease;
-}
-
-body.dark .lang-btn {
-  border-color: rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.02);
-  color: #ccc;
 }
 
 .lang-btn:hover {
@@ -285,18 +297,10 @@ body.dark .lang-btn {
   text-decoration:none;
 }
 
-body.dark .dropdown-item{
-  color: #eee;
-}
-
 .dropdown-item:hover{
   background: rgba(255, 122, 0, 0.1);
   color: #ff7a00;
   transform: translateX(4px);
-}
-
-body.dark .dropdown-item:hover{
-  background: rgba(255, 122, 0, 0.15);
 }
 
 /* ================= MOBILE ICON ================= */
@@ -383,9 +387,10 @@ body.dark .dropdown-item:hover{
 
   .menu-right{
     gap:10px;
-    margin-right: 50px; /* Make space for mobile menu icon */
+    margin-right: 50px;
   }
 }
+
 /* ================= RTL (ARABIC) FIXES ================= */
 
 /* Inverser le flex du menu en RTL */
@@ -398,9 +403,17 @@ body.dark .dropdown-item:hover{
   order: 2;
 }
 
-/* Liens au centre en RTL */
+/* Liens ALIGNÉS À centre en RTL */
 .menu.rtl .menu-links {
   flex-direction: row-reverse;
+  margin-left: 0;
+  margin-right: 0;
+  justify-content: center;
+}
+
+/* En arabe: texte à droite, icône à gauche du texte */
+.menu.rtl .menu-links li a {
+  flex-direction: row;
 }
 
 /* Bouton settings à gauche en RTL */
@@ -408,15 +421,11 @@ body.dark .dropdown-item:hover{
   order: -1;
 }
 
-/* DROPDOWN RTL - positionné à gauche du bouton */
+/* DROPDOWN RTL */
 .dropdown-rtl {
   right: auto !important;
   left: 0 !important;
   transform-origin: top left !important;
-}
-
-/* Animation dropdown RTL */
-.dropdown-rtl {
   animation: dropdownEnterRTL 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
@@ -431,7 +440,7 @@ body.dark .dropdown-item:hover{
   }
 }
 
-/* Mobile menu RTL */
+/* ================= RESPONSIVE RTL ================= */
 @media (max-width: 900px) {
   .menu.rtl .menu-links {
     left: auto;
@@ -439,6 +448,8 @@ body.dark .dropdown-item:hover{
     border-right: none;
     border-left: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: -20px 0 50px rgba(0, 0, 0, 0.5);
+    margin-left: 0;
+    justify-content: center;
   }
 
   .menu.rtl .menu-links.active {

@@ -15,6 +15,16 @@
   padding:90px 7%;
   background:linear-gradient(135deg,#f8f9fc,#eef2f7);
   font-family:'Poppins', sans-serif;
+  transition: background 0.4s ease;
+}
+
+/* ================= DARK MODE ================= */
+.dark .activities-section {
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+}
+
+.dark .activities-header h2 {
+  color: white;
 }
 
 /* ================= HEADER ================= */
@@ -41,6 +51,7 @@
   font-size:38px;
   font-weight:700;
   color:#111;
+  transition: color 0.4s ease;
 }
 
 /* BUTTON */
