@@ -1,0 +1,684 @@
+
+/* Destinations.css */
+.destinations-page {
+  min-height: 100vh;
+  background-color: #f5f5f0;
+  padding-bottom: 4rem;
+}
+
+/* Dark mode variables */
+.dark .destinations-page {
+  background-color: #121212;
+}
+
+/* Hero Section with Hassan II Mosque Background */
+.destinations-hero {
+  position: relative;
+  height: 85vh;
+  min-height: 600px;
+  background-image: url("../../assets/background2.jpg");
+  background-size: cover;
+  background-position: center 25%;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fallback background if first image fails */
+.destinations-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80');
+  background-size: cover;
+  background-position: center 25%;
+  opacity: 0;
+  z-index: -1;
+}
+
+/* For dark mode, keep the same image */
+.dark .destinations-hero {
+  background-image: url('https://images.pexels.com/photos/16113274/pexels-photo-16113274.jpeg?auto=compress&cs=tinysrgb&w=1600');
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.4) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding: 0 2rem;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-content h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 3px 3px 12px rgba(0,0,0,0.5);
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fff, #ffd89b, #ffb347);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  opacity: 0.95;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  max-width: 600px;
+  margin: 0 auto;
+  font-weight: 400;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Search and Filter Bar - Moved down more */
+.search-filter-container {
+  max-width: 1200px;
+  margin: -40px auto 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  z-index: 10;
+}
+
+.search-bar {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 60px;
+  padding: 0.9rem 1.8rem;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.dark .search-bar {
+  background: rgba(30, 30, 40, 0.95);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.search-bar:focus-within {
+  box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+  transform: translateY(-2px);
+  background: white;
+}
+
+.search-icon {
+  color: #ff6b35;
+  margin-right: 12px;
+}
+
+.dark .search-icon {
+  color: #ff9068;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+  color: #2d2d2d;
+  font-weight: 500;
+}
+
+.dark .search-input {
+  color: #e9ecef;
+}
+
+.search-input::placeholder {
+  color: #999;
+  font-weight: 400;
+}
+
+.sort-container {
+  position: relative;
+}
+
+.sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.9rem 1.8rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 60px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2d2d2d;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.dark .sort-btn {
+  background: rgba(30, 30, 40, 0.95);
+  color: #e9ecef;
+}
+
+.sort-btn:hover {
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.dark .sort-btn:hover {
+  background: #3d3d5c;
+}
+
+.sort-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 12px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+  min-width: 180px;
+  z-index: 100;
+  overflow: hidden;
+  animation: fadeInDown 0.2s ease;
+}
+
+.dark .sort-menu {
+  background: #2d2d44;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+}
+
+.sort-menu button {
+  width: 100%;
+  padding: 14px 22px;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2d2d2d;
+  transition: all 0.2s ease;
+}
+
+.dark .sort-menu button {
+  color: #e9ecef;
+}
+
+.sort-menu button:hover {
+  background: #f8f9fa;
+}
+
+.dark .sort-menu button:hover {
+  background: #3d3d5c;
+}
+
+.sort-menu button.active {
+  background: #fff0eb;
+  color: #ff6b35;
+  font-weight: 600;
+}
+
+.dark .sort-menu button.active {
+  background: #4a3a2f;
+  color: #ff9068;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Results Info */
+.results-info {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 2rem 0 2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.dark .results-info {
+  color: #aaa;
+  border-bottom-color: #2d2d44;
+}
+
+/* Destinations Grid */
+.destinations-grid {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem 2rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+/* Destination Card */
+.destination-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  cursor: pointer;
+  display: block;
+  position: relative;
+}
+
+.dark .destination-card {
+  background: #1e1e28;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.destination-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 45px rgba(0,0,0,0.15);
+}
+
+.dark .destination-card:hover {
+  box-shadow: 0 25px 45px rgba(0,0,0,0.4);
+}
+
+.card-image {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.destination-card:hover .card-image img {
+  transform: scale(1.08);
+}
+
+/* Save Heart Button */
+.save-heart {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.save-heart:hover {
+  transform: scale(1.1);
+  background: white;
+}
+
+.save-heart.saved {
+  background: #ff6b35;
+}
+
+.save-heart.saved:hover {
+  background: #ff5a22;
+}
+
+.save-heart svg {
+  color: #ff6b35;
+  transition: all 0.2s ease;
+}
+
+.save-heart.saved svg {
+  color: white;
+  fill: white;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+}
+
+.card-content {
+  padding: 1.25rem 1.25rem 1.5rem 1.25rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.card-content h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+  color: #1a1a2e;
+  transition: color 0.2s ease;
+}
+
+.dark .card-content h3 {
+  color: #f0f0f0;
+}
+
+.destination-card:hover .card-content h3 {
+  color: #ff6b35;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff8f0;
+  padding: 5px 12px;
+  border-radius: 30px;
+  color: #f5a623;
+  font-weight: 700;
+}
+
+.dark .rating {
+  background: #2a2a3a;
+}
+
+.star-icon {
+  fill: #f5a623;
+  color: #f5a623;
+}
+
+.rating span {
+  font-size: 0.9rem;
+}
+
+/* Card Description */
+.card-description {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0.75rem 0 1rem 0;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dark .card-description {
+  color: #aaa;
+}
+
+/* Card Footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e9ecef;
+  margin-top: 0.25rem;
+}
+
+.dark .card-footer {
+  border-top-color: #2d2d44;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.dark .location {
+  color: #999;
+}
+
+.activities-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: #ff6b35;
+  font-weight: 600;
+  background: #fff0eb;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.dark .activities-count {
+  background: #3a2a2a;
+  color: #ff9068;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #888;
+  font-size: 1.1rem;
+}
+
+.dark .no-results {
+  color: #aaa;
+}
+
+/* RTL Support */
+.destinations-page[dir="rtl"] .search-icon {
+  margin-right: 0;
+  margin-left: 12px;
+}
+
+.destinations-page[dir="rtl"] .sort-menu {
+  right: auto;
+  left: 0;
+}
+
+.destinations-page[dir="rtl"] .sort-menu button {
+  text-align: right;
+}
+
+.destinations-page[dir="rtl"] .save-heart {
+  right: auto;
+  left: 15px;
+}
+
+.destinations-page[dir="rtl"] .rating {
+  direction: ltr;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .destinations-hero {
+    height: 60vh;
+    min-height: 450px;
+    background-attachment: scroll;
+    background-position: center 20%;
+  }
+
+  .hero-content h1 {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+  }
+
+  .hero-content p {
+    font-size: 0.85rem;
+  }
+
+  .search-filter-container {
+    padding: 0 1rem;
+    margin-top: -25px;
+    flex-direction: column;
+  }
+
+  .search-bar {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .sort-container {
+    width: 100%;
+  }
+
+  .sort-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .results-info {
+    padding: 1rem 1rem 0 1rem;
+    font-size: 0.8rem;
+  }
+
+  .destinations-grid {
+    padding: 0 1rem 1rem 1rem;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  .card-image {
+    height: 220px;
+  }
+
+  .card-content h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .destinations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* FIX FOR MENU - Make menu transparent/glass morphism */
+.menu {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(15px) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.2) !important;
+}
+
+/* Dark mode menu */
+.dark .menu {
+  background: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(15px) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+/* Menu text color for transparency */
+.menu .menu-links a,
+.mobile-icon svg,
+.menu-right .settings-btn svg {
+  color: white !important;
+}
+
+.dark .menu .menu-links a,
+.dark .mobile-icon svg,
+.dark .menu-right .settings-btn svg {
+  color: white !important;
+}
+
+/* Menu hover effects */
+.menu .menu-links a:hover {
+  color: #ffd89b !important;
+}
+
+/* Menu logo - make it pop */
+.menu .logo {
+  filter: brightness(0) invert(1);
+}
+
+/* Settings button active state */
+.settings-btn.active {
+  background: rgba(255,255,255,0.2) !important;
+}
+
+/* Dropdown styling for transparent menu */
+.dropdown {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.dark .dropdown {
+  background: rgba(30, 30, 40, 0.95) !important;
+}
+
+/* For mobile menu when open */
+@media (max-width: 768px) {
+  .menu .menu-links.active {
+    background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(15px) !important;
+  }
+  
+  .menu .menu-links.active a {
+    color: white !important;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading animation for images */
+.card-image img {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
