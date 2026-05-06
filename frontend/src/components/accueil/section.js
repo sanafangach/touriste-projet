@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { useLanguage } from "./LanguageContext"; // 🔥 Import
+import { useLanguage } from "./LanguageContext";
 import "../css/section.css";
 
 import img1 from "../../assets/taghazot.png";
@@ -10,9 +10,8 @@ import img3 from "../../assets/Chefchaouen.jpg";
 import img4 from "../../assets/Merzouga.jpg";
 
 function PopularDestination() {
-  const { t, lang } = useLanguage(); // 🔥 Utilisation du contexte
+  const { t, lang } = useLanguage();
 
-  // Données traduites selon la langue
   const getPlaces = () => {
     const basePlaces = [
       { id: 1, image: img1, link: "/destination/agadir" },
@@ -64,17 +63,15 @@ function PopularDestination() {
 
       <div className="popular-grid">
         {places.map((item) => (
-          <Link to={item.link} className="popular-card group" key={item.id}>
-            <div className="card-bg" style={{ backgroundImage: `url(${item.image})` }}></div>
-            <div className="card-overlay">
-              <div className="card-content">
-                <h3>{item.place}</h3>
-                <p>{item.city}</p>
-                <div className="card-hover-indicator">
-                  <span>{lang === "FR" ? "Explorer" : lang === "AR" ? "استكشف" : "Explore"}</span>
-                  <ArrowRight size={16} />
-                </div>
-              </div>
+          <Link to={item.link} className="popular-card" key={item.id}>
+            <img src={item.image} alt={item.place} />
+            <div className="card-info">
+              <h3>{item.place}</h3>
+              <p>{item.city}</p>
+              <span className="card-btn">
+                {lang === "FR" ? "Explorer" : lang === "AR" ? "استكشف" : "Explore"}
+                <ArrowRight size={16} />
+              </span>
             </div>
           </Link>
         ))}

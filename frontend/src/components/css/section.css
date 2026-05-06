@@ -2,14 +2,8 @@
    POPULAR DESTINATIONS - MODERN UI
 ================================= */
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  font-family:'Inter', 'Poppins', sans-serif;
+body {
+  font-family: 'Inter', 'Poppins', sans-serif;
 }
 
 /* ================= DARK MODE ================= */
@@ -22,67 +16,62 @@ body{
 }
 
 /* ================= SECTION ================= */
-
-.popular-section{
-  width:100%;
-  padding:100px 7%;
-  background:#f7f8fc;
+.popular-section {
+  width: 100%;
+  padding: 100px 7%;
+  background: #f7f8fc;
   transition: background 0.4s ease;
 }
 
 /* ================= HEADER ================= */
-
-.popular-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  margin-bottom:50px;
-  flex-wrap:wrap;
-  gap:20px;
+.popular-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.mini-title{
-  font-size:14px;
-  font-weight:700;
-  color:#ff7a00;
-  text-transform:uppercase;
-  letter-spacing:2px;
+.mini-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ff7a00;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   margin-bottom: 8px;
 }
 
-.popular-header h2{
-  font-size:42px;
-  font-weight:800;
-  color:#111;
+.popular-header h2 {
+  font-size: 42px;
+  font-weight: 800;
+  color: #111;
   letter-spacing: -1px;
   transition: color 0.4s ease;
 }
 
-/* VIEW ALL BUTTON (LINK STYLE) */
-.view-btn{
-  display:inline-flex;
+/* VIEW ALL BUTTON */
+.view-btn {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding:14px 30px;
-  border-radius:50px;
-  text-decoration:none;
-
-  background:rgba(255, 122, 0, 0.1);
-  color:#ff7a00;
+  padding: 14px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  background: rgba(255, 122, 0, 0.1);
+  color: #ff7a00;
   border: 1px solid rgba(255, 122, 0, 0.3);
-
-  font-size:15px;
-  font-weight:600;
-
-  transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.view-btn:hover{
-  background:linear-gradient(135deg,#ff7a00,#ff4d00);
-  color:white;
-  transform:translateY(-3px);
+.view-btn:hover {
+  background: linear-gradient(135deg, #ff7a00, #ff4d00);
+  color: white;
+  transform: translateY(-3px);
   border-color: transparent;
-  box-shadow:0 15px 30px rgba(255,122,0,0.3);
+  box-shadow: 0 15px 30px rgba(255, 122, 0, 0.3);
 }
 
 .arrow-icon {
@@ -94,153 +83,163 @@ body{
 }
 
 /* ================= GRID ================= */
-
-.popular-grid{
-  display:grid;
-  grid-template-columns:repeat(4, 1fr);
-  gap:30px;
+.popular-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
 }
 
 /* ================= CARD ================= */
-
-.popular-card{
-  height:420px;
-  border-radius:24px;
-  overflow:hidden;
-  position:relative;
-  cursor:pointer;
-  text-decoration:none;
-  box-shadow:0 10px 30px rgba(0,0,0,0.06);
-  transform-style: preserve-3d;
-  perspective: 1000px;
+.popular-card {
+  height: 420px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-.card-bg {
+/* Image */
+.popular-card img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-size:cover;
-  background-position:center;
-  transition:transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  object-fit: cover;
+  transition: transform 0.7s ease;
 }
 
-.popular-card:hover .card-bg {
-  transform:scale(1.1);
+.popular-card:hover img {
+  transform: scale(1.1);
 }
 
-.popular-card:hover{
-  box-shadow:0 25px 50px rgba(0,0,0,0.2);
-}
-
-/* DARK OVERLAY */
-.card-overlay{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  padding:30px;
-  background:linear-gradient(
+/* ================= INFO LTAHT ================= */
+.card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
+  padding-top: 80px;
+  
+  /* Gradient sombra bach text yban */
+  background: linear-gradient(
     to top,
-    rgba(0,0,0,0.85) 0%,
-    rgba(0,0,0,0.4) 40%,
-    rgba(0,0,0,0) 100%
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.6) 40%,
+    rgba(0, 0, 0, 0.1) 80%,
+    rgba(0, 0, 0, 0) 100%
   );
-  transition: background 0.4s ease;
+  
+  transition: all 0.4s ease;
 }
 
-.popular-card:hover .card-overlay {
-  background:linear-gradient(
+/* Hover: Orange gradient */
+.popular-card:hover .card-info {
+  background: linear-gradient(
     to top,
-    rgba(255, 122, 0, 0.9) 0%,
-    rgba(0,0,0,0.5) 50%,
-    rgba(0,0,0,0) 100%
+    rgba(255, 122, 0, 0.95) 0%,
+    rgba(255, 122, 0, 0.6) 35%,
+    rgba(0, 0, 0, 0.3) 80%,
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
-.card-content {
-  transform: translateY(20px);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* ================= TEXT DIMNA LTAHT ================= */
+.card-info h3 {
+  color: white;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-.popular-card:hover .card-content {
-  transform: translateY(0);
-}
-
-/* TEXT INSIDE IMAGE */
-.card-content h3{
-  color:white;
-  font-size:24px;
-  font-weight:800;
-  margin-bottom:8px;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-.card-content p{
-  color:#eaeaea;
-  font-size:15px;
+.card-info p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
   font-weight: 500;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  margin-bottom: 0; /* HNA: Ma kaynch margin ltaht */
 }
 
-.card-hover-indicator {
-  display: flex;
+/* ================= EXPLORER - YBAN FACH HOVER ================= */
+.card-btn {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  
   color: white;
-  margin-top: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  
+  /* HNA: Hidden by default */
   opacity: 0;
   transform: translateY(15px);
   transition: all 0.4s ease;
-  font-weight: 600;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  
+  margin-top: 12px; /* HNA: Margin mn lfo9 */
 }
 
-.popular-card:hover .card-hover-indicator {
+/* HNA: Yban fach hover */
+.popular-card:hover .card-btn {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.1s;
+}
+
+/* Icon */
+.card-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.popular-card:hover .card-btn svg {
+  transform: translateX(4px);
 }
 
 /* ================= RESPONSIVE ================= */
 
 /* DESKTOP SMALL */
-@media(max-width:1200px){
-  .popular-grid{
-    grid-template-columns:repeat(3,1fr);
+@media (max-width: 1200px) {
+  .popular-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 /* TABLET */
-@media(max-width:900px){
-  .popular-grid{
-    grid-template-columns:repeat(2,1fr);
+@media (max-width: 900px) {
+  .popular-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .popular-card{
-    height:350px;
+  .popular-card {
+    height: 350px;
   }
 }
 
 /* MOBILE */
-@media(max-width:600px){
+@media (max-width: 600px) {
   .popular-section {
     padding: 60px 5%;
   }
-  .popular-grid{
-    grid-template-columns:1fr;
+  .popular-grid {
+    grid-template-columns: 1fr;
   }
-  .popular-header{
+  .popular-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  .popular-header h2{
-    font-size:32px;
+  .popular-header h2 {
+    font-size: 32px;
   }
-  .popular-card{
-    height:300px;
+  .popular-card {
+    height: 300px;
   }
 }
