@@ -582,6 +582,40 @@
     text-shadow: 0 0 10px rgba(255, 122, 0, 0.3);
 }
 
+/* ila derti copy l chi nas f input katweli bida f dark khasha la tweli swd ila kna f dark mode  */
+.form-group input {
+    color: #1a1a1a;
+    background-color: #fff;
+    caret-color: #ff7a00;
+}
+
+.form-group input::selection {
+    background: #ff7a00;
+    color: #fff;
+}
+
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover,
+.form-group input:-webkit-autofill:focus,
+.form-group input:-webkit-autofill:active {
+    -webkit-text-fill-color: #1a1a1a !important;
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+}
+
+.dark .form-group input {
+    background-color: rgba(255,255,255,0.05);
+    color: white;
+}
+
+.dark .form-group input:-webkit-autofill,
+.dark .form-group input:-webkit-autofill:hover,
+.dark .form-group input:-webkit-autofill:focus,
+.dark .form-group input:-webkit-autofill:active {
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+    background-color: #1a1a1a !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
 /* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
     .login-container {
