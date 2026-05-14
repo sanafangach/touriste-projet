@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\VerificationCode;
+use App\Models\PasswordReset; // ✅ HADI! KHAS T-ZIDHA
 use App\Mail\VerificationCodeMail;
+use App\Mail\ResetPasswordMail;      // ✅ ZID HADI (ila mazal)
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str; // ✅ HADI L-ERREUR! KHAS T-ZIDHA
+
 
 class AuthController extends Controller
 {
@@ -183,6 +187,142 @@ class AuthController extends Controller
         return response()->json([
             'verified' => true,
             'message' => 'Code vérifié'
+        ]);
+    }
+
+
+
+ // ===== MOT DE PASSE OUBLIÉ =====
+
+    /**
+     * Step 1: Sifet lien de reset l-email
+     */
+    public function forgotPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $email = $request->email;
+
+        // Check wach user kayn
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return response()->json([
+                'message' => 'Aucun compte trouvé avec cet email'
+            ], 404);
+        }
+
+        // Generer token magique
+        $token = Str::random(64);
+
+        // Supprimer tokens 9dam
+        PasswordReset::where('email', $email)->delete();
+
+        // Creer token jdid
+        PasswordReset::create([
+            'email' => $email,
+            'token' => $token,
+            'expires_at' => now()->addMinutes(30)
+        ]);
+
+        // Sifet email b lien
+        try {
+            Mail::to($email)->send(new ResetPasswordMail($token, $email));
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Lien envoyé à votre email'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de l\'envoi de l\'email'
+            ], 500);
+        }
+    }
+
+    /**
+     * Step 2: Verifier token w badal password
+     */
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'token' => 'required|string',
+            'password' => 'required|string|min:6|confirmed'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Verifier token
+        $record = PasswordReset::where('email', $request->email)
+            ->where('token', $request->token)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if (!$record) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lien invalide ou expiré'
+            ], 400);
+        }
+
+        // Badal password
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json([
+                'message' => 'Utilisateur non trouvé'
+            ], 404);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Supprimer token
+        $record->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mot de passe modifié avec succès !'
+        ]);
+    }
+
+    /**
+     * Verifier wach token s7i7 (optionnel)
+     */
+    public function verifyResetToken(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'token' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $record = PasswordReset::where('email', $request->email)
+            ->where('token', $request->token)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if (!$record) {
+            return response()->json([
+                'valid' => false,
+                'message' => 'Lien invalide ou expiré'
+            ], 400);
+        }
+
+        return response()->json([
+            'valid' => true,
+            'message' => 'Lien valide'
         ]);
     }
 }

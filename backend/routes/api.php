@@ -7,10 +7,15 @@ use App\Http\Controllers\AdminController;
 // PUBLIC
 Route::post('/login', [AuthController::class, 'login']);
 
-// REGISTER - 2 steps
+// REGISTER
 Route::post('/register-send-code', [AuthController::class, 'registerSendCode']);
 Route::post('/register-verify', [AuthController::class, 'registerVerify']);
 Route::post('/verify-code', [AuthController::class, 'verifyCode']);
+
+// PASSWORD RESET ✅
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('/verify-reset-token', [AuthController::class, 'verifyResetToken']);
 
 // PROTECTED
 Route::middleware('auth:sanctum')->group(function () {

@@ -2,33 +2,23 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const ProtectedRoute = ({ children, requireAdmin = false }) => {
-    const { user, isAdmin, loading } = useAuth();
+function ProtectedRoute({ children, requireAdmin = false }) {
+    const { user, isAuthenticated, isAdmin } = useAuth();
 
-    if (loading) {
-        return (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                fontSize: '20px',
-                color: '#666'
-            }}>
-                Chargement...
-            </div>
-        );
+    // Ila ma connectéch → redirect l login
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
     }
 
-    if (!user) {
-        return <Navigate to="/login" />;
-    }
-
-    if (requireAdmin && !isAdmin()) {
-        return <Navigate to="/" />;
+    // Ila page khassa b-admin w user ma adminch → redirect l home
+    if (requireAdmin) {
+        // ✅ HNA: isAdmin hia function, dir () bach t-executiha
+        if (!isAdmin()) {
+            return <Navigate to="/" replace />;
+        }
     }
 
     return children;
-};
+}
 
 export default ProtectedRoute;

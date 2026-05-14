@@ -313,6 +313,20 @@ function Login() {
                             </button>
                         </form>
 
+                         {!isRegister && (
+                            <div style={{textAlign: isRTL ? 'left' : 'right', marginBottom: '15px'}}>
+                                <button 
+                                    onClick={() => navigate('/forgot-password')} 
+                                    className="toggle-btn"
+                                    style={{fontSize: '13px', color: '#ff7a00'}}
+                                >
+                                    {lang === 'AR' ? 'نسيت كلمة المرور؟' : 
+                                     lang === 'FR' ? 'Mot de passe oublié ?' : 
+                                     'Forgot password?'}
+                                </button>
+                            </div>
+                        )}
+
                         <div className="login-divider"><span>{currentLang.orContinueWith}</span></div>
 
                         <div className="social-login">

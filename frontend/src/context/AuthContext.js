@@ -47,8 +47,23 @@ export function AuthProvider({ children }) {
         localStorage.removeItem('user');
     };
 
+    // ✅ HADOLI L-FUNCTIONS LI KHAS YKONO F CONTEXT
+    const isAuthenticated = !!user && !!token;
+    
+    const isAdmin = () => {
+        return user?.role === 'admin';
+    };
+
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            token, 
+            login, 
+            logout, 
+            loading,
+            isAuthenticated,
+            isAdmin // ✅ ZID HADI
+        }}>
             {children}
         </AuthContext.Provider>
     );
