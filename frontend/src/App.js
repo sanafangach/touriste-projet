@@ -7,6 +7,8 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from "./components/pages/ProtectedRoute";
 
 import Menu from "./components/accueil/Menu";
+import Footer from "./components/accueil/Footer";
+
 import Home from "./components/accueil/home";
 import Card from "./components/pages/card";
 import Destination from "./components/pages/destination";
@@ -15,6 +17,7 @@ import Login from "./components/pages/login";
 import Saved from "./components/pages/saved";
 import Chatbot from "./components/Chatbot/Chatbot";
 import AdminDashboard from "./components/pages/adminDashboard";
+
 import EmailVerification from './components/auth/EmailVerification';
 import VerifyCode from './components/auth/VerifyCode';
 import ForgotPassword from './components/auth/ForgotPassword';
@@ -23,8 +26,21 @@ import ResetPassword from './components/auth/ResetPassword';
 function AppContent() {
     const location = useLocation();
 
-    const noMenuPages = ['/login', '/admin', '/forgot-password', '/reset-password', '/verify-code'];
-    const noChatbotPages = ['/login', '/admin', '/forgot-password', '/reset-password', '/verify-code'];
+    const noMenuPages = [
+        '/login',
+        '/admin',
+        '/forgot-password',
+        '/reset-password',
+        '/verify-code'
+    ];
+
+    const noChatbotPages = [
+        '/login',
+        '/admin',
+        '/forgot-password',
+        '/reset-password',
+        '/verify-code'
+    ];
 
     const showMenu = !noMenuPages.includes(location.pathname);
     const showChatbot = !noChatbotPages.includes(location.pathname);
@@ -34,43 +50,51 @@ function AppContent() {
             {showMenu && <Menu />}
 
             <Routes>
-                {/* ✅ PUBLIC - Bla login */}
+                {/* PUBLIC */}
                 <Route path="/" element={<Home />} />
                 <Route path="/card" element={<Card />} />
                 <Route path="/destination" element={<Destination />} />
                 <Route path="/languages" element={<Languages />} />
 
-                {/* ✅ LOGIN page */}
+                {/* LOGIN */}
                 <Route path="/login" element={<Login />} />
 
-                {/* ✅ PROTECTED - Khassin login */}
-                <Route path="/saved" element={
-                    <ProtectedRoute>
-                        <Saved />
-                    </ProtectedRoute>
-                } />
+                {/* PROTECTED */}
+                <Route
+                    path="/saved"
+                    element={
+                        <ProtectedRoute>
+                            <Saved />
+                        </ProtectedRoute>
+                    }
+                />
 
-                {/* ✅ ADMIN - Khassin login + admin role */}
-                <Route path="/admin" element={
-                    <ProtectedRoute requireAdmin={true}>
-                        <AdminDashboard />
-                    </ProtectedRoute>
-                } />
+                {/* ADMIN */}
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectedRoute requireAdmin={true}>
+                            <AdminDashboard />
+                        </ProtectedRoute>
+                    }
+                />
 
-                {/* Auth routes */}
+                {/* AUTH */}
                 <Route path="/verify-email" element={<EmailVerification />} />
                 <Route path="/verify-code" element={<VerifyCode />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
 
-                {/* fallback */}
+                {/* FALLBACK */}
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
 
             {showChatbot && <Chatbot />}
+            {showMenu && <Footer />}
         </>
     );
 }
+
 function App() {
     return (
         <AuthProvider>
