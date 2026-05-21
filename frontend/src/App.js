@@ -1,5 +1,6 @@
+// App.js - Version corrigée (sans Router imbriqué)
 import React from "react";
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 
 import { LanguageProvider } from "./components/accueil/LanguageContext";
 import { AuthProvider } from './context/AuthContext';
@@ -22,6 +23,14 @@ import EmailVerification from './components/auth/EmailVerification';
 import VerifyCode from './components/auth/VerifyCode';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
+
+// Import des pages de destinations
+import Agadir from "./components/pages/destinations/Agadir";
+import Casablanca from "./components/pages/destinations/Casablanca";
+import Marrakech from "./components/pages/destinations/Marrakech";
+import Fes from "./components/pages/destinations/Fes";
+import Chefchaouen from "./components/pages/destinations/Chefchaouen";
+import Essaouira from "./components/pages/destinations/Essaouira";
 
 function AppContent() {
     const location = useLocation();
@@ -50,34 +59,28 @@ function AppContent() {
             {showMenu && <Menu />}
 
             <Routes>
-                {/* PUBLIC */}
+                {/* ✅ PUBLIC - Bla login */}
                 <Route path="/" element={<Home />} />
                 <Route path="/card" element={<Card />} />
                 <Route path="/destination" element={<Destination />} />
                 <Route path="/languages" element={<Languages />} />
 
-                {/* LOGIN */}
+                {/* ✅ LOGIN page */}
                 <Route path="/login" element={<Login />} />
 
-                {/* PROTECTED */}
-                <Route
-                    path="/saved"
-                    element={
-                        <ProtectedRoute>
-                            <Saved />
-                        </ProtectedRoute>
-                    }
-                />
+                {/* ✅ PROTECTED - Khassin login */}
+                <Route path="/saved" element={
+                    <ProtectedRoute>
+                        <Saved />
+                    </ProtectedRoute>
+                } />
 
-                {/* ADMIN */}
-                <Route
-                    path="/admin"
-                    element={
-                        <ProtectedRoute requireAdmin={true}>
-                            <AdminDashboard />
-                        </ProtectedRoute>
-                    }
-                />
+                {/* ✅ ADMIN - Khassin login + admin role */}
+                <Route path="/admin" element={
+                    <ProtectedRoute requireAdmin={true}>
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                } />
 
                 {/* AUTH */}
                 <Route path="/verify-email" element={<EmailVerification />} />
@@ -85,7 +88,7 @@ function AppContent() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
 
-                {/* FALLBACK */}
+                {/* fallback */}
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
 
@@ -99,7 +102,9 @@ function App() {
     return (
         <AuthProvider>
             <LanguageProvider>
-                <AppContent />
+                <Router>
+                    <AppContent />
+                </Router>
             </LanguageProvider>
         </AuthProvider>
     );

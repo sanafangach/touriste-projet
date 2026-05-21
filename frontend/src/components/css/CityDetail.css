@@ -1,0 +1,1338 @@
+/* ============================================
+   CITY DETAIL CSS - VERSION COMPLÈTE
+   ============================================ */
+
+.city-detail {
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.dark .city-detail {
+  background: #0f172a;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.city-hero {
+  position: relative;
+  height: 90vh;
+  min-height: 700px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.hero-container {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bouton Back - visible */
+.back-button {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.back-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateX(-5px);
+}
+
+.hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  max-width: 60%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,107,53,0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  width: fit-content;
+  margin-bottom: 1.5rem;
+}
+
+.hero-content h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  opacity: 0.95;
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.save-btn, .share-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.save-btn {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.save-btn.saved {
+  background: #ff6b35;
+  color: white;
+}
+
+.share-btn {
+  background: white;
+  color: #1a1a2e;
+}
+
+.save-btn:hover, .share-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.mouse {
+  width: 30px;
+  height: 50px;
+  border: 2px solid white;
+  border-radius: 20px;
+  position: relative;
+}
+
+.wheel {
+  width: 4px;
+  height: 10px;
+  background: white;
+  border-radius: 2px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scroll 1.5s infinite;
+}
+
+@keyframes scroll {
+  0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+
+/* ============================================
+   DESCRIPTION SECTION
+   ============================================ */
+
+.description-section {
+  padding: 60px 0;
+  background: #f8fafc;
+}
+
+.dark .description-section {
+  background: #0f172a;
+}
+
+.description-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 50px;
+}
+
+.description-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.dark .description-content h2 {
+  color: #f1f5f9;
+}
+
+.description-content p {
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.dark .description-content p {
+  color: #94a3b8;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.dark .highlight-item {
+  background: #1e293b;
+}
+
+.highlight-icon {
+  color: #ff6b35;
+}
+
+/* Quick Info */
+.quick-info {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.dark .quick-info {
+  background: #1e293b;
+}
+
+.quick-info h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.dark .quick-info h3 {
+  color: #f1f5f9;
+}
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.dark .info-item {
+  color: #94a3b8;
+}
+
+.info-item svg {
+  color: #ff6b35;
+  flex-shrink: 0;
+}
+
+.info-item strong {
+  color: #1e293b;
+  font-weight: 600;
+  min-width: 70px;
+}
+
+.dark .info-item strong {
+  color: #f1f5f9;
+}
+
+/* ============================================
+   TABS CONTAINER - RESTE TOUJOURS VISIBLE
+   ============================================ */
+
+.tabs-container {
+  background: white;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  transition: all 0.3s ease;
+}
+
+.dark .tabs-container {
+  background: #1e293b;
+}
+
+.tabs-container.scrolled {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 3rem;
+  padding: 1rem 0;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.tab.active {
+  color: #ff6b35;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #ff6b35;
+  border-radius: 3px;
+}
+
+.tab:hover {
+  color: #ff6b35;
+}
+
+/* ============================================
+   SECTION HEADER
+   ============================================ */
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.dark .section-header h2 {
+  color: #f1f5f9;
+}
+
+.section-header p {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.dark .section-header p {
+  color: #94a3b8;
+}
+
+/* ============================================
+   ACTIVITIES SECTION
+   ============================================ */
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2rem;
+}
+
+.activity-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dark .activity-card {
+  background: #1e293b;
+}
+
+.activity-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.activity-image {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+}
+
+.activity-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.activity-card:hover .activity-image img {
+  transform: scale(1.08);
+}
+
+/* Prix pour les activités */
+.activity-price {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #ff6b35, #ff4757);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 1rem;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.activity-price::before {
+  content: '💰';
+  margin-right: 6px;
+  font-size: 0.85rem;
+}
+
+.activity-duration {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 10;
+}
+
+.activity-content {
+  padding: 1.5rem;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 0.75rem;
+}
+
+.activity-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.dark .activity-header h3 {
+  color: #f1f5f9;
+}
+
+.activity-description {
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.dark .activity-description {
+  color: #94a3b8;
+}
+
+.activity-includes {
+  background: #f1f5f9;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.dark .activity-includes {
+  background: #334155;
+}
+
+.includes-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1e293b;
+}
+
+.dark .includes-title {
+  color: #f1f5f9;
+}
+
+.includes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.include-item {
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.dark .include-item {
+  color: #cbd5e1;
+}
+
+.activity-best-time {
+  font-size: 0.85rem;
+  color: #ff6b35;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.book-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.book-btn:hover {
+  background: linear-gradient(135deg, #ff6b35, #ff4757);
+  transform: scale(0.98);
+}
+
+/* ============================================
+   RESTAURANTS SECTION
+   ============================================ */
+
+.restaurants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.restaurant-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dark .restaurant-card {
+  background: #1e293b;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.restaurant-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.restaurant-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.restaurant-card:hover .restaurant-image img {
+  transform: scale(1.05);
+}
+
+/* Prix pour les restaurants */
+.restaurant-price-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.restaurant-price-badge::before {
+  content: '🍽️ ';
+  margin-right: 4px;
+}
+
+.restaurant-content {
+  padding: 1.5rem;
+}
+
+.restaurant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.restaurant-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.dark .restaurant-header h3 {
+  color: #f1f5f9;
+}
+
+.restaurant-cuisine {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #ff6b35;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.restaurant-description {
+  color: #64748b;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.dark .restaurant-description {
+  color: #94a3b8;
+}
+
+.restaurant-signature {
+  margin-bottom: 1rem;
+}
+
+.restaurant-signature strong {
+  font-size: 0.85rem;
+  color: #1e293b;
+}
+
+.dark .restaurant-signature strong {
+  color: #f1f5f9;
+}
+
+.signature-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.signature-item {
+  background: #fef3c7;
+  color: #d97706;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+}
+
+.dark .signature-item {
+  background: #4a3a2f;
+  color: #ff9068;
+}
+
+.restaurant-info {
+  margin-bottom: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dark .restaurant-info {
+  border-color: #334155;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.dark .info-row {
+  color: #94a3b8;
+}
+
+.restaurant-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.feature-tag {
+  background: #e2e8f0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  color: #475569;
+}
+
+.dark .feature-tag {
+  background: #334155;
+  color: #cbd5e1;
+}
+
+.details-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  border: 2px solid #ff6b35;
+  color: #ff6b35;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.details-btn:hover {
+  background: #ff6b35;
+  color: white;
+}
+
+/* ============================================
+   PLACES SECTION
+   ============================================ */
+
+.places-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.place-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dark .place-card {
+  background: #1e293b;
+}
+
+.place-card:hover {
+  transform: translateY(-5px);
+}
+
+.place-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.place-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.place-category {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  z-index: 10;
+}
+
+.place-content {
+  padding: 1.5rem;
+}
+
+.place-content h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+}
+
+.dark .place-content h3 {
+  color: #f1f5f9;
+}
+
+.place-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  color: #f5a623;
+}
+
+.place-description {
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.dark .place-description {
+  color: #94a3b8;
+}
+
+.place-details {
+  margin-bottom: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dark .place-details {
+  border-color: #334155;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.dark .detail {
+  color: #94a3b8;
+}
+
+/* Prix pour les places */
+.place-card .detail:last-child {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.place-activities {
+  margin-bottom: 1rem;
+}
+
+.place-activities strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #1e293b;
+}
+
+.dark .place-activities strong {
+  color: #f1f5f9;
+}
+
+.activity-tag {
+  display: inline-block;
+  background: #e2e8f0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  color: #475569;
+  margin: 0.25rem;
+}
+
+.dark .activity-tag {
+  background: #334155;
+  color: #cbd5e1;
+}
+
+.explore-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.explore-btn:hover {
+  background: #ff6b35;
+}
+
+/* ============================================
+   HIDDEN GEMS SECTION
+   ============================================ */
+
+.hidden-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.hidden-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dark .hidden-card {
+  background: #1e293b;
+}
+
+.hidden-card:hover {
+  transform: translateY(-5px);
+}
+
+.hidden-image {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.hidden-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hidden-content {
+  padding: 1.5rem;
+}
+
+.hidden-content h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #1e293b;
+}
+
+.dark .hidden-content h3 {
+  color: #f1f5f9;
+}
+
+.hidden-content p {
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.dark .hidden-content p {
+  color: #94a3b8;
+}
+
+.hidden-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.dark .hidden-meta {
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.hidden-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.discover-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  border: 2px solid #ff6b35;
+  color: #ff6b35;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.discover-btn:hover {
+  background: #ff6b35;
+  color: white;
+}
+
+/* ============================================
+   BOUTON FAVORI (CŒUR) - POUR TOUTES LES CARTES
+   ============================================ */
+
+.favorite-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 20;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.favorite-btn:hover {
+  transform: scale(1.1);
+  background: white;
+}
+
+.favorite-btn svg {
+  color: #ff6b35;
+  transition: all 0.2s ease;
+}
+
+.favorite-btn.active svg {
+  fill: #ff6b35;
+  color: #ff6b35;
+}
+
+/* ============================================
+   STARS
+   ============================================ */
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rating-value {
+  margin-left: 6px;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.dark .rating-value {
+  color: #94a3b8;
+}
+
+/* ============================================
+   RTL SUPPORT
+   ============================================ */
+
+[dir="rtl"] .back-button {
+  left: auto;
+  right: 2rem;
+}
+
+[dir="rtl"] .back-button:hover {
+  transform: translateX(5px);
+}
+
+[dir="rtl"] .hero-content {
+  text-align: right;
+}
+
+[dir="rtl"] .activity-price,
+[dir="rtl"] .restaurant-price-badge {
+  right: auto;
+  left: 15px;
+}
+
+[dir="rtl"] .favorite-btn {
+  left: auto;
+  right: 15px;
+}
+
+[dir="rtl"] .activity-duration,
+[dir="rtl"] .place-category {
+  left: auto;
+  right: 15px;
+}
+
+[dir="rtl"] .activity-price::before {
+  margin-right: 0;
+  margin-left: 6px;
+}
+
+[dir="rtl"] .restaurant-price-badge::before {
+  margin-right: 0;
+  margin-left: 4px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 2rem;
+  }
+  
+  .hero-content {
+    max-width: 80%;
+  }
+  
+  .hero-content h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .city-hero {
+    height: 70vh;
+    background-attachment: scroll;
+  }
+  
+  .hero-container {
+    padding: 0 1.5rem;
+  }
+  
+  .hero-content {
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  .hero-stats {
+    justify-content: center;
+  }
+  
+  .hero-actions {
+    justify-content: center;
+  }
+  
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .tabs {
+    gap: 1.5rem;
+    overflow-x: auto;
+  }
+  
+  .tab span {
+    display: none;
+  }
+  
+  .activities-grid,
+  .restaurants-grid,
+  .places-grid,
+  .hidden-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .description-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .highlights-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-info {
+    order: -1;
+  }
+  
+  .activity-price,
+  .restaurant-price-badge {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+  
+  .favorite-btn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .favorite-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .activities-grid,
+  .restaurants-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-content h1,
+.hero-content p,
+.hero-stats,
+.hero-actions {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.hero-content p {
+  animation-delay: 0.1s;
+}
+
+.hero-stats {
+  animation-delay: 0.2s;
+}
+
+.hero-actions {
+  animation-delay: 0.3s;
+}
