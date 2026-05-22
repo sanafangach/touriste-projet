@@ -19,12 +19,19 @@ import EmailVerification from './components/auth/EmailVerification';
 import VerifyCode from './components/auth/VerifyCode';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
+import GoogleCallback from './components/auth/GoogleCallback';
+
 
 function AppContent() {
     const location = useLocation();
 
-    const noMenuPages = ['/login', '/admin', '/forgot-password', '/reset-password', '/verify-code'];
-    const noChatbotPages = ['/login', '/admin', '/forgot-password', '/reset-password', '/verify-code'];
+    React.useEffect(() => {
+        const savedDark = localStorage.getItem("app-dark-mode") === "true";
+        document.documentElement.classList.toggle("dark", savedDark);
+    }, []);
+
+    const noMenuPages = ['/login', '/register', '/admin', '/forgot-password', '/reset-password', '/verify-code', '/auth/google/callback', '/auth/registration-success'];
+    const noChatbotPages = ['/login', '/register', '/admin', '/forgot-password', '/reset-password', '/verify-code', '/auth/google/callback', '/auth/registration-success'];
 
     const showMenu = !noMenuPages.includes(location.pathname);
     const showChatbot = !noChatbotPages.includes(location.pathname);
@@ -42,6 +49,7 @@ function AppContent() {
 
                 {/* ✅ LOGIN page */}
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Login />} />
 
                 {/* ✅ PROTECTED - Khassin login */}
                 <Route path="/saved" element={
@@ -62,6 +70,9 @@ function AppContent() {
                 <Route path="/verify-code" element={<VerifyCode />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/auth/google/callback" element={<GoogleCallback />} />
+                <Route path="/auth/registration-success" element={<Navigate to="/" replace />} />
+
 
                 {/* fallback */}
                 <Route path="*" element={<Navigate to="/" />} />

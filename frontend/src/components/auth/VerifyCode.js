@@ -28,6 +28,7 @@ function VerifyCode() {
             verify: 'Vérifier',
             invalidCode: 'Code invalide ou expiré',
             verified: 'Inscription réussie ! Redirection...',
+            registrationSuccessful: 'Inscription reussie.',
             resend: 'Renvoyer le code'
         },
         EN: {
@@ -37,6 +38,7 @@ function VerifyCode() {
             verify: 'Verify',
             invalidCode: 'Invalid or expired code',
             verified: 'Registration successful! Redirecting...',
+            registrationSuccessful: 'Registration successful.',
             resend: 'Resend code'
         },
         AR: {
@@ -46,6 +48,7 @@ function VerifyCode() {
             verify: 'تحقق',
             invalidCode: 'رمز غير صالح أو منتهي الصلاحية',
             verified: 'تم التسجيل بنجاح! جاري التحويل...',
+            registrationSuccessful: 'تم التسجيل بنجاح.',
             resend: 'إعادة الإرسال'
         }
     };
@@ -77,15 +80,16 @@ function VerifyCode() {
                 return;
             }
             
-            setSuccess(t.verified);
-            
             // Auto-login
             login(user, token);
             
-            // Redirect l home page directement
-            setTimeout(() => {
-                navigate('/');
-            }, 1500);
+            // Go directly home and show the same success toast as other auth flows.
+            navigate('/', {
+                replace: true,
+                state: {
+                    authMessage: t.registrationSuccessful
+                }
+            });
             
         } catch (err) {
             if (err.response?.data?.errors) {

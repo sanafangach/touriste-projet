@@ -8,15 +8,16 @@ import {
     X, 
     Bookmark, 
     LogIn, 
-    LogOut, // ✅ ZID HADA
-    User,   // ✅ ZID HADA
+    LogOut, 
+    User,   
     Home, 
     Map, 
     Globe, 
     Box 
 } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
-import { useAuth } from "../../context/AuthContext"; // ✅ ZID HADA
+import { useAuth } from "../../context/AuthContext"; 
+import ConfirmDialog from "../common/ConfirmDialog";
 
 import "../css/Menu.css";
 import logo from "../../assets/logo1.png";
@@ -31,6 +32,7 @@ function Menu() {
     });
     const [mobile, setMobile] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
     
     const { lang, setLang, t, isRTL } = useLanguage();
     const { user, isAuthenticated, logout } = useAuth(); // ✅ ZID HADA
@@ -70,10 +72,38 @@ function Menu() {
         setLang(newLang);
     };
 
+    const logoutCopy = {
+        FR: {
+            title: 'Confirmer la deconnexion',
+            message: 'Etes-vous sur de vouloir vous deconnecter ?',
+            cancel: 'Annuler',
+            confirm: 'Se deconnecter',
+        },
+        EN: {
+            title: 'Confirm logout',
+            message: 'Are you sure you want to log out?',
+            cancel: 'Cancel',
+            confirm: 'Log out',
+        },
+        AR: {
+            title: 'تأكيد تسجيل الخروج',
+            message: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
+            cancel: 'إلغاء',
+            confirm: 'تسجيل الخروج',
+        },
+    };
+    const currentLogoutCopy = logoutCopy[lang] || logoutCopy.EN;
+
+    const requestLogout = () => {
+        setOpen(false);
+        setLogoutConfirmOpen(true);
+    };
+
     // ✅ DÉCONNEXION - ywelle l home page
     const handleLogout = () => {
         logout();
         setOpen(false);
+        setLogoutConfirmOpen(false);
         navigate('/'); // ✅ Ywelle l home page, mashi l login
     };
 
@@ -91,6 +121,7 @@ function Menu() {
     const navLinks = getNavLinks();
 
     return (
+        <>
         <nav className={`menu ${scrolled ? "scrolled" : ""} ${isRTL ? "rtl" : ""}`}>
             <div className="menu-left">
                 <Link to="/">
@@ -161,7 +192,7 @@ function Menu() {
                         {/* ✅ CONNEXION / DÉCONNEXION */}
                         {isAuthenticated ? (
                             // ✅ Ila connecté → Déconnexion
-                            <div className="dropdown-item logout-item" onClick={handleLogout}>
+                            <div className="dropdown-item logout-item" onClick={requestLogout}>
                                 <LogOut size={18} /> 
                                 <span>{lang === 'AR' ? 'تسجيل الخروج' : lang === 'FR' ? 'Déconnexion' : 'Logout'}</span>
                             </div>
@@ -180,6 +211,17 @@ function Menu() {
                 )}
             </div>
         </nav>
+        <ConfirmDialog
+            open={logoutConfirmOpen}
+            title={currentLogoutCopy.title}
+            message={currentLogoutCopy.message}
+            cancelLabel={currentLogoutCopy.cancel}
+            confirmLabel={currentLogoutCopy.confirm}
+            onCancel={() => setLogoutConfirmOpen(false)}
+            onConfirm={handleLogout}
+            isRTL={isRTL}
+        />
+        </>
     );
 }
 

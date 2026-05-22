@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Users, Shield, Trash2, UserCheck, LogOut, BarChart3, Crown, TrendingUp, UserPlus } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../accueil/LanguageContext';
+import ConfirmDialog from '../common/ConfirmDialog';
 import api from '../../services/api';
 import '../css/AdminDashboard.css';
 
@@ -14,6 +15,7 @@ function AdminDashboard() {
     const [users, setUsers] = useState([]);
     const [stats, setStats] = useState({ total_users: 0, total_admins: 0, total_regular_users: 0 });
     const [loading, setLoading] = useState(true);
+    const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
     useEffect(() => {
         if (!isAdmin()) {
@@ -63,6 +65,7 @@ function AdminDashboard() {
         try {
             await api.post('/logout');
         } catch (e) {}
+        setLogoutConfirmOpen(false);
         logout();
         navigate('/');
     };
@@ -83,6 +86,10 @@ function AdminDashboard() {
             makeAdmin: 'Rendre admin',
             removeAdmin: 'Retirer admin',
             logout: 'Déconnexion',
+            logoutTitle: 'Confirmer la deconnexion',
+            logoutMessage: 'Etes-vous sur de vouloir vous deconnecter ?',
+            cancel: 'Annuler',
+            confirmLogout: 'Se deconnecter',
             adminPanel: 'Panneau Admin',
             welcome: 'Bienvenue'
         },
@@ -100,6 +107,10 @@ function AdminDashboard() {
             makeAdmin: 'Make Admin',
             removeAdmin: 'Remove Admin',
             logout: 'Logout',
+            logoutTitle: 'Confirm logout',
+            logoutMessage: 'Are you sure you want to log out?',
+            cancel: 'Cancel',
+            confirmLogout: 'Log out',
             adminPanel: 'Admin Panel',
             welcome: 'Welcome'
         },
@@ -117,6 +128,10 @@ function AdminDashboard() {
             makeAdmin: 'جعله مشرفاً',
             removeAdmin: 'إزالة الإشراف',
             logout: 'تسجيل الخروج',
+            logoutTitle: 'تأكيد تسجيل الخروج',
+            logoutMessage: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
+            cancel: 'إلغاء',
+            confirmLogout: 'تسجيل الخروج',
             adminPanel: 'لوحة الإدارة',
             welcome: 'أهلاً بك'
         }
@@ -159,7 +174,7 @@ function AdminDashboard() {
                     
                     <div className="nav-divider"></div>
                     
-                    <button className="nav-item logout-item" onClick={handleLogout}>
+                    <button className="nav-item logout-item" onClick={() => setLogoutConfirmOpen(true)}>
                         <div className="nav-icon">
                             <LogOut size={18} />
                         </div>
@@ -303,6 +318,16 @@ function AdminDashboard() {
                     </div>
                 </div>
             </main>
+            <ConfirmDialog
+                open={logoutConfirmOpen}
+                title={currentLang.logoutTitle}
+                message={currentLang.logoutMessage}
+                cancelLabel={currentLang.cancel}
+                confirmLabel={currentLang.confirmLogout}
+                onCancel={() => setLogoutConfirmOpen(false)}
+                onConfirm={handleLogout}
+                isRTL={isRTL}
+            />
         </div>
     );
 }

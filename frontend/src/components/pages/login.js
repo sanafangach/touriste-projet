@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Globe, Hotel, Compass } from 'lucide-react';
 import { useLanguage } from '../accueil/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import { loginWithGoogle } from '../../services/googleAuth';
 import '../css/Login.css';
 
 function Login() {
     const { lang, isRTL } = useLanguage();
     const { login } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
     
-    const [isRegister, setIsRegister] = useState(false);
+    const [isRegister, setIsRegister] = useState(() => location.pathname === '/register');
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     
@@ -23,6 +27,19 @@ function Login() {
         name: '',
         password_confirmation: ''
     });
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const loginError = params.get('error');
+
+        if (loginError) {
+            setError(loginError);
+        }
+    }, [location.search]);
+
+    useEffect(() => {
+        setIsRegister(location.pathname === '/register');
+    }, [location.pathname]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -65,15 +82,13 @@ function Login() {
         
         try {
             if (isRegister) {
-                // Step 1: Sifet verification code
-                const response = await api.post('/register-send-code', {
+                await api.post('/register-send-code', {
                     name: formData.name,
                     email: formData.email,
                     password: formData.password,
                     password_confirmation: formData.password_confirmation
                 });
                 
-                // Redirect l verification page
                 navigate('/verify-code', {
                     state: {
                         email: formData.email,
@@ -84,7 +99,6 @@ function Login() {
                 });
                 
             } else {
-                // Login normal
                 const response = await api.post('/login', {
                     email: formData.email,
                     password: formData.password
@@ -96,7 +110,11 @@ function Login() {
                 if (user.role === 'admin') {
                     navigate('/admin');
                 } else {
-                    navigate('/');
+                    navigate('/', {
+                        state: {
+                            authMessage: lt[lang].loggedIn
+                        }
+                    });
                 }
             }
             
@@ -118,11 +136,24 @@ function Login() {
     };
 
     const toggleMode = () => {
-        setIsRegister(!isRegister);
+        const nextIsRegister = !isRegister;
+        setIsRegister(nextIsRegister);
         setError('');
         setSuccess('');
+        setShowPassword(false);
+        setShowConfirmPassword(false);
+        navigate(nextIsRegister ? '/register' : '/login', { replace: true });
     };
 
+    const handleGoogleLogin = () => {
+        try {
+            setLoading(true);
+            loginWithGoogle(); // redirect مباشر
+        } catch (err) {
+            setLoading(false);
+            setError(err.message);
+        }
+    };
     const lt = {
         FR: {
             welcomeBack: 'Bon retour !',
@@ -146,7 +177,8 @@ function Login() {
             networkError: 'Erreur réseau. Vérifiez que le backend est démarré',
             orContinueWith: 'Ou continuer avec',
             google: 'Google',
-            facebook: 'Facebook',
+            loggedIn: 'Connexion reussie.',
+            registrationSuccessful: 'Inscription reussie.',
             subtitleLogin: 'Explorez le Maroc avec nous',
             subtitleRegister: 'Rejoignez l\'aventure marocaine',
             discoverMorocco: 'Découvrez le Maroc',
@@ -175,7 +207,8 @@ function Login() {
             networkError: 'Network error. Check if backend is running',
             orContinueWith: 'Or continue with',
             google: 'Google',
-            facebook: 'Facebook',
+            loggedIn: 'Login successful.',
+            registrationSuccessful: 'Registration successful.',
             subtitleLogin: 'Explore Morocco with us',
             subtitleRegister: 'Join the Moroccan adventure',
             discoverMorocco: 'Discover Morocco',
@@ -204,7 +237,8 @@ function Login() {
             networkError: 'خطأ في الشبكة. تأكد من تشغيل الخادم',
             orContinueWith: 'أو تابع باستخدام',
             google: 'جوجل',
-            facebook: 'فيسبوك',
+            loggedIn: 'تم تسجيل الدخول بنجاح.',
+            registrationSuccessful: 'تم التسجيل بنجاح.',
             subtitleLogin: 'اكتشف المغرب معنا',
             subtitleRegister: 'انضم إلى مغامرة مغربية',
             discoverMorocco: 'اكتشف المغرب',
@@ -286,20 +320,51 @@ function Login() {
                                 <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="email@example.com" required />
                             </div>
                             
+                            {/* Mot de passe avec toggle INDÉPENDANT */}
                             <div className="form-group">
                                 <label><Lock size={16} className="label-icon" />{currentLang.password}</label>
                                 <div className="password-input">
-                                    <input type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required />
-                                    <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                                    <input 
+                                        type={showPassword ? 'text' : 'password'} 
+                                        name="password" 
+                                        value={formData.password} 
+                                        onChange={handleChange} 
+                                        placeholder="••••••••" 
+                                        required 
+                                    />
+                                    <button 
+                                        type="button" 
+                                        className="toggle-password" 
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        tabIndex="-1"
+                                    >
                                         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                     </button>
                                 </div>
                             </div>
                             
+                            {/* Confirmation mot de passe avec toggle INDÉPENDANT */}
                             {isRegister && (
                                 <div className="form-group">
                                     <label><Lock size={16} className="label-icon" />{currentLang.confirmPassword}</label>
-                                    <input type={showPassword ? 'text' : 'password'} name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="••••••••" required />
+                                    <div className="password-input">
+                                        <input 
+                                            type={showConfirmPassword ? 'text' : 'password'} 
+                                            name="password_confirmation" 
+                                            value={formData.password_confirmation} 
+                                            onChange={handleChange} 
+                                            placeholder="••••••••" 
+                                            required 
+                                        />
+                                        <button 
+                                            type="button" 
+                                            className="toggle-password" 
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            tabIndex="-1"
+                                        >
+                                            {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                        </button>
+                                    </div>
                                 </div>
                             )}
                             
@@ -313,7 +378,7 @@ function Login() {
                             </button>
                         </form>
 
-                         {!isRegister && (
+                        {!isRegister && (
                             <div style={{textAlign: isRTL ? 'left' : 'right', marginBottom: '15px'}}>
                                 <button 
                                     onClick={() => navigate('/forgot-password')} 
@@ -329,8 +394,9 @@ function Login() {
 
                         <div className="login-divider"><span>{currentLang.orContinueWith}</span></div>
 
+                        {/* Social Login - GIR GOOGLE */}
                         <div className="social-login">
-                            <button className="social-btn google">
+                            <button className="social-btn google" onClick={handleGoogleLogin} type="button">
                                 <svg viewBox="0 0 24 24" width="18" height="18">
                                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -338,12 +404,6 @@ function Login() {
                                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                                 </svg>
                                 {currentLang.google}
-                            </button>
-                            <button className="social-btn facebook">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="#1877F2">
-                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                </svg>
-                                {currentLang.facebook}
                             </button>
                         </div>
 
