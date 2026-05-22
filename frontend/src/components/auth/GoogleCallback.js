@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../accueil/LanguageContext';
 import api from '../../services/api';
+import AuthLoader from './AuthLoader';
 import '../css/GoogleCallback.css';
 
 const callbackText = {
@@ -83,21 +84,7 @@ function GoogleCallback() {
         handleCallback();
     }, [location.search, login, navigate, text]);
 
-    return (
-        <div
-            className={`google-callback-bridge ${isRTL ? 'rtl' : ''}`}
-            dir={isRTL ? 'rtl' : 'ltr'}
-            role="status"
-            aria-live="polite"
-        >
-            <div className="google-callback-bridge-content">
-                <div className="google-callback-brand">AMUDUX</div>
-                <div className="google-callback-loader compact" aria-hidden="true">
-                    <div className="google-callback-loader-inner"></div>
-                </div>
-            </div>
-        </div>
-    );
+    return <AuthLoader />;
 }
 
 export default GoogleCallback;

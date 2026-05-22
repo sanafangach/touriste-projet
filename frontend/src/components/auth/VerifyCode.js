@@ -4,6 +4,7 @@ import { CheckCircle, AlertCircle, Loader, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../accueil/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import AuthLoader from './AuthLoader';
 import '../css/Login.css';
 
 function VerifyCode() {
@@ -14,6 +15,7 @@ function VerifyCode() {
     
     const [code, setCode] = useState('');
     const [loading, setLoading] = useState(false);
+    const [authSuccess, setAuthSuccess] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     
@@ -83,13 +85,16 @@ function VerifyCode() {
             // Auto-login
             login(user, token);
             
-            // Go directly home and show the same success toast as other auth flows.
-            navigate('/', {
-                replace: true,
-                state: {
-                    authMessage: t.registrationSuccessful
-                }
-            });
+            setAuthSuccess(true);
+            setTimeout(() => {
+                navigate('/', {
+                    replace: true,
+                    state: {
+                        authMessage: t.registrationSuccessful
+                    }
+                });
+            }, 1500);
+            return;
             
         } catch (err) {
             if (err.response?.data?.errors) {
@@ -125,77 +130,80 @@ function VerifyCode() {
     };
 
     return (
-        <div className={`login-page ${isRTL ? 'rtl' : ''}`}>
-            <div className="login-container">
-                <div className="login-left">
-                    <div className="login-left-overlay"></div>
-                    <div className="login-branding">
-                        <div className="login-logo">AMUDUX</div>
-                        <h1 className="login-tagline">
-                            {lang === 'AR' ? 'تحقق من حسابك' : 
-                             lang === 'FR' ? 'Vérifiez votre compte' : 
-                             'Verify your account'}
-                        </h1>
+        <>
+            {authSuccess && <AuthLoader />}
+            <div className={`login-page ${isRTL ? 'rtl' : ''}`}>
+                <div className="login-container">
+                    <div className="login-left">
+                        <div className="login-left-overlay"></div>
+                        <div className="login-branding">
+                            <div className="login-logo">AMUDUX</div>
+                            <h1 className="login-tagline">
+                                {lang === 'AR' ? 'تحقق من حسابك' : 
+                                 lang === 'FR' ? 'Vérifiez votre compte' : 
+                                 'Verify your account'}
+                            </h1>
+                        </div>
+                        <div className="login-decorative-circle circle-1"></div>
+                        <div className="login-decorative-circle circle-2"></div>
                     </div>
-                    <div className="login-decorative-circle circle-1"></div>
-                    <div className="login-decorative-circle circle-2"></div>
-                </div>
 
-                <div className="login-right">
-                    <div className="login-form-wrapper">
-                        <div className="login-form-header">
-                            <h2>{t.verifyCode}</h2>
-                            <p className="login-subtitle">
-                                {t.codeSent} <strong>{email}</strong>
+                    <div className="login-right">
+                        <div className="login-form-wrapper">
+                            <div className="login-form-header">
+                                <h2>{t.verifyCode}</h2>
+                                <p className="login-subtitle">
+                                    {t.codeSent} <strong>{email}</strong>
+                                </p>
+                            </div>
+
+                            {error && (
+                                <div className="login-error" style={{display:'flex',alignItems:'center',gap:'8px',justifyContent:'center'}}>
+                                    <AlertCircle size={16} /> {error}
+                                </div>
+                            )}
+                            {success && (
+                                <div className="login-success" style={{display:'flex',alignItems:'center',gap:'8px',justifyContent:'center'}}>
+                                    <CheckCircle size={16} /> {success}
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit} className="login-form">
+                                <div className="form-group">
+                                    <label>
+                                        <CheckCircle size={16} className="label-icon" />
+                                        {t.enterCode}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={code}
+                                        onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                                        placeholder="123456"
+                                        maxLength={6}
+                                        required
+                                        style={{textAlign:'center',letterSpacing:'8px',fontSize:'20px',fontWeight:'700'}}
+                                    />
+                                </div>
+                                <button type="submit" className="login-submit" disabled={loading}>
+                                    {loading ? <span className="spinner"></span> : (
+                                        <>{t.verify} <ArrowRight size={18} /></>
+                                    )}
+                                </button>
+                            </form>
+
+                            <p className="login-toggle">
+                                {lang === 'AR' ? 'لم تستلم الرمز؟' : 
+                                 lang === 'FR' ? 'Vous n\'avez pas reçu le code ?' : 
+                                 'Didn\'t receive the code?'}{' '}
+                                <button onClick={handleResend} className="toggle-btn" disabled={loading}>
+                                    {t.resend}
+                                </button>
                             </p>
                         </div>
-
-                        {error && (
-                            <div className="login-error" style={{display:'flex',alignItems:'center',gap:'8px',justifyContent:'center'}}>
-                                <AlertCircle size={16} /> {error}
-                            </div>
-                        )}
-                        {success && (
-                            <div className="login-success" style={{display:'flex',alignItems:'center',gap:'8px',justifyContent:'center'}}>
-                                <CheckCircle size={16} /> {success}
-                            </div>
-                        )}
-
-                        <form onSubmit={handleSubmit} className="login-form">
-                            <div className="form-group">
-                                <label>
-                                    <CheckCircle size={16} className="label-icon" />
-                                    {t.enterCode}
-                                </label>
-                                <input
-                                    type="text"
-                                    value={code}
-                                    onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                                    placeholder="123456"
-                                    maxLength={6}
-                                    required
-                                    style={{textAlign:'center',letterSpacing:'8px',fontSize:'20px',fontWeight:'700'}}
-                                />
-                            </div>
-                            <button type="submit" className="login-submit" disabled={loading}>
-                                {loading ? <span className="spinner"></span> : (
-                                    <>{t.verify} <ArrowRight size={18} /></>
-                                )}
-                            </button>
-                        </form>
-
-                        <p className="login-toggle">
-                            {lang === 'AR' ? 'لم تستلم الرمز؟' : 
-                             lang === 'FR' ? 'Vous n\'avez pas reçu le code ?' : 
-                             'Didn\'t receive the code?'}{' '}
-                            <button onClick={handleResend} className="toggle-btn" disabled={loading}>
-                                {t.resend}
-                            </button>
-                        </p>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
