@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SocialAuthController;
+
+
 
 // PUBLIC
 Route::post('/login', [AuthController::class, 'login']);
@@ -16,6 +19,9 @@ Route::post('/verify-code', [AuthController::class, 'verifyCode']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/verify-reset-token', [AuthController::class, 'verifyResetToken']);
+
+// ===== google AUTH CALLBACKS =====
+Route::post('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 
 // PROTECTED
 Route::middleware('auth:sanctum')->group(function () {

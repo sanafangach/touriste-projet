@@ -135,6 +135,16 @@ class AuthController extends Controller
             ], 400);
         }
 
+        $existingUser = User::where('email', $request->email)->first();
+        if ($existingUser) {
+            $record->delete();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Cet email est deja utilise'
+            ], 422);
+        }
+
         $record->delete();
 
         $user = User::create([

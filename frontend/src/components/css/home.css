@@ -1,190 +1,482 @@
-.home {
-  width: 100%;
-  min-height: 100vh;
-  position: relative;
+/* ================= THEME VARIABLES ================= */
+:root {
+    /* Light mode defaults */
+    --toast-bg: rgba(255, 255, 255, 0.95);
+    --toast-border: rgba(255, 122, 0, 0.2);
+    --toast-shadow: 
+        0 24px 48px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 122, 0, 0.08),
+        0 0 40px rgba(255, 122, 0, 0.05);
+    --toast-text-primary: #1a1a1a;
+    --toast-text-secondary: rgba(0, 0, 0, 0.6);
+    --toast-icon-bg: linear-gradient(135deg, rgba(255, 122, 0, 0.12), rgba(255, 77, 0, 0.08));
+    --toast-glow-shadow: 0 0 12px rgba(255, 122, 0, 0.4);
+    --toast-shine: linear-gradient(110deg, transparent 0%, rgba(255, 122, 0, 0.04) 40%, transparent 70%);
+    --toast-progress-bg: linear-gradient(90deg, #ff7a00, #ff4d00);
 }
 
+.dark {
+    /* Dark mode overrides */
+    --toast-bg: rgba(26, 26, 26, 0.95);
+    --toast-border: rgba(255, 122, 0, 0.15);
+    --toast-shadow: 
+        0 24px 48px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 122, 0, 0.05),
+        0 0 40px rgba(255, 122, 0, 0.08);
+    --toast-text-primary: rgba(255, 255, 255, 0.9);
+    --toast-text-secondary: rgba(255, 255, 255, 0.6);
+    --toast-icon-bg: linear-gradient(135deg, rgba(255, 122, 0, 0.15), rgba(255, 77, 0, 0.1));
+    --toast-glow-shadow: 0 0 12px rgba(255, 122, 0, 0.5);
+    --toast-shine: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.06) 40%, transparent 70%);
+    --toast-progress-bg: linear-gradient(90deg, #ff7a00, #ff4d00);
+}
+
+/* ================= BASE ================= */
+.home {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    background: #f5f5f5;
+}
+
+.dark .home {
+    background: #0a0a0a;
+}
+
+/* ================= AUTH TOAST NOTIFICATION - BOTTOM LEFT ================= */
+.home-auth-message {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: var(--toast-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--toast-border);
+    border-radius: 16px;
+    box-shadow: var(--toast-shadow);
+    min-width: 320px;
+    max-width: 400px;
+    overflow: hidden;
+    
+    /* Entry animation */
+    animation: authToastIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-origin: left center;
+}
+
+/* Shine effect overlay */
+.home-auth-message::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--toast-shine);
+    transform: translateX(-120%);
+    animation: authToastShine 1.9s ease 0.25s both;
+    pointer-events: none;
+}
+
+/* Exit animation */
+.home-auth-message.leaving {
+    animation: authToastOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Glowing accent line on left */
+.home-auth-message__glow {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 3px;
+    background: linear-gradient(to bottom, #ff7a00, #ff4d00);
+    border-radius: 0 4px 4px 0;
+    box-shadow: var(--toast-glow-shadow);
+}
+
+/* Icon container */
+.home-auth-message__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--toast-icon-bg);
+    border-radius: 12px;
+    color: #ff7a00;
+    flex-shrink: 0;
+    animation: authIconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+.home-auth-message__icon svg {
+    stroke-width: 2.5;
+}
+
+/* Content layout */
+.home-auth-message__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+/* Brand label */
+.home-auth-message__brand {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #ff7a00;
+    opacity: 0.85;
+}
+
+/* Message text */
+.home-auth-message__text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--toast-text-primary);
+    line-height: 1.4;
+}
+
+/* Progress bar at bottom */
+.home-auth-message__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--toast-progress-bg);
+    border-radius: 0 0 0 16px;
+    animation: authToastProgress 2.5s linear forwards;
+    transform-origin: left;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes authToastIn {
+    from {
+        opacity: 0;
+        transform: translateX(-60px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes authToastOut {
+    from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-40px) scale(0.95);
+    }
+}
+
+@keyframes authToastShine {
+    to {
+        transform: translateX(120%);
+    }
+}
+
+@keyframes authIconPop {
+    from {
+        opacity: 0;
+        transform: scale(0.6) rotate(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes authToastProgress {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* ================= RTL SUPPORT ================= */
+[dir="rtl"] .home-auth-message,
+.home.rtl .home-auth-message {
+    left: auto;
+    right: 24px;
+    transform-origin: right center;
+    animation-name: authToastInRTL;
+}
+
+[dir="rtl"] .home-auth-message.leaving,
+.home.rtl .home-auth-message.leaving {
+    animation-name: authToastOutRTL;
+}
+
+[dir="rtl"] .home-auth-message__glow,
+.home.rtl .home-auth-message__glow {
+    left: auto;
+    right: 0;
+    border-radius: 4px 0 0 4px;
+}
+
+[dir="rtl"] .home-auth-message__progress,
+.home.rtl .home-auth-message__progress {
+    left: auto;
+    right: 0;
+    border-radius: 0 0 16px 0;
+    transform-origin: right;
+}
+
+@keyframes authToastInRTL {
+    from {
+        opacity: 0;
+        transform: translateX(60px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes authToastOutRTL {
+    from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(40px) scale(0.95);
+    }
+}
+
+/* ================= HERO ================= */
 .hero {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: #111111;
 }
 
 /* BACKGROUND IMAGE WITH ZOOM ANIMATION */
 .hero-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
-  animation: zoomBg 10s infinite alternate;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    animation: zoomBg 10s infinite alternate;
 }
 
 @keyframes zoomBg {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.1); }
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
 }
 
 /* OVERLAY */
 .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  color: white;
-  text-align: center;
-  z-index: 1;
-  padding: 0 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    z-index: 1;
+    padding: 0 20px;
 }
 
 /* TITLE */
 .overlay h1 {
-  font-size: 64px;
-  font-weight: 800;
-  margin-bottom: 15px;
-  text-shadow: 0 10px 20px rgba(0,0,0,0.5);
-  letter-spacing: -1px;
+    font-size: 64px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    letter-spacing: -1px;
 }
 
 /* TEXT */
 .overlay p {
-  font-size: 22px;
-  font-weight: 300;
-  margin-bottom: 30px;
-  opacity: 0.9;
-  text-shadow: 0 5px 10px rgba(0,0,0,0.5);
-  max-width: 600px;
+    font-size: 22px;
+    font-weight: 300;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    text-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    max-width: 600px;
 }
 
 /* BUTTON */
 .hero-btn {
-  padding: 15px 35px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  color: white;
-  cursor: pointer;
-  border-radius: 50px;
-
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 15px 35px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .hero-btn:hover {
-  transform: translateY(-5px) scale(1.05);
-  background: linear-gradient(135deg, #ff7a00, #ff4d00);
-  border-color: transparent;
-  box-shadow: 0 15px 30px rgba(255, 122, 0, 0.4);
+    transform: translateY(-5px) scale(1.05);
+    background: linear-gradient(135deg, #ff7a00, #ff4d00);
+    border-color: transparent;
+    box-shadow: 0 15px 30px rgba(255, 122, 0, 0.4);
 }
 
 /* ANIMATIONS */
 .slide-up {
-  animation: slideUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
+    animation: slideUp 1s cubic-bezier(0.19, 1, 0.22, 1) both;
 }
 .slide-up-delay {
-  animation: slideUp 1s cubic-bezier(0.19, 1, 0.22, 1) 0.2s both;
+    animation: slideUp 1s cubic-bezier(0.19, 1, 0.22, 1) 0.2s both;
 }
 .slide-up-delay-2 {
-  animation: slideUp 1s cubic-bezier(0.19, 1, 0.22, 1) 0.4s both;
+    animation: slideUp 1s cubic-bezier(0.19, 1, 0.22, 1) 0.4s both;
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* SCROLL INDICATOR */
 .scroll-indicator {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  color: rgba(255,255,255,0.7);
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    color: rgba(255,255,255,0.7);
 }
 
 .scroll-indicator:hover {
-  color: #ff7a00;
-  transform: translateX(-50%) translateY(5px);
+    color: #ff7a00;
+    transform: translateX(-50%) translateY(5px);
 }
 
 .mouse {
-  width: 26px;
-  height: 42px;
-  border: 2px solid currentColor;
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    width: 26px;
+    height: 42px;
+    border: 2px solid currentColor;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    padding-top: 6px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
 .wheel {
-  width: 4px;
-  height: 8px;
-  background-color: currentColor;
-  border-radius: 2px;
-  animation: scrollWheel 2s infinite;
+    width: 4px;
+    height: 8px;
+    background-color: currentColor;
+    border-radius: 2px;
+    animation: scrollWheel 2s infinite;
 }
 
 .bounce {
-  animation: bounceArrow 2s infinite;
+    animation: bounceArrow 2s infinite;
 }
 
 @keyframes scrollWheel {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(15px); opacity: 0; }
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(15px); opacity: 0; }
 }
 
 @keyframes bounceArrow {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
 }
 
-/* RESPONSIVE */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
-  .overlay h1 {
-    font-size: 42px;
-  }
-  .overlay p {
-    font-size: 18px;
-  }
-  .hero-btn {
-    padding: 12px 28px;
-    font-size: 14px;
-  }
+    .home-auth-message,
+    [dir="rtl"] .home-auth-message,
+    .home.rtl .home-auth-message {
+        left: 14px;
+        right: 14px;
+        bottom: 18px;
+        top: auto;
+        width: auto;
+        min-width: auto;
+        max-width: none;
+        padding: 14px 15px;
+    }
+
+    [dir="rtl"] .home-auth-message,
+    .home.rtl .home-auth-message {
+        left: 14px;
+        right: 14px;
+    }
+
+    .home-auth-message__icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .overlay h1 {
+        font-size: 42px;
+    }
+    .overlay p {
+        font-size: 18px;
+    }
+    .hero-btn {
+        padding: 12px 28px;
+        font-size: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-auth-message,
+    .home-auth-message::before,
+    .home-auth-message.leaving,
+    .home-auth-message__icon,
+    .home-auth-message__progress {
+        animation: none;
+    }
+    
+    .home-auth-message {
+        opacity: 1;
+        transform: none;
+    }
+    
+    .home-auth-message.leaving {
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .home-auth-message__progress {
+        display: none;
+    }
 }

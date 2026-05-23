@@ -45,9 +45,8 @@
     transform: rotate(180deg);
 }
 
-.login-page.rtl .feature-item {
-    flex-direction: row-reverse;
-    text-align: right;
+.login-page.rtl .feature-item:hover {
+    transform: translateX(-5px);
 }
 
 /* Container - Glassmorphism like home menu */
@@ -206,10 +205,6 @@
     transform: translateX(5px);
     background: rgba(255,255,255,0.25);
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.login-page.rtl .feature-item:hover {
-    transform: translateX(-5px);
 }
 
 .feature-icon {
@@ -512,46 +507,61 @@
     padding: 0 15px;
 }
 
-/* Social Login */
+/* ================= SOCIAL LOGIN - GOOGLE ONLY ================= */
 .social-login {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    display: flex;
+    justify-content: center;
     margin-bottom: 25px;
 }
 
-.social-btn {
+/* GOOGLE BUTTON - Design moderne */
+.social-btn.google {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 12px;
+    gap: 12px;
+    padding: 14px 28px;
     border: 2px solid #e0e0e0;
-    border-radius: 12px;
+    border-radius: 50px;
     background: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     color: #555;
     transition: all 0.3s ease;
+    width: 100%;
+    max-width: 320px;
 }
 
-.dark .social-btn {
+.dark .social-btn.google {
     background: rgba(255,255,255,0.05);
     border-color: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.9);
 }
 
-.social-btn:hover {
+.social-btn.google:hover {
     border-color: #ff7a00;
-    background: rgba(255, 122, 0, 0.05);
+    background: rgba(255, 122, 0, 0.08);
     color: #ff7a00;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 122, 0, 0.15);
+    box-shadow: 0 8px 25px rgba(255, 122, 0, 0.22);
 }
 
-.social-btn svg {
+.dark .social-btn.google:hover {
+    background: rgba(255, 122, 0, 0.12);
+    color: #ff7a00;
+    border-color: #ff7a00;
+    box-shadow: 0 8px 25px rgba(255, 122, 0, 0.28);
+}
+
+.social-btn.google:active {
+    transform: translateY(0);
+}
+
+.social-btn.google svg {
     flex-shrink: 0;
+    width: 20px;
+    height: 20px;
 }
 
 /* Toggle */
@@ -616,6 +626,7 @@
     background-color: #1a1a1a !important;
     transition: background-color 5000s ease-in-out 0s;
 }
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
     .login-container {
@@ -657,7 +668,11 @@
     }
     
     .social-login {
-        grid-template-columns: 1fr;
+        padding: 0 10px;
+    }
+    
+    .social-btn.google {
+        max-width: 100%;
     }
     
     .login-form-wrapper h2 {
