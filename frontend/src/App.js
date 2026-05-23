@@ -15,7 +15,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/pages/ProtectedRoute";
 
 import Menu from "./components/accueil/Menu";
-import Home from "./components/accueil/home";
+import Home from "./components/accueil/Home";
 import Card from "./components/pages/card";
 import Destination from "./components/pages/destination";
 import Languages from "./components/pages/languages";

@@ -3,10 +3,10 @@ import { Link , useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "./LanguageContext"; // 🔥 Import
 import "../css/home.css";
-import PopularDestination from "./section"
-import AboutSite from "./sectiondescription"
-import PopularActivities from "./sectionactivite"
-import LearningSection from "./sectionlearning"
+import PopularDestination from "./Section"
+import AboutSite from "./Sectiondescription"
+import PopularActivities from "./Sectionactivite"
+import LearningSection from "./Sectionlearning"
 import Footer from "./Footer"
 
 import img1 from "../../assets/img1.jpg";
