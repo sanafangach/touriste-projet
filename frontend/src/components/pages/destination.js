@@ -1,37 +1,61 @@
+// src/components/pages/destination.js
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, SlidersHorizontal, Star, MapPin, Activity, Heart, ArrowRight } from "lucide-react";
 import { useLanguage } from "../accueil/LanguageContext";
 import "../css/destination.css";
 
-import agadir from "../../assets/agadir(1).jpg";
-import atlantic from "../../assets/atlantic.jpg";
-import casa from "../../assets/casa.jpg";
-import fes from "../../assets/fes.jpg";
-import chefchaouen from "../../assets/Chefchaouen.jpg";
-import Merzouga from "../../assets/Merzouga.jpg";
-import Marrakech from "../../assets/Marrakech.jpg";
-import essouira from "../../assets/essouira.jpg";
-import rabat from "../../assets/rabat.jpg";
-import tiznit from "../../assets/tiznit.jpg";
+// Import de TES images depuis assets
+import atlanticImg from "../../assets/atlantic.jpg";
+import atlasImg from "../../assets/img1.jpg";
+import casablancaImg from "../../assets/casa.jpg";
+import fezImg from "../../assets/fes.jpg";
+import marrakechImg from "../../assets/Marrakech.jpg";
+import chefchaouenImg from "../../assets/Chefchaouen.jpg";
+import essaouiraImg from "../../assets/essouira.jpg";
+import merzougaImg from "../../assets/Merzouga.jpg";
+import rabatImg from "../../assets/rabat.jpg";
+import tangierImg from "../../assets/taghazot.png";
+import tiznitImg from "../../assets/tiznit.jpg";
+import camelImg from "../../assets/camel.jpg";
+import backgroundImg from "../../assets/background2.jpg"; // Image par défaut
+
+// Map des images par ville
+const cityImages = {
+  "Agadir": camelImg,
+  "Atlantic Coast": atlanticImg,
+  "Atlas Mountains": atlasImg,
+  "Casablanca": casablancaImg,
+  "Fez": fezImg,
+  "Marrakech": marrakechImg,
+  "Chefchaouen": chefchaouenImg,
+  "Essaouira": essaouiraImg,
+  "Merzouga": merzougaImg,
+  "Rabat": rabatImg,
+  "Tangier": tangierImg,
+  "Tiznit": tiznitImg
+};
 
 const destinationsData = [
-  { id: 1, name: "Agadir", rating: 4.7, reviews: 312, activities: 12, image: agadir, location: "Souss-Massa", featured: true },
-  { id: 2, name: "Atlantic Coast", rating: 4.7, reviews: 274, activities: 16, image: atlantic, location: "Coastal Region", featured: true },
-  { id: 3, name: "Atlas Mountains", rating: 4.8, reviews: 342, activities: 18, image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80", location: "High Atlas", featured: true },
-  { id: 4, name: "Casablanca", rating: 4.8, reviews: 528, activities: 15, image: casa, location: "Casablanca-Settat", featured: true },
-  { id: 5, name: "Fez", rating: 4.7, reviews: 345, activities: 18, image: fes, location: "Fès-Meknès", featured: true },
-  { id: 6, name: "Tiznit", rating: 4.8, reviews: 412, activities: 22, image: tiznit, location: "Sous Massa", featured: true },
-  { id: 7, name: "Marrakech", rating: 4.9, reviews: 892, activities: 34, image: Marrakech, location: "Marrakech-Safi", featured: false },
-  { id: 8, name: "Chefchaouen", rating: 4.9, reviews: 567, activities: 14, image: chefchaouen, location: "Tangier-Tetouan", featured: false },
-  { id: 9, name: "Essaouira", rating: 4.6, reviews: 298, activities: 11, image: essouira, location: "Marrakech-Safi", featured: false },
-  { id: 10, name: "Merzouga", rating: 4.8, reviews: 421, activities: 19, image: Merzouga, location: "Draa-Tafilalet", featured: false },
-  { id: 11, name: "Rabat", rating: 4.5, reviews: 234, activities: 10, image: rabat, location: "Rabat-Salé-Kénitra", featured: false },
-  { id: 12, name: "Tangier", rating: 4.6, reviews: 378, activities: 13, image: "https://images.unsplash.com/photo-1584987729951-35d44b231d25?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80", location: "Tangier-Tetouan", featured: false }
-];
+  { id: 1, name: "Agadir", slug: "agadir", rating: 4.7, reviews: 312, activities: 12, location: "Souss-Massa", featured: true },
+  { id: 2, name: "Atlantic Coast", slug: "atlantic-coast", rating: 4.7, reviews: 274, activities: 16, location: "Coastal Region", featured: true },
+  { id: 3, name: "Atlas Mountains", slug: "atlas-mountains", rating: 4.8, reviews: 342, activities: 18, location: "High Atlas", featured: true },
+  { id: 4, name: "Casablanca", slug: "casablanca", rating: 4.8, reviews: 528, activities: 15, location: "Casablanca-Settat", featured: true },
+  { id: 5, name: "Fez", slug: "fes", rating: 4.7, reviews: 345, activities: 18, location: "Fès-Meknès", featured: true },
+  { id: 6, name: "Marrakech", slug: "marrakech", rating: 4.9, reviews: 892, activities: 34, location: "Marrakech-Safi", featured: true },
+  { id: 7, name: "Chefchaouen", slug: "chefchaouen", rating: 4.9, reviews: 567, activities: 14, location: "Tangier-Tetouan", featured: false },
+  { id: 8, name: "Essaouira", slug: "essaouira", rating: 4.6, reviews: 298, activities: 11, location: "Marrakech-Safi", featured: false },
+  { id: 9, name: "Merzouga", slug: "merzouga", rating: 4.8, reviews: 421, activities: 19, location: "Draa-Tafilalet", featured: false },
+  { id: 10, name: "Rabat", slug: "rabat", rating: 4.5, reviews: 234, activities: 10, location: "Rabat-Salé-Kénitra", featured: false },
+  { id: 11, name: "Tangier", slug: "tangier", rating: 4.6, reviews: 378, activities: 13, location: "Tangier-Tetouan", featured: false },
+  { id: 12, name: "Tiznit", slug: "tiznit", rating: 4.8, reviews: 412, activities: 22, location: "Sous Massa", featured: false }
+].map(city => ({
+  ...city,
+  image: cityImages[city.name] || backgroundImg // fallback si image non trouvée
+}));
 
 function Destinations() {
-  const { t, lang, isRTL } = useLanguage();
+  const { lang, isRTL } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [showSortMenu, setShowSortMenu] = useState(false);
@@ -40,159 +64,85 @@ function Destinations() {
   const toggleSave = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    setSavedItems(prev => 
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    );
+    setSavedItems(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
   };
 
-  const filteredDestinations = destinationsData.filter(dest =>
-    dest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    dest.location.toLowerCase().includes(searchTerm.toLowerCase())
+  const filtered = destinationsData.filter(d =>
+    d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    d.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const sortedDestinations = [...filteredDestinations].sort((a, b) => {
-    switch (sortBy) {
-      case "rating": return b.rating - a.rating;
-      case "reviews": return b.reviews - a.reviews;
-      case "activities": return b.activities - a.activities;
-      case "name": return a.name.localeCompare(b.name);
-      default: return 0;
-    }
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === "rating") return b.rating - a.rating;
+    if (sortBy === "reviews") return b.reviews - a.reviews;
+    if (sortBy === "activities") return b.activities - a.activities;
+    if (sortBy === "name") return a.name.localeCompare(b.name);
+    return 0;
   });
 
-  const startCount = 1;
-  const endCount = Math.min(9, sortedDestinations.length);
-  const totalCount = sortedDestinations.length;
+  const endCount = Math.min(9, sorted.length);
 
   return (
     <div className={`destinations-page ${isRTL ? 'rtl' : ''}`}>
-      {/* Hero Section */}
       <div className="destinations-hero">
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <h1>{lang === 'AR' ? 'استكشف الوجهات' : lang === 'FR' ? 'Explorez les Destinations' : 'Explore Destinations'}</h1>
-          <p>{lang === 'AR' ? 'اكتشف أجمل الوجهات في جميع أنحاء المغرب' : lang === 'FR' ? 'Découvrez les plus belles destinations à travers le Maroc' : 'Discover the most beautiful destinations across Morocco'}</p>
-        </div>
-        
-        {/* Scroll indicator */}
-        <div className="scroll-indicator" onClick={() => window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' })}>
-          <div className="mouse">
-            <div className="wheel"></div>
-          </div>
+          <p>{lang === 'AR' ? 'اكتشف أجمل الوجهات في المغرب' : lang === 'FR' ? 'Découvrez les plus belles destinations' : 'Discover the most beautiful destinations in Morocco'}</p>
         </div>
       </div>
 
-      {/* Search and Filter Bar */}
       <div className="search-filter-container">
         <div className="search-bar">
           <Search size={20} className="search-icon" />
-          <input
-            type="text"
-            placeholder={lang === 'AR' ? 'ابحث عن وجهة...' : lang === 'FR' ? 'Rechercher une destination...' : 'Search destinations...'}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
+          <input type="text" placeholder={lang === 'AR' ? 'ابحث...' : lang === 'FR' ? 'Rechercher...' : 'Search...'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" />
         </div>
-
         <div className="sort-container">
           <button className="sort-btn" onClick={() => setShowSortMenu(!showSortMenu)}>
             <SlidersHorizontal size={18} />
-            <span>{lang === 'AR' ? 'ترتيب حسب' : lang === 'FR' ? 'Trier par' : 'Sort By'}</span>
+            <span>{lang === 'AR' ? 'ترتيب' : lang === 'FR' ? 'Trier' : 'Sort'}</span>
           </button>
           {showSortMenu && (
             <div className="sort-menu">
-              <button onClick={() => { setSortBy("default"); setShowSortMenu(false); }} className={sortBy === "default" ? "active" : ""}>
-                {lang === 'AR' ? 'افتراضي' : lang === 'FR' ? 'Par défaut' : 'Default'}
-              </button>
-              <button onClick={() => { setSortBy("name"); setShowSortMenu(false); }} className={sortBy === "name" ? "active" : ""}>
-                {lang === 'AR' ? 'الاسم' : lang === 'FR' ? 'Nom' : 'Name'}
-              </button>
-              <button onClick={() => { setSortBy("rating"); setShowSortMenu(false); }} className={sortBy === "rating" ? "active" : ""}>
-                {lang === 'AR' ? 'التقييم' : lang === 'FR' ? 'Note' : 'Rating'}
-              </button>
-              <button onClick={() => { setSortBy("reviews"); setShowSortMenu(false); }} className={sortBy === "reviews" ? "active" : ""}>
-                {lang === 'AR' ? 'المراجعات' : lang === 'FR' ? 'Avis' : 'Reviews'}
-              </button>
-              <button onClick={() => { setSortBy("activities"); setShowSortMenu(false); }} className={sortBy === "activities" ? "active" : ""}>
-                {lang === 'AR' ? 'الأنشطة' : lang === 'FR' ? 'Activités' : 'Activities'}
-              </button>
+              <button onClick={() => { setSortBy("default"); setShowSortMenu(false); }}>Default</button>
+              <button onClick={() => { setSortBy("name"); setShowSortMenu(false); }}>Name</button>
+              <button onClick={() => { setSortBy("rating"); setShowSortMenu(false); }}>Rating</button>
+              <button onClick={() => { setSortBy("reviews"); setShowSortMenu(false); }}>Reviews</button>
+              <button onClick={() => { setSortBy("activities"); setShowSortMenu(false); }}>Activities</button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Results Info */}
       <div className="results-info">
-        <span>
-          {lang === 'AR' ? `عرض ${startCount}-${endCount} من ${totalCount} وجهة` : 
-           lang === 'FR' ? `Affichage de ${startCount}-${endCount} sur ${totalCount} destinations` : 
-           `Showing ${startCount}-${endCount} of ${totalCount} destinations`}
-        </span>
+        <span>Showing 1-{endCount} of {sorted.length} destinations</span>
       </div>
 
-      {/* Destinations Grid */}
       <div className="destinations-grid">
-        {sortedDestinations.slice(0, 9).map((dest) => (
-          <Link to={`/destination/${dest.id}`} key={dest.id} className="destination-card">
+        {sorted.slice(0, 9).map((dest) => (
+          <Link to={`/destination/${dest.slug}`} key={dest.id} className="destination-card">
             <div className="card-image">
-              <img src={dest.image} alt={dest.name} loading="lazy" />
-              <div className="card-overlay"></div>
-              
-              {/* Save button */}
-              <button 
-                className={`save-heart ${savedItems.includes(dest.id) ? 'saved' : ''}`}
-                onClick={(e) => toggleSave(e, dest.id)}
-              >
+              <img src={dest.image} alt={dest.name} />
+              <button className={`save-heart ${savedItems.includes(dest.id) ? 'saved' : ''}`} onClick={(e) => toggleSave(e, dest.id)}>
                 <Heart size={18} fill={savedItems.includes(dest.id) ? "currentColor" : "none"} />
               </button>
-              
-              {/* Featured badge */}
-              {dest.featured && (
-                <div className="featured-badge">
-                  <Star size={12} fill="currentColor" />
-                  {lang === 'AR' ? 'مميز' : lang === 'FR' ? 'En vedette' : 'Featured'}
-                </div>
-              )}
+              {dest.featured && <div className="featured-badge">⭐ Featured</div>}
             </div>
-            
             <div className="card-content">
-              <div className="card-header">
-                <h3>{dest.name}</h3>
-                <div className="rating">
-                  <Star size={14} fill="currentColor" className="star-icon" />
-                  <span>{dest.rating}</span>
-                </div>
-              </div>
-              
-              <div className="card-stats">
-                <div className="stat-item">
-                  <MapPin size={14} />
-                  <span>{dest.location}</span>
-                </div>
-                <div className="stat-item">
-                  <Activity size={14} />
-                  <span>{dest.activities} {lang === 'AR' ? 'نشاط' : lang === 'FR' ? 'activités' : 'activities'}</span>
-                </div>
-              </div>
-              
-              <div className="card-footer">
-                <span className="reviews-count">({dest.reviews} {lang === 'AR' ? 'مراجعة' : lang === 'FR' ? 'avis' : 'reviews'})</span>
-                <span className="explore-link">
-                  {lang === 'AR' ? 'استكشف' : lang === 'FR' ? 'Explorer' : 'Explore'}
-                  <ArrowRight size={14} />
-                </span>
-              </div>
+              <h3>{dest.name}</h3>
+              <div className="rating"><Star size={14} fill="currentColor" /> {dest.rating}</div>
+              <div className="location"><MapPin size={14} /> {dest.location}</div>
+              <div className="activities"><Activity size={14} /> {dest.activities} activities</div>
+              <div className="reviews">({dest.reviews} reviews)</div>
+              <div className="explore-link">Explore <ArrowRight size={14} /></div>
             </div>
           </Link>
         ))}
       </div>
 
-      {/* No Results */}
-      {sortedDestinations.length === 0 && (
+      {sorted.length === 0 && (
         <div className="no-results">
-          <div className="no-results-icon">🔍</div>
-          <p>{lang === 'AR' ? 'لا توجد وجهات تطابق بحثك' : lang === 'FR' ? 'Aucune destination ne correspond à votre recherche' : 'No destinations found matching your search'}</p>
+          <p>No destinations found</p>
         </div>
       )}
     </div>
