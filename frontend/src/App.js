@@ -57,7 +57,7 @@ function AppContent() {
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/saved" element={<Saved />} />
-
+        <Route path="/pack" element={<Pack />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
