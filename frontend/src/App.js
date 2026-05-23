@@ -22,7 +22,6 @@ import AdminDashboard from "./components/pages/adminDashboard";
 import Pack from "./components/pages/pack";
 
 import Profile from "./components/pages/Profile";
-import Saved from "./components/pages/saved";
 
 import Agadir from "./components/pages/destinations/Agadir";
 import Casablanca from "./components/pages/destinations/Casablanca";
