@@ -1,11 +1,14 @@
-// App.js - Version corrigée (sans Router imbriqué)
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 
-import { LanguageProvider } from "./components/accueil/LanguageContext";
-import { AuthProvider } from './context/AuthContext';
-
-import ProtectedRoute from "./components/pages/ProtectedRoute";
+import { LanguageProvider } from "./components/accueil/LanguageContext"; 
+import { AuthProvider } from "./context/AuthContext";
 
 import Menu from "./components/accueil/Menu";
 import Home from "./components/accueil/home";
@@ -13,6 +16,8 @@ import Card from "./components/pages/card";
 import Destination from "./components/pages/destination";
 import Languages from "./components/pages/languages";
 import Login from "./components/pages/login";
+import Footer from "./components/accueil/Footer"
+import Profile from "./components/pages/Profile";
 import Saved from "./components/pages/saved";
 import Chatbot from "./components/Chatbot/Chatbot";
 import AdminDashboard from "./components/pages/adminDashboard";
@@ -21,7 +26,7 @@ import VerifyCode from './components/auth/VerifyCode';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import GoogleCallback from './components/auth/GoogleCallback';
-
+import ProtectedRoute from "./components/pages/ProtectedRoute"
 
 // Import des pages de destinations
 import Agadir from "./components/pages/destinations/Agadir";
@@ -32,7 +37,7 @@ import Chefchaouen from "./components/pages/destinations/Chefchaouen";
 import Essaouira from "./components/pages/destinations/Essaouira";
 
 function AppContent() {
-    const location = useLocation();
+  const location = useLocation();
 
     React.useEffect(() => {
         const savedDark = localStorage.getItem("app-dark-mode") === "true";
@@ -45,28 +50,28 @@ function AppContent() {
     const showMenu = !noMenuPages.includes(location.pathname);
     const showChatbot = !noChatbotPages.includes(location.pathname);
 
-    return (
-        <>
-            {showMenu && <Menu />}
+  return (
+    <>
+      {showMenu && <Menu /> }
 
-            <Routes>
-                {/* Routes principales */}
-                <Route path="/" element={<Home />} />
-                <Route path="/card" element={<Card />} />
-                <Route path="/destination" element={<Destination />} />
-                <Route path="/languages" element={<Languages />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/card" element={<Card />} />
+        <Route path="/destination" element={<Destination />} />
+        <Route path="/languages" element={<Languages />} />
 
-                {/* Routes des villes */}
-                <Route path="/destination/agadir" element={<Agadir />} />
-                <Route path="/destination/casablanca" element={<Casablanca />} />
-                <Route path="/destination/marrakech" element={<Marrakech />} />
-                <Route path="/destination/fes" element={<Fes />} />
-                <Route path="/destination/chefchaouen" element={<Chefchaouen />} />
-                <Route path="/destination/essaouira" element={<Essaouira />} />
+        <Route path="/destination/agadir" element={<Agadir />} />
+        <Route path="/destination/casablanca" element={<Casablanca />} />
+        <Route path="/destination/marrakech" element={<Marrakech />} />
+        <Route path="/destination/fes" element={<Fes />} />
+        <Route path="/destination/chefchaouen" element={<Chefchaouen />} />
+        <Route path="/destination/essaouira" element={<Essaouira />} />
 
                 {/* Login page */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
+
 
                 {/* Protected routes */}
                 <Route path="/saved" element={
@@ -81,6 +86,7 @@ function AppContent() {
                         <AdminDashboard />
                     </ProtectedRoute>
                 } />
+                
 
                 {/* Auth routes */}
                 <Route path="/verify-email" element={<EmailVerification />} />
@@ -91,25 +97,27 @@ function AppContent() {
                 <Route path="/auth/registration-success" element={<Navigate to="/" replace />} />
 
 
+
                 {/* Fallback */}
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
 
-            {showChatbot && <Chatbot />}
+            {showChatbot && <Chatbot /> }
+            {showChatbot && <Footer /> }
         </>
     );
 }
 
 function App() {
-    return (
-        <AuthProvider>
-            <LanguageProvider>
-                <Router>
-                    <AppContent />
-                </Router>
-            </LanguageProvider>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <LanguageProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </LanguageProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;

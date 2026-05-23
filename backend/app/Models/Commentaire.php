@@ -4,18 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Restaurant extends Model
+class Commentaire extends Model
 {
     protected $fillable = [
+        'user_id',
         'city_id',
-        'name',
-        'image',
-        'cuisine',
-        'rating',
-        'description',
-        'phone',
-        'opening_hours'
+        'comment'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function city()
     {

@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profils', function (Blueprint $table) {
+        Schema::create('meteos', function (Blueprint $table) {
             $table->id();
 
-    $table->foreignId('user_id')
-          ->constrained('users')
+    $table->foreignId('city_id')
+          ->constrained('cities')
           ->onDelete('cascade');
 
-    $table->string('image')->nullable();
-    $table->string('telephone')->nullable();
-    $table->string('ville')->nullable();
-    $table->text('bio')->nullable();
+    $table->string('temperature');
+    $table->string('weather');
+    $table->string('humidity')->nullable();
+    $table->string('wind')->nullable();
 
     $table->timestamps();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profils');
+        Schema::dropIfExists('meteos');
     }
 };

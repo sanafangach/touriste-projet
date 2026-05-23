@@ -4,14 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profil extends Model
+class Favorite extends Model
 {
     protected $fillable = [
         'user_id',
-        'image',
-        'telephone',
-        'ville',
-        'bio'
+        'item_type',
+        'item_id'
     ];
 
     public function user()

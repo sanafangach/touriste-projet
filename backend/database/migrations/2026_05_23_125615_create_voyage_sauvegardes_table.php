@@ -11,17 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profils', function (Blueprint $table) {
+        Schema::create('voyage_sauvegardes', function (Blueprint $table) {
             $table->id();
 
     $table->foreignId('user_id')
           ->constrained('users')
           ->onDelete('cascade');
 
-    $table->string('image')->nullable();
-    $table->string('telephone')->nullable();
-    $table->string('ville')->nullable();
-    $table->text('bio')->nullable();
+    $table->foreignId('city_id')
+          ->constrained('cities')
+          ->onDelete('cascade');
+
+    $table->string('trip_name');
+    $table->date('start_date')->nullable();
+    $table->date('end_date')->nullable();
 
     $table->timestamps();
         });
@@ -32,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profils');
+        Schema::dropIfExists('voyage_sauvegardes');
     }
 };

@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profils', function (Blueprint $table) {
-            $table->id();
+        Schema::create('favorites', function (Blueprint $table) {
+             $table->id();
 
     $table->foreignId('user_id')
-          ->constrained('users')
+          ->constrained()
           ->onDelete('cascade');
 
-    $table->string('image')->nullable();
-    $table->string('telephone')->nullable();
-    $table->string('ville')->nullable();
-    $table->text('bio')->nullable();
+    $table->enum('item_type', ['activity', 'restaurant', 'place']);
+
+    $table->unsignedBigInteger('item_id');
 
     $table->timestamps();
         });
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profils');
+        Schema::dropIfExists('favorites');
     }
 };
