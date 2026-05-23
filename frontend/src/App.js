@@ -1,9 +1,16 @@
-// App.js - Version corrigée (sans Router imbriqué)
+// App.js
+
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  Navigate
+} from "react-router-dom";
 
 import { LanguageProvider } from "./components/accueil/LanguageContext";
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from "./context/AuthContext";
 
 import ProtectedRoute from "./components/pages/ProtectedRoute";
 
@@ -16,89 +23,137 @@ import Login from "./components/pages/login";
 import Saved from "./components/pages/saved";
 import Chatbot from "./components/Chatbot/Chatbot";
 import AdminDashboard from "./components/pages/adminDashboard";
-import EmailVerification from './components/auth/EmailVerification';
-import VerifyCode from './components/auth/VerifyCode';
-import ForgotPassword from './components/auth/ForgotPassword';
-import ResetPassword from './components/auth/ResetPassword';
 
-// Import des pages de destinations
-import Agadir from "./components/pages/destinations/Agadir";
-import Casablanca from "./components/pages/destinations/Casablanca";
-import Marrakech from "./components/pages/destinations/Marrakech";
-import Fes from "./components/pages/destinations/Fes";
-import Chefchaouen from "./components/pages/destinations/Chefchaouen";
-import Essaouira from "./components/pages/destinations/Essaouira";
+import EmailVerification from "./components/auth/EmailVerification";
+import VerifyCode from "./components/auth/VerifyCode";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
+
+// ✅ Generic Dynamic City Page
+import CityDetail from "./components/pages/destinations/CityDetail";
 
 function AppContent() {
-    const location = useLocation();
+  const location = useLocation();
 
-    const noMenuPages = ['/login', '/admin', '/forgot-password', '/reset-password', '/verify-code'];
-    const noChatbotPages = ['/login', '/admin', '/forgot-password', '/reset-password', '/verify-code'];
+  const noMenuPages = [
+    "/login",
+    "/admin",
+    "/forgot-password",
+    "/reset-password",
+    "/verify-code"
+  ];
 
-    const showMenu = !noMenuPages.includes(location.pathname);
-    const showChatbot = !noChatbotPages.includes(location.pathname);
+  const noChatbotPages = [
+    "/login",
+    "/admin",
+    "/forgot-password",
+    "/reset-password",
+    "/verify-code"
+  ];
 
-    return (
-        <>
-            {showMenu && <Menu />}
+  const showMenu = !noMenuPages.includes(location.pathname);
 
-            <Routes>
-                {/* Routes principales */}
-                <Route path="/" element={<Home />} />
-                <Route path="/card" element={<Card />} />
-                <Route path="/destination" element={<Destination />} />
-                <Route path="/languages" element={<Languages />} />
+  const showChatbot = !noChatbotPages.includes(location.pathname);
 
-                {/* Routes des villes */}
-                <Route path="/destination/agadir" element={<Agadir />} />
-                <Route path="/destination/casablanca" element={<Casablanca />} />
-                <Route path="/destination/marrakech" element={<Marrakech />} />
-                <Route path="/destination/fes" element={<Fes />} />
-                <Route path="/destination/chefchaouen" element={<Chefchaouen />} />
-                <Route path="/destination/essaouira" element={<Essaouira />} />
+  return (
+    <>
+      {showMenu && <Menu />}
 
-                {/* Login page */}
-                <Route path="/login" element={<Login />} />
+      <Routes>
+        {/* MAIN ROUTES */}
 
-                {/* Protected routes */}
-                <Route path="/saved" element={
-                    <ProtectedRoute>
-                        <Saved />
-                    </ProtectedRoute>
-                } />
+        <Route path="/" element={<Home />} />
 
-                {/* Admin route */}
-                <Route path="/admin" element={
-                    <ProtectedRoute requireAdmin={true}>
-                        <AdminDashboard />
-                    </ProtectedRoute>
-                } />
+        <Route path="/card" element={<Card />} />
 
-                {/* Auth routes */}
-                <Route path="/verify-email" element={<EmailVerification />} />
-                <Route path="/verify-code" element={<VerifyCode />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/destination"
+          element={<Destination />}
+        />
 
-                {/* Fallback */}
-                <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
+        <Route
+          path="/languages"
+          element={<Languages />}
+        />
 
-            {showChatbot && <Chatbot />}
-        </>
-    );
+        {/* ✅ DYNAMIC CITY ROUTE */}
+
+        <Route
+          path="/destination/:slug"
+          element={<CityDetail />}
+        />
+
+        {/* LOGIN */}
+
+        <Route path="/login" element={<Login />} />
+
+        {/* PROTECTED */}
+
+        <Route
+          path="/saved"
+          element={
+            <ProtectedRoute>
+              <Saved />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ADMIN */}
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* AUTH */}
+
+        <Route
+          path="/verify-email"
+          element={<EmailVerification />}
+        />
+
+        <Route
+          path="/verify-code"
+          element={<VerifyCode />}
+        />
+
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
+
+        <Route
+          path="/reset-password"
+          element={<ResetPassword />}
+        />
+
+        {/* FALLBACK */}
+
+        <Route
+          path="*"
+          element={<Navigate to="/" />}
+        />
+      </Routes>
+
+      {showChatbot && <Chatbot />}
+    </>
+  );
 }
 
 function App() {
-    return (
-        <AuthProvider>
-            <LanguageProvider>
-                <Router>
-                    <AppContent />
-                </Router>
-            </LanguageProvider>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <LanguageProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </LanguageProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;
