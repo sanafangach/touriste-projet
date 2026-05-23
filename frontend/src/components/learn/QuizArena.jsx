@@ -261,13 +261,13 @@ const QuizArena = ({ onXpEarned, unlockedAchievements, onAchievementUnlock, curr
           </div>
           
           <div className={`quiz-mode-card ${currentLevel < 7 ? 'locked-feature-card' : ''}`} onClick={() => currentLevel >= 7 && startQuiz('audio')}>
-            <div className="quiz-mode-icon"><Volume2 size={48} color="var(--amazigh-emerald)" /></div>
+            <div className="quiz-mode-icon"><Volume2 size={48} color="var(--amazigh-amber)" /></div>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>À l'Aveugle</h3>
             <p style={{ color: 'var(--text-muted)' }}>Écoutez le son et identifiez le symbole Tifinagh.</p>
             {currentLevel < 7 && (
               <div className="padlock-overlay">
-                <Volume2 size={24} color="var(--amazigh-emerald)" />
-                <span style={{ color: 'var(--amazigh-emerald)', fontWeight: 'bold' }}>Niveau 7 requis</span>
+                <Volume2 size={24} color="var(--amazigh-amber)" />
+                <span style={{ color: 'var(--amazigh-amber)', fontWeight: 'bold' }}>Niveau 7 requis</span>
               </div>
             )}
           </div>
@@ -290,7 +290,7 @@ const QuizArena = ({ onXpEarned, unlockedAchievements, onAchievementUnlock, curr
             
             <div className="epic-stat-item">
               <p className="epic-stat-label">Précision</p>
-              <strong className="epic-stat-value" style={{ color: accuracy >= 80 ? 'var(--amazigh-emerald)' : accuracy >= 50 ? 'var(--amazigh-amber)' : 'var(--text-primary)' }}>
+              <strong className="epic-stat-value" style={{ color: accuracy >= 80 ? 'var(--amazigh-amber)' : accuracy >= 50 ? '#ffb977' : 'var(--text-primary)' }}>
                 {accuracy}%
               </strong>
             </div>

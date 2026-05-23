@@ -153,7 +153,7 @@ const AlphabetSystem = ({ learnedLetters, onMarkLearned }) => {
             ) : (
               <button 
                 className="btn-primary"
-                style={{ background: '#2D6B4F', color: '#FFF' }}
+                style={{ background: 'rgba(255, 122, 0, 0.16)', color: 'var(--amazigh-amber)', border: '1px solid rgba(255, 122, 0, 0.22)' }}
                 onClick={() => setSelectedLetter(null)}
               >
                 <CheckCircle size={18} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '8px' }} />

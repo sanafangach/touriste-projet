@@ -109,9 +109,9 @@ const NameConverter = ({ onAchievementUnlock, unlockedAchievements }) => {
           
           <div style={{ position: 'relative', zIndex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', color: 'var(--amazigh-amber)', marginBottom: '20px' }}>
-              <hr style={{ width: '50px', borderColor: 'rgba(212, 168, 67, 0.4)' }} />
+              <hr style={{ width: '50px', borderColor: 'rgba(255, 122, 0, 0.36)' }} />
               <Sparkles size={20} />
-              <hr style={{ width: '50px', borderColor: 'rgba(212, 168, 67, 0.4)' }} />
+              <hr style={{ width: '50px', borderColor: 'rgba(255, 122, 0, 0.36)' }} />
             </div>
             
             <p style={{ textTransform: 'uppercase', letterSpacing: '4px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
@@ -128,7 +128,7 @@ const NameConverter = ({ onAchievementUnlock, unlockedAchievements }) => {
 
             <div style={{ marginTop: '40px', display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
               {convertedChars.map((c, i) => c.char !== ' ' && (
-                <div key={i} style={{ background: 'rgba(0,0,0,0.5)', padding: '5px 15px', borderRadius: '15px', fontSize: '0.8rem', border: '1px solid rgba(212, 168, 67, 0.3)' }}>
+                <div key={i} style={{ background: 'rgba(0,0,0,0.5)', padding: '5px 15px', borderRadius: '15px', fontSize: '0.8rem', border: '1px solid rgba(255, 122, 0, 0.26)' }}>
                   <strong style={{ color: 'var(--amazigh-amber)' }}>{c.char}</strong> = {c.transliteration}
                 </div>
               ))}

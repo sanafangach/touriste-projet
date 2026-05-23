@@ -18,7 +18,7 @@ import UnlockCelebrationModal from "./UnlockCelebrationModal";
 import { loadProgress, addXp, markLetterLearned, unlockAchievement, getRankByXp } from "./data/gamificationEngine";
 import { tifinaghAlphabet } from "./data/tifnaghData";
 
-const TifinaghHub = ({ onBack }) => {
+const TifinaghHub = ({ onBack, theme = "dark" }) => {
   const [activeTab, setActiveTab] = useState("alphabet");
   
   // Global State
@@ -162,7 +162,7 @@ const TifinaghHub = ({ onBack }) => {
   if (!stats || !currentRank) return <div style={{ color: 'white', textAlign: 'center', padding: '100px' }}>Chargement de l'univers...</div>;
 
   return (
-    <div className="learn-hub-container">
+    <div className={`learn-hub-container ${theme === "light" ? "learn-hub-container--light" : ""}`}>
       {unlockQueue.length > 0 && (
         <UnlockCelebrationModal 
           feature={unlockQueue[0]} 

@@ -76,7 +76,7 @@ const UnlockCelebrationModal = ({ feature, onClose }) => {
           <h2 style={{ fontSize: '2rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '4px', marginBottom: '10px' }}>
             Nouveau Palier Atteint
           </h2>
-          <h1 style={{ fontSize: '3.5rem', color: '#FFF', marginBottom: '20px', textShadow: '0 0 20px rgba(212, 168, 67, 0.5)' }}>
+          <h1 style={{ fontSize: '3.5rem', color: '#FFF', marginBottom: '20px', textShadow: '0 0 20px rgba(255, 122, 0, 0.42)' }}>
             {feature.title}
           </h1>
           <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', marginBottom: '40px' }}>

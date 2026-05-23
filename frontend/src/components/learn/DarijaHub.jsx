@@ -14,7 +14,7 @@ import UnlockCelebrationModal from "./UnlockCelebrationModal";
 // Import data & logic
 import { loadProgress, addXp, unlockAchievement, getRankByXp } from "./data/gamificationEngine";
 
-const DarijaHub = ({ onBack }) => {
+const DarijaHub = ({ onBack, theme = "dark" }) => {
   const [activeTab, setActiveTab] = useState("lessons");
   
   // Global State
@@ -155,7 +155,15 @@ const DarijaHub = ({ onBack }) => {
   if (!stats || !currentRank) return <div style={{ color: 'white', textAlign: 'center', padding: '100px' }}>Chargement de l'univers...</div>;
 
   return (
-    <div className="learn-hub-container" style={{ backgroundImage: 'radial-gradient(circle at 50% 0%, rgba(255, 122, 0, 0.14) 0%, rgba(18, 27, 39, 1) 72%)' }}>
+    <div
+      className={`learn-hub-container ${theme === "light" ? "learn-hub-container--light" : ""}`}
+      style={{
+        backgroundImage:
+          theme === "light"
+            ? "radial-gradient(circle at 50% 0%, rgba(255, 122, 0, 0.12) 0%, rgba(247, 240, 230, 1) 68%)"
+            : "radial-gradient(circle at 50% 0%, rgba(255, 122, 0, 0.14) 0%, rgba(18, 27, 39, 1) 72%)",
+      }}
+    >
       {unlockQueue.length > 0 && (
         <UnlockCelebrationModal 
           feature={unlockQueue[0]} 

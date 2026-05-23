@@ -36,14 +36,14 @@ const PronunciationLab = () => {
       ctx.lineTo(i, y);
     }
     
-    ctx.strokeStyle = active ? '#D4A843' : 'rgba(212, 168, 67, 0.2)';
+    ctx.strokeStyle = active ? '#ff7a00' : 'rgba(255, 122, 0, 0.18)';
     ctx.lineWidth = active ? 3 : 1;
     ctx.stroke();
 
     // Add glow
     if (active) {
       ctx.shadowBlur = 15;
-      ctx.shadowColor = 'rgba(212, 168, 67, 0.6)';
+      ctx.shadowColor = 'rgba(255, 122, 0, 0.42)';
     } else {
       ctx.shadowBlur = 0;
     }
@@ -147,7 +147,7 @@ const PronunciationLab = () => {
       </div>
 
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <div style={{ background: 'rgba(255,255,255,0.02)', minHeight: '100px', border: '1px dashed rgba(212, 168, 67, 0.4)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', gap: '10px', boxShadow: 'inset 0 0 20px rgba(212, 168, 67, 0.05)' }}>
+        <div style={{ background: 'rgba(255,255,255,0.02)', minHeight: '100px', border: '1px dashed rgba(255, 122, 0, 0.32)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', gap: '10px', boxShadow: 'inset 0 0 20px rgba(255, 122, 0, 0.05)' }}>
           {word.length === 0 ? (
             <span style={{ color: 'var(--text-muted)' }}>Cliquez sur les lettres ci-dessous pour construire un mot...</span>
           ) : (

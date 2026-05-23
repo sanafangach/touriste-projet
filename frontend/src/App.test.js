@@ -6,6 +6,6 @@ test("renders the learning hub entry points", async () => {
 
   render(<Languages />);
 
-  expect(await screen.findByText(/Immersion Darija/i)).toBeInTheDocument();
-  expect(await screen.findByText(/Tifinagh/i)).toBeInTheDocument();
+  expect(await screen.findByRole("button", { name: /Open Darija Studio/i })).toBeInTheDocument();
+  expect(await screen.findByRole("button", { name: /Enter Tifinagh Lab/i })).toBeInTheDocument();
 });
