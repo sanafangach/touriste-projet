@@ -46,13 +46,13 @@ html, body {
 
 /* ========== MODE SOMBRE ========== */
 html.dark {
-  --orange-primary: #fb923c;
-  --orange-deep: #f97316;
-  --orange-glow: rgba(251, 146, 60, 0.3);
+  --orange-primary: #f97316;
+  --orange-deep: #ea580c;
+  --orange-glow: rgba(249, 115, 22, 0.35);
 
   --bg-page: 
-    radial-gradient(circle at 0% 20%, rgba(251, 146, 60, 0.12), transparent 55%),
-    radial-gradient(circle at 100% 80%, rgba(193, 65, 12, 0.15), transparent 60%),
+    radial-gradient(circle at 0% 20%, rgba(249, 115, 22, 0.10), transparent 55%),
+    radial-gradient(circle at 100% 80%, rgba(234, 88, 12, 0.12), transparent 60%),
     linear-gradient(135deg, #292524 0%, #1c1917 100%);
 
   --card-bg: rgba(18, 16, 14, 0.96);
@@ -69,6 +69,24 @@ html.dark {
   --shape-1: rgba(249, 115, 22, 0.25);
   --shape-2: rgba(234, 88, 12, 0.2);
   --shape-3: rgba(251, 146, 60, 0.18);
+}
+html.dark .input-icon-wrapper {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(249, 115, 22, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: all 0.3s ease;
+}
+
+html.dark .input-icon-wrapper:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+html.dark .input-icon-wrapper:focus-within {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--orange-primary);
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
 }
 
 /* Conteneur principal */

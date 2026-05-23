@@ -1,11 +1,10 @@
-/* RESET */
+/* GOOGLE FONT */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* BASE BODY */
 body {
   font-family: 'Inter', 'Poppins', sans-serif;
   background: #f5f5f5;
@@ -32,17 +31,43 @@ body {
   z-index: 1000;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* SCROLLED MENU */
 .menu.scrolled {
   background: rgba(255, 255, 255, 0.85);
-  height: 75px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  height: 75px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.menu.scrolled .logo {
+  filter: brightness(0);
+}
+
+.menu.scrolled .menu-links li a {
+  color: #333;
+  text-shadow: none;
+}
+
+.menu.scrolled .mobile-icon {
+  color: #333;
+}
+
+.menu.scrolled .settings-btn {
+  color: #333;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.menu.scrolled .settings-btn:hover,
+.menu.scrolled .settings-btn.active {
+  color: white;
+}
+
+/* DARK MODE MENU */
 .dark .menu {
   background: rgba(0, 0, 0, 0.45);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -50,16 +75,28 @@ body {
 
 .dark .menu.scrolled {
   background: rgba(20, 20, 20, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark .menu.scrolled .logo {
+  filter: brightness(1);
+}
+
+.dark .menu.scrolled .menu-links li a,
+.dark .menu.scrolled .mobile-icon,
+.dark .menu.scrolled .settings-btn {
+  color: white;
 }
 
 /* LOGO */
 .logo {
   width: 140px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
 }
 
 .logo:hover {
-  transform: scale(1.05);
+  transform: scale(1.05) rotate(-2deg);
 }
 
 /* ================= LINKS ================= */
@@ -67,6 +104,7 @@ body {
   display: flex;
   list-style: none;
   gap: 40px;
+  align-items: center;
 }
 
 .menu-links li a {
@@ -74,63 +112,148 @@ body {
   color: white;
   font-size: 15px;
   font-weight: 500;
+  letter-spacing: 0.5px;
+  position: relative;
+  transition: 0.3s ease;
   display: flex;
+  align-items: center;
   gap: 8px;
-  transition: 0.3s;
+  padding: 8px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* underline effect */
+.menu-links li a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff7a00, transparent);
+  transition: 0.4s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.menu-links li a:hover::after {
+  width: 100%;
 }
 
 .menu-links li a:hover {
   color: #ff9800;
+  text-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
 }
 
+/* ================= ACTIVE LINK (for React active-link class) ================= */
 .menu-links li a.active-link {
-  color: #ff7a00;
+  color: #ff7a00 !important;
+  text-shadow: 0 0 8px rgba(255, 122, 0, 0.5);
 }
 
-/* ================= RIGHT ================= */
+.menu-links li a.active-link::after {
+  width: 100%;
+  background: linear-gradient(90deg, transparent, #ff7a00, transparent);
+}
+
+/* Dark mode active link */
+.dark .menu-links li a.active-link {
+  color: #ff9800 !important;
+}
+
+/* Scrolled menu active link */
+.menu.scrolled .menu-links li a.active-link {
+  color: #ff7a00 !important;
+  text-shadow: none;
+}
+
+/* Scrolled + dark mode active link */
+.dark .menu.scrolled .menu-links li a.active-link {
+  color: #ff9800 !important;
+}
+
+/* RTL support for active link icon order */
+.menu.rtl .menu-links li a.active-link .link-icon {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+/* ================= RIGHT SIDE ================= */
 .menu-right {
   display: flex;
   align-items: center;
   gap: 14px;
+  position: relative;
 }
 
-/* USER GREETING */
+/* ================= USER GREETING ================= */
 .user-greeting {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.15), rgba(255, 77, 0, 0.1));
+  border: 1px solid rgba(255, 122, 0, 0.2);
   border-radius: 50px;
   color: #ff7a00;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user-greeting:hover {
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.25), rgba(255, 77, 0, 0.15));
+  transform: scale(1.02);
+  color: #ff9800;
   text-decoration: none;
 }
 
-/* SETTINGS BUTTON */
+.dark .user-greeting {
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.2), rgba(255, 77, 0, 0.1));
+  color: #ff9800;
+}
+
+.menu.scrolled .user-greeting {
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.1), rgba(255, 77, 0, 0.05));
+  color: #ff7a00;
+}
+
+/* BUTTONS */
 .settings-btn {
   width: 46px;
   height: 46px;
-  border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  border-radius: 50%;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .settings-btn:hover,
 .settings-btn.active {
+  transform: scale(1.1);
   background: linear-gradient(135deg, #ff7a00, #ff4d00);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 10px 20px rgba(255, 122, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
-/* SPIN ICON */
-.spin {
+.settings-btn .spin {
   animation: spin 3s linear infinite;
 }
 
 @keyframes spin {
-  100% { transform: rotate(360deg); }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ================= DROPDOWN ================= */
@@ -140,67 +263,201 @@ body {
   right: 0;
   width: 240px;
   background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
   border-radius: 20px;
-  padding: 10px;
-  animation: dropdownEnter 0.3s ease;
+  padding: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  animation: dropdownEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  transform-origin: top right;
 }
 
 .dark .dropdown {
   background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes dropdownEnter {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+.dropdown-header {
+  padding: 12px 16px 4px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #aaa;
 }
 
-/* LANGUAGE */
+.dropdown-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 6px 0;
+}
+
+/* LANGUAGE BAR */
 .language-bar {
   display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
   gap: 8px;
-  padding: 8px;
 }
 
 .lang-btn {
   flex: 1;
-  padding: 6px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  padding: 8px 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+.lang-btn:hover {
+  background: rgba(255, 122, 0, 0.1);
+  color: #ff7a00;
 }
 
 .lang-btn.active {
-  background: #ff7a00;
+  background: linear-gradient(135deg, #ff7a00, #ff4d00);
   color: white;
+  border-color: transparent;
 }
 
 /* DROPDOWN ITEMS */
 .dropdown-item {
   display: flex;
-  gap: 10px;
-  padding: 10px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 14px;
   cursor: pointer;
-  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
   color: #333;
+  text-decoration: none;
 }
 
 .dropdown-item:hover {
   background: rgba(255, 122, 0, 0.1);
+  color: #ff7a00;
+  transform: translateX(4px);
 }
 
+/* LOGOUT */
 .logout-item {
-  color: red;
+  color: #e74c3c !important;
 }
 
-/* MOBILE */
+.logout-item:hover {
+  background: rgba(231, 76, 60, 0.1) !important;
+  color: #c0392b !important;
+}
+
+/* MOBILE ICON */
 .mobile-icon {
   display: none;
   color: white;
   cursor: pointer;
+  z-index: 1001;
 }
 
-/* RESPONSIVE */
+/* ANIMATION */
+@keyframes dropdownEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ================= RTL ================= */
+.menu.rtl {
+  flex-direction: row-reverse;
+}
+
+.menu.rtl .menu-left {
+  order: 2;
+}
+
+.menu.rtl .menu-links {
+  flex-direction: row-reverse;
+}
+
+.menu.rtl .menu-right {
+  order: -1;
+}
+
+.dropdown-rtl {
+  right: auto !important;
+  left: 0 !important;
+}
+/* ================= DARK MODE LINKS FIX ================= */
+
+.dark .dropdown-item {
+  color: #ffffff !important;
+}
+
+.dark .dropdown-item span {
+  color: #ffffff !important;
+}
+
+.dark .dropdown-item:hover {
+  background: rgba(255, 122, 0, 0.15);
+  color: #ff9800 !important;
+}
+
+/* Saved / Profile / Login icons (Lucide icons) */
+.dark .dropdown-item svg {
+  color: #ffffff !important;
+}
+
+/* Dropdown header in dark mode */
+.dark .dropdown-header {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Divider in dark mode */
+.dark .dropdown-divider {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Language buttons in dark mode */
+.dark .lang-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.dark .lang-btn:hover {
+  background: rgba(255, 122, 0, 0.2);
+  color: #ff9800;
+}
+
+.dark .lang-btn.active {
+  background: linear-gradient(135deg, #ff7a00, #ff4d00);
+  color: white;
+}
+
+/* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
+  .menu {
+    padding: 0 20px;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .mobile-icon {
+    display: block;
+  }
+
   .menu-links {
     position: fixed;
     top: 0;
@@ -208,7 +465,8 @@ body {
     width: 80%;
     height: 100vh;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    background: rgba(10, 10, 10, 0.95);
     transition: 0.5s;
   }
 
@@ -216,8 +474,8 @@ body {
     left: 0;
   }
 
-  .mobile-icon {
-    display: block;
+  .menu-right {
+    margin-right: 50px;
   }
 
   .user-greeting {

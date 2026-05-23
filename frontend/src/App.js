@@ -1,5 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+
+import { LanguageProvider } from "./components/accueil/LanguageContext";
+import { AuthProvider } from "./context/AuthContext";
 
 import Menu from "./components/accueil/Menu";
 import Home from "./components/accueil/home";
@@ -22,7 +31,6 @@ function AppContent() {
   const location = useLocation();
 
   const hideMenuPages = ["/login", "/admin"];
-
   const showMenu = !hideMenuPages.includes(location.pathname);
 
   return (
@@ -35,7 +43,6 @@ function AppContent() {
         <Route path="/destination" element={<Destination />} />
         <Route path="/languages" element={<Languages />} />
 
-        {/* destinations */}
         <Route path="/destination/agadir" element={<Agadir />} />
         <Route path="/destination/casablanca" element={<Casablanca />} />
         <Route path="/destination/marrakech" element={<Marrakech />} />
@@ -43,14 +50,11 @@ function AppContent() {
         <Route path="/destination/chefchaouen" element={<Chefchaouen />} />
         <Route path="/destination/essaouira" element={<Essaouira />} />
 
-        {/* auth */}
         <Route path="/login" element={<Login />} />
 
-        {/* simple pages */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/saved" element={<Saved />} />
 
-        {/* fallback */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
@@ -59,9 +63,13 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <AuthProvider>
+      <LanguageProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </LanguageProvider>
+    </AuthProvider>
   );
 }
 
