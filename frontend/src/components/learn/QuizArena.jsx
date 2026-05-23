@@ -5,8 +5,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { Heart, Timer, Volume2, BookOpen } from "lucide-react";
 import { generateQuestion, calculateXpReward, QUESTION_TYPES } from "./data/quizEngine";
 import { tifinaghAlphabet } from "./data/tifnaghData";
+import { useLanguage } from "../accueil/LanguageContext";
 
 const QuizArena = ({ onXpEarned, unlockedAchievements, onAchievementUnlock, currentLevel = 1 }) => {
+  const { t } = useLanguage();
   const [activeMode, setActiveMode] = useState(null);
   const [question, setQuestion] = useState(null);
   const [score, setScore] = useState(0);
@@ -225,49 +227,49 @@ const QuizArena = ({ onXpEarned, unlockedAchievements, onAchievementUnlock, curr
     return (
       <div className="quiz-setup learn-glass-panel">
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>Arène d'Entraînement</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Choisissez votre mode de défi. Gagnez de l'XP en répondant rapidement et sans erreur !</p>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>{t("learnTrainingArena")}</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>{t("learnArenaDesc")}</p>
         </div>
         
         <div className="quiz-modes">
           <div className="quiz-mode-card" onClick={() => startQuiz('classic')}>
             <div className="quiz-mode-icon"><BookOpen size={48} /></div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Classique</h3>
-            <p style={{ color: 'var(--text-muted)' }}>Apprentissage standard sans pression temporelle.</p>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{t("learnModeClassic")}</h3>
+            <p style={{ color: 'var(--text-muted)' }}>{t("learnModeClassicDesc")}</p>
           </div>
           
           <div className={`quiz-mode-card ${currentLevel < 3 ? 'locked-feature-card' : ''}`} onClick={() => currentLevel >= 3 && startQuiz('survival')}>
             <div className="quiz-mode-icon"><Heart size={48} color="var(--amazigh-crimson)" /></div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Mode Survie</h3>
-            <p style={{ color: 'var(--text-muted)' }}>3 vies. Difficulté croissante. XP multiplié par 1.5.</p>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{t("learnModeSurvival")}</h3>
+            <p style={{ color: 'var(--text-muted)' }}>{t("learnModeSurvivalDesc")}</p>
             {currentLevel < 3 && (
               <div className="padlock-overlay">
                 <Heart size={24} color="#ff4d4d" />
-                <span style={{ color: '#ff4d4d', fontWeight: 'bold' }}>Niveau 3 requis</span>
+                <span style={{ color: '#ff4d4d', fontWeight: 'bold' }}>{t("learnLevelRequired")} 3 {t("learnRequired")}</span>
               </div>
             )}
           </div>
           
           <div className={`quiz-mode-card ${currentLevel < 5 ? 'locked-feature-card' : ''}`} onClick={() => currentLevel >= 5 && startQuiz('timed')}>
             <div className="quiz-mode-icon"><Timer size={48} color="#4A90E2" /></div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Contre-la-montre</h3>
-            <p style={{ color: 'var(--text-muted)' }}>60 secondes pour accumuler un maximum de points.</p>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{t("learnModeTimed")}</h3>
+            <p style={{ color: 'var(--text-muted)' }}>{t("learnModeTimedDesc")}</p>
             {currentLevel < 5 && (
               <div className="padlock-overlay">
                 <Timer size={24} color="#4A90E2" />
-                <span style={{ color: '#4A90E2', fontWeight: 'bold' }}>Niveau 5 requis</span>
+                <span style={{ color: '#4A90E2', fontWeight: 'bold' }}>{t("learnLevelRequired")} 5 {t("learnRequired")}</span>
               </div>
             )}
           </div>
           
           <div className={`quiz-mode-card ${currentLevel < 7 ? 'locked-feature-card' : ''}`} onClick={() => currentLevel >= 7 && startQuiz('audio')}>
             <div className="quiz-mode-icon"><Volume2 size={48} color="var(--amazigh-emerald)" /></div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>À l'Aveugle</h3>
-            <p style={{ color: 'var(--text-muted)' }}>Écoutez le son et identifiez le symbole Tifinagh.</p>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{t("learnModeAudio")}</h3>
+            <p style={{ color: 'var(--text-muted)' }}>{t("learnModeAudioDesc")}</p>
             {currentLevel < 7 && (
               <div className="padlock-overlay">
                 <Volume2 size={24} color="var(--amazigh-emerald)" />
-                <span style={{ color: 'var(--amazigh-emerald)', fontWeight: 'bold' }}>Niveau 7 requis</span>
+                <span style={{ color: 'var(--amazigh-emerald)', fontWeight: 'bold' }}>{t("learnLevelRequired")} 7 {t("learnRequired")}</span>
               </div>
             )}
           </div>
@@ -283,27 +285,27 @@ const QuizArena = ({ onXpEarned, unlockedAchievements, onAchievementUnlock, curr
       <div className="epic-results-container">
         <div className="epic-results-card">
           <h2 className="epic-title">
-            Session Terminée
+            {t("learnSessionFinished")}
           </h2>
           
           <div className="epic-stats-grid">
             
             <div className="epic-stat-item">
-              <p className="epic-stat-label">Précision</p>
+              <p className="epic-stat-label">{t("learnAccuracy")}</p>
               <strong className="epic-stat-value" style={{ color: accuracy >= 80 ? 'var(--amazigh-emerald)' : accuracy >= 50 ? 'var(--amazigh-amber)' : 'var(--text-primary)' }}>
                 {accuracy}%
               </strong>
             </div>
 
             <div className="epic-stat-item">
-              <p className="epic-stat-label">Combo Max</p>
+              <p className="epic-stat-label">{t("learnMaxCombo")}</p>
               <strong className="epic-stat-value" style={{ color: 'var(--text-primary)' }}>
                 x{maxCombo}
               </strong>
             </div>
 
             <div className="epic-stat-item">
-              <p className="epic-stat-label">Progression</p>
+              <p className="epic-stat-label">{t("learnProgress")}</p>
               <strong className="epic-stat-value" style={{ color: 'var(--text-primary)' }}>
                 +{score} XP
               </strong>
@@ -312,7 +314,7 @@ const QuizArena = ({ onXpEarned, unlockedAchievements, onAchievementUnlock, curr
           </div>
           
           <button className="btn-cinematic" onClick={() => setActiveMode(null)}>
-            Continuer l'Aventure
+            {t("learnContinueAdventure")}
           </button>
         </div>
       </div>
@@ -351,7 +353,7 @@ const QuizArena = ({ onXpEarned, unlockedAchievements, onAchievementUnlock, curr
             </div>
           )}
           <button onClick={() => { if(timerRef.current) clearInterval(timerRef.current); setActiveMode(null); }} className="quit-arena-btn">
-            Quitter
+            {t("learnQuit")}
           </button>
         </div>
       </div>

@@ -2,37 +2,37 @@
 // Designed for the AMUDUX Immersive Learning Platform
 
 export const MASTERY_RANKS = [
-  { level: 1, title: "Arrivée à Casablanca", minXp: 0, color: "#A0A0A0" },
-  { level: 2, title: "Passage à Rabat", minXp: 500, color: "#cd7f32" },
-  { level: 3, title: "Les Ruelles de Fès", minXp: 1200, color: "#2D6B4F" },
-  { level: 4, title: "Médina de Marrakech", minXp: 2500, color: "#4A90E2" },
-  { level: 5, title: "Le Tumulte du Souk", minXp: 4000, color: "#8E44AD" },
-  { level: 6, title: "Portes de Ouarzazate", minXp: 6000, color: "#2980B9" },
-  { level: 7, title: "Vallée du Dadès", minXp: 8500, color: "#E67E22" },
-  { level: 8, title: "Sommets de l'Atlas", minXp: 11500, color: "#F1C40F" },
-  { level: 9, title: "Le Vent du Chergui", minXp: 15000, color: "#D35400" },
-  { level: 10, title: "Dunes de Merzouga", minXp: 20000, color: "#C0392B" },
-  { level: 11, title: "Sagesse Amazighe", minXp: 26000, color: "#FFD700" },
-  { level: 12, title: "Légende du Sahara", minXp: 35000, color: "#00FFcc" }
+  { level: 1, title: "Arrivée à Casablanca", titleKey: "rank1Title", minXp: 0, color: "#A0A0A0" },
+  { level: 2, title: "Passage à Rabat", titleKey: "rank2Title", minXp: 500, color: "#cd7f32" },
+  { level: 3, title: "Les Ruelles de Fès", titleKey: "rank3Title", minXp: 1200, color: "#2D6B4F" },
+  { level: 4, title: "Médina de Marrakech", titleKey: "rank4Title", minXp: 2500, color: "#4A90E2" },
+  { level: 5, title: "Le Tumulte du Souk", titleKey: "rank5Title", minXp: 4000, color: "#8E44AD" },
+  { level: 6, title: "Portes de Ouarzazate", titleKey: "rank6Title", minXp: 6000, color: "#2980B9" },
+  { level: 7, title: "Vallée du Dadès", titleKey: "rank7Title", minXp: 8500, color: "#E67E22" },
+  { level: 8, title: "Sommets de l'Atlas", titleKey: "rank8Title", minXp: 11500, color: "#F1C40F" },
+  { level: 9, title: "Le Vent du Chergui", titleKey: "rank9Title", minXp: 15000, color: "#D35400" },
+  { level: 10, title: "Dunes de Merzouga", titleKey: "rank10Title", minXp: 20000, color: "#C0392B" },
+  { level: 11, title: "Sagesse Amazighe", titleKey: "rank11Title", minXp: 26000, color: "#FFD700" },
+  { level: 12, title: "Légende du Sahara", titleKey: "rank12Title", minXp: 35000, color: "#00FFcc" }
 ];
 
 export const ACHIEVEMENTS = [
-  { id: 'first_word', title: "Premier Pas", description: "Apprendre votre premier mot", icon: "Flag", color: "#4A90E2", xpReward: 50 },
-  { id: 'streak_3', title: "Régularité", description: "3 jours de suite", icon: "Calendar", color: "#E67E22", xpReward: 100 },
-  { id: 'perfect_quiz', title: "Sans Faute", description: "Terminer un quiz à 100%", icon: "Target", color: "#F1C40F", xpReward: 150 },
-  { id: 'speed_demon', title: "Réflexe", description: "Réponse en moins d'une seconde", icon: "Zap", color: "#C0392B", xpReward: 100 },
-  { id: 'darija_speaker', title: "Conversationaliste", description: "Terminer un scénario de vie", icon: "MessageCircle", color: "#8E44AD", xpReward: 200 },
-  { id: 'alphabet_master', title: "Gardien des Lettres", description: "Maîtriser tout l'alphabet Tifinagh", icon: "Book", color: "#2D6B4F", xpReward: 500 },
-  { id: 'cultural_scholar', title: "Érudit", description: "Lire 5 mythes culturels", icon: "Compass", color: "#D35400", xpReward: 250 }
+  { id: 'first_word', title: "Premier Pas", titleKey: "achFirstWordTitle", description: "Apprendre votre premier mot", descriptionKey: "achFirstWordDesc", icon: "Flag", color: "#4A90E2", xpReward: 50 },
+  { id: 'streak_3', title: "Régularité", titleKey: "achStreakTitle", description: "3 jours de suite", descriptionKey: "achStreakDesc", icon: "Calendar", color: "#E67E22", xpReward: 100 },
+  { id: 'perfect_quiz', title: "Sans Faute", titleKey: "achPerfectQuizTitle", description: "Terminer un quiz à 100%", descriptionKey: "achPerfectQuizDesc", icon: "Target", color: "#F1C40F", xpReward: 150 },
+  { id: 'speed_demon', title: "Réflexe", titleKey: "achSpeedDemonTitle", description: "Réponse en moins d'une seconde", descriptionKey: "achSpeedDemonDesc", icon: "Zap", color: "#C0392B", xpReward: 100 },
+  { id: 'darija_speaker', title: "Conversationaliste", titleKey: "achDarijaSpeakerTitle", description: "Terminer un scénario de vie", descriptionKey: "achDarijaSpeakerDesc", icon: "MessageCircle", color: "#8E44AD", xpReward: 200 },
+  { id: 'alphabet_master', title: "Gardien des Lettres", titleKey: "achAlphabetMasterTitle", description: "Maîtriser tout l'alphabet Tifinagh", descriptionKey: "achAlphabetMasterDesc", icon: "Book", color: "#2D6B4F", xpReward: 500 },
+  { id: 'cultural_scholar', title: "Érudit", titleKey: "achCulturalScholarTitle", description: "Lire 5 mythes culturels", descriptionKey: "achCulturalScholarDesc", icon: "Compass", color: "#D35400", xpReward: 250 }
 ];
 
 export const FEATURE_UNLOCKS = [
-  { id: 'quiz_survival', title: 'Arène : Mode Survie', requiredLevel: 3, icon: 'Heart', hub: 'tifinagh' },
-  { id: 'quiz_timed', title: 'Arène : Contre-la-montre', requiredLevel: 5, icon: 'Timer', hub: 'tifinagh' },
-  { id: 'quiz_audio', title: 'Arène : À l\'Aveugle', requiredLevel: 7, icon: 'Volume2', hub: 'tifinagh' },
-  { id: 'name_converter', title: 'Studio de Calligraphie', requiredLevel: 2, icon: 'Award', hub: 'tifinagh' },
-  { id: 'pronunciation_lab', title: 'Laboratoire Phonétique', requiredLevel: 4, icon: 'Mic', hub: 'tifinagh' },
-  { id: 'darija_taxi', title: 'Scénario : Le Petit Taxi', requiredLevel: 2, icon: 'MapPin', hub: 'darija' }
+  { id: 'quiz_survival', title: 'Arène : Mode Survie', titleKey: 'featQuizSurvival', requiredLevel: 3, icon: 'Heart', hub: 'tifinagh' },
+  { id: 'quiz_timed', title: 'Arène : Contre-la-montre', titleKey: 'featQuizTimed', requiredLevel: 5, icon: 'Timer', hub: 'tifinagh' },
+  { id: 'quiz_audio', title: 'Arène : À l\'Aveugle', titleKey: 'featQuizAudio', requiredLevel: 7, icon: 'Volume2', hub: 'tifinagh' },
+  { id: 'name_converter', title: 'Studio de Calligraphie', titleKey: 'featNameConverter', requiredLevel: 2, icon: 'Award', hub: 'tifinagh' },
+  { id: 'pronunciation_lab', title: 'Laboratoire Phonétique', titleKey: 'featPronunciationLab', requiredLevel: 4, icon: 'Mic', hub: 'tifinagh' },
+  { id: 'darija_taxi', title: 'Scénario : Le Petit Taxi', titleKey: 'featDarijaTaxi', requiredLevel: 2, icon: 'MapPin', hub: 'darija' }
 ];
 
 export const getNewlyUnlockedFeatures = (oldXp, newXp) => {

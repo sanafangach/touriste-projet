@@ -3,8 +3,10 @@
 
 import React, { useEffect } from 'react';
 import { Sparkles, Heart, Timer, Volume2, Award, Mic, MessageCircle, MapPin, Coffee, LockOpen } from 'lucide-react';
+import { useLanguage } from '../accueil/LanguageContext';
 
 const UnlockCelebrationModal = ({ feature, onClose }) => {
+  const { t } = useLanguage();
   useEffect(() => {
     // Triumphant AudioContext Chord
     try {
@@ -74,17 +76,17 @@ const UnlockCelebrationModal = ({ feature, onClose }) => {
           </div>
           
           <h2 style={{ fontSize: '2rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '4px', marginBottom: '10px' }}>
-            Nouveau Palier Atteint
+            {t("learnNewTierReached")}
           </h2>
           <h1 style={{ fontSize: '3.5rem', color: '#FFF', marginBottom: '20px', textShadow: '0 0 20px rgba(212, 168, 67, 0.5)' }}>
-            {feature.title}
+            {t(feature.titleKey) || feature.title}
           </h1>
           <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', marginBottom: '40px' }}>
-            Cette fonctionnalité est maintenant disponible dans votre parcours.
+            {t("learnFeatureAvailable")}
           </p>
           
           <button className="btn-primary" onClick={onClose} style={{ fontSize: '1.2rem', padding: '15px 40px' }}>
-            Continuer l'Aventure
+            {t("learnContinueAdventure")}
           </button>
         </div>
       </div>

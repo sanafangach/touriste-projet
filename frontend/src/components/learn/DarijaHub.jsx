@@ -158,7 +158,7 @@ const DarijaHub = ({ onBack, selectedDestination, onXpEarned }) => {
     }
   };
 
-  if (!stats || !currentRank) return <div style={{ color: 'white', textAlign: 'center', padding: '100px' }}>Chargement de l'univers...</div>;
+  if (!stats || !currentRank) return <div style={{ color: 'white', textAlign: 'center', padding: '100px' }}>{t("learnLoadingHub")}</div>;
 
   return (
     <div className="learn-hub-container" style={{ backgroundImage: 'radial-gradient(circle at 50% 0%, rgba(255, 122, 0, 0.14) 0%, rgba(18, 27, 39, 1) 72%)' }}>
@@ -213,7 +213,7 @@ const DarijaHub = ({ onBack, selectedDestination, onXpEarned }) => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ fontSize: '1.5rem' }}>{destContext.emoji}</span>
                 <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#FFF' }}>
-                  Vocabulaire et scènes pour {t(destContext.nameKey)}
+                  {t("learnVocabScenesFor")} {t(destContext.nameKey)}
                 </h3>
               </div>
             </div>
@@ -222,14 +222,14 @@ const DarijaHub = ({ onBack, selectedDestination, onXpEarned }) => {
 
         <div className="learn-tabs">
           <button className={`learn-tab-btn ${activeTab === 'lessons' ? 'active' : ''}`} onClick={() => setActiveTab('lessons')} style={activeTab === 'lessons' ? { borderColor: 'rgba(255, 122, 0, 0.35)', color: 'var(--amazigh-amber)', boxShadow: '0 0 20px rgba(255, 122, 0, 0.18)', background: 'rgba(255, 122, 0, 0.12)' } : {}}>
-            <BookOpen size={18} /> Vocabulaire
+            <BookOpen size={18} /> {t("learnVocabulary")}
           </button>
           <button className={`learn-tab-btn ${activeTab === 'conversations' ? 'active' : ''}`} onClick={() => setActiveTab('conversations')} style={activeTab === 'conversations' ? { borderColor: 'rgba(255, 122, 0, 0.35)', color: 'var(--amazigh-amber)', boxShadow: '0 0 20px rgba(255, 122, 0, 0.18)', background: 'rgba(255, 122, 0, 0.12)' } : {}}>
-            <MessageCircle size={18} /> Scénarios
+            <MessageCircle size={18} /> {t("learnScenarios")}
           </button>
           {/* Quiz and Audio tabs can be enabled here using the same style logic */}
           <button className={`learn-tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')} style={activeTab === 'dashboard' ? { borderColor: 'rgba(255, 122, 0, 0.35)', color: 'var(--amazigh-amber)', boxShadow: '0 0 20px rgba(255, 122, 0, 0.18)', background: 'rgba(255, 122, 0, 0.12)' } : {}}>
-            <Trophy size={18} /> Progression Globale
+            <Trophy size={18} /> {t("learnGlobalProgress")}
           </button>
         </div>
 

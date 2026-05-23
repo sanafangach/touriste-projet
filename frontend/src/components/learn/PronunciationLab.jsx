@@ -4,8 +4,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Play, Square, Settings, RefreshCcw } from "lucide-react";
 import { tifinaghAlphabet } from "./data/tifnaghData";
+import { useLanguage } from "../accueil/LanguageContext";
 
 const PronunciationLab = () => {
+  const { t } = useLanguage();
   const [word, setWord] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
@@ -120,8 +122,8 @@ const PronunciationLab = () => {
   return (
     <div className="pronunciation-lab learn-glass-panel">
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h2 style={{ fontSize: '2.2rem', marginBottom: '10px', fontWeight: '500', color: '#FFF' }}>Laboratoire Phonétique</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Construisez des mots, analysez les ondes sonores et affinez votre accent avec l'IA.</p>
+        <h2 style={{ fontSize: '2.2rem', marginBottom: '10px', fontWeight: '500', color: '#FFF' }}>{t("learnPhoneticLab")}</h2>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{t("learnLabDesc")}</p>
       </div>
 
       <canvas ref={canvasRef} className="wave-canvas" style={{ width: '100%', height: '150px' }}></canvas>
@@ -134,7 +136,7 @@ const PronunciationLab = () => {
           style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '10px' }}
         >
           {isPlaying ? <Square size={20} /> : <Play size={20} />}
-          {isPlaying ? 'Analyse en cours...' : 'Écouter'}
+          {isPlaying ? t("learnAnalysisInProgress") : t("learnListen")}
         </button>
         
         <button 
@@ -149,7 +151,7 @@ const PronunciationLab = () => {
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <div style={{ background: 'rgba(255,255,255,0.02)', minHeight: '100px', border: '1px dashed rgba(212, 168, 67, 0.4)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', gap: '10px', boxShadow: 'inset 0 0 20px rgba(212, 168, 67, 0.05)' }}>
           {word.length === 0 ? (
-            <span style={{ color: 'var(--text-muted)' }}>Cliquez sur les lettres ci-dessous pour construire un mot...</span>
+            <span style={{ color: 'var(--text-muted)' }}>{t("learnClickToBuild")}</span>
           ) : (
             word.map((w, i) => (
               <span key={i} style={{ fontSize: '3.5rem', fontFamily: 'var(--font-tifinagh)', color: '#FFF' }}>
@@ -166,18 +168,18 @@ const PronunciationLab = () => {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '1.2rem' }}>Clavier Phonétique</h3>
+        <h3 style={{ fontSize: '1.2rem' }}>{t("learnPhoneticKeyboard")}</h3>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Settings size={18} color="var(--text-muted)" />
-          <span style={{ color: 'var(--text-muted)' }}>Vitesse: </span>
+          <span style={{ color: 'var(--text-muted)' }}>{t("learnSpeed")} </span>
           <select 
             value={playbackSpeed} 
             onChange={(e) => setPlaybackSpeed(parseFloat(e.target.value))}
             style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--amazigh-amber)', border: '1px solid rgba(255,255,255,0.1)', padding: '5px 10px', borderRadius: '8px', cursor: 'pointer' }}
           >
-            <option value="0.5">Lente (0.5x)</option>
-            <option value="0.85">Normale (0.85x)</option>
-            <option value="1.5">Rapide (1.5x)</option>
+            <option value="0.5">{t("learnSpeedSlow")}</option>
+            <option value="0.85">{t("learnSpeedNormal")}</option>
+            <option value="1.5">{t("learnSpeedFast")}</option>
           </select>
         </div>
       </div>

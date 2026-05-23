@@ -4,8 +4,10 @@
 import React, { useState, useRef } from "react";
 import { Download, Sparkles } from "lucide-react";
 import { tifinaghAlphabet } from "./data/tifnaghData";
+import { useLanguage } from "../accueil/LanguageContext";
 
 const NameConverter = ({ onAchievementUnlock, unlockedAchievements }) => {
+  const { t } = useLanguage();
   const [nameInput, setNameInput] = useState("");
   const [convertedChars, setConvertedChars] = useState([]);
   const badgeRef = useRef(null);
@@ -73,21 +75,21 @@ const NameConverter = ({ onAchievementUnlock, unlockedAchievements }) => {
   const downloadBadge = () => {
     // In a real app, we would use html2canvas here.
     // For this build, we mock the download functionality securely.
-    alert("Votre carte d'identité Amazighe va être téléchargée en Haute Définition !");
+    alert(t("learnDownloadAlert"));
   };
 
   return (
     <div className="name-converter-system learn-glass-panel">
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h2 style={{ fontSize: '2.2rem', marginBottom: '10px', fontWeight: '500', color: '#FFF' }}>Calligraphie Identitaire</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Découvrez comment votre prénom s'écrit dans l'antique alphabet Tifinagh et téléchargez votre blason.</p>
+        <h2 style={{ fontSize: '2.2rem', marginBottom: '10px', fontWeight: '500', color: '#FFF' }}>{t("learnIdentityCalligraphy")}</h2>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{t("learnConverterDesc")}</p>
       </div>
 
       <div className="converter-input-wrapper">
         <input 
           type="text" 
           className="converter-input" 
-          placeholder="Entrez votre prénom..." 
+          placeholder={t("learnEnterFirstName")} 
           value={nameInput}
           onChange={handleInputChange}
           maxLength="20"
@@ -99,7 +101,7 @@ const NameConverter = ({ onAchievementUnlock, unlockedAchievements }) => {
           disabled={convertedChars.length === 0}
         >
           <Download size={20} style={{ marginRight: '10px', verticalAlign: 'middle' }} />
-          Sauvegarder
+          {t("learnSave")}
         </button>
       </div>
 
@@ -115,7 +117,7 @@ const NameConverter = ({ onAchievementUnlock, unlockedAchievements }) => {
             </div>
             
             <p style={{ textTransform: 'uppercase', letterSpacing: '4px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-              Identité Amazighe
+              {t("learnAmazighIdentity")}
             </p>
             
             <div className="id-card-tifinagh" dir="ltr">

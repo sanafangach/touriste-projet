@@ -5,13 +5,15 @@ import React, { useState } from "react";
 import { Volume2, CheckCircle, Search, AlertCircle } from "lucide-react";
 import { darijaVocab } from "./data/darijaData";
 import { getWordMastery, recordWordAttempt } from "./data/gamificationEngine";
+import { useLanguage } from "../accueil/LanguageContext";
 
 const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedDestination }) => {
+  const { t, lang } = useLanguage();
   const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
   const [masteryData, setMasteryData] = useState(getWordMastery());
 
-  const categories = ['All', 'Recommandés', 'À Réviser', ...new Set(darijaVocab.map(v => v.category))];
+  const categories = ['All', 'Recommandés', 'À Réviser', ...new Set(darijaVocab.map(v => v.categoryKey))];
 
   const filteredVocab = darijaVocab.filter(v => {
     if (filter === 'À Réviser') {
@@ -23,9 +25,10 @@ const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedD
     } else if (filter === 'Recommandés') {
       return v.tags && v.tags.includes('essential');
     }
-    const matchesCategory = filter === 'All' || v.category === filter;
+    const matchesCategory = filter === 'All' || v.categoryKey === filter;
+    const wordTranslation = lang === 'FR' ? v.french : lang === 'EN' ? v.english : v.french; // fallback to french for arabic or other
     const matchesSearch = v.darija.toLowerCase().includes(search.toLowerCase()) || 
-                          v.french.toLowerCase().includes(search.toLowerCase());
+                          wordTranslation.toLowerCase().includes(search.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -57,8 +60,8 @@ const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedD
     <div className="darija-lessons">
       <div className="learn-glass-panel" style={{ marginBottom: '30px', display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>Survie & Street</h2>
-          <p style={{ color: 'var(--text-muted)' }}>Le vocabulaire essentiel pour naviguer au Maroc comme un local.</p>
+          <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>{t("learnDarijaLessonsTitle")}</h2>
+          <p style={{ color: 'var(--text-muted)' }}>{t("learnDarijaLessonsDesc")}</p>
         </div>
         
         <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
@@ -73,14 +76,14 @@ const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedD
                 padding: '10px 20px', borderRadius: '30px', cursor: 'pointer', transition: 'all 0.3s'
               }}
             >
-              Recommandés
+              {t("learnRecommended")}
             </button>
           )}
           <div style={{ position: 'relative' }}>
             <Search size={20} color="var(--text-muted)" style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)' }} />
             <input 
               type="text" 
-              placeholder="Rechercher un mot..." 
+              placeholder={t("learnSearchPlaceholder")} 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--glass-border)', padding: '12px 15px 12px 45px', borderRadius: '30px', color: '#FFF', outline: 'none' }}
@@ -92,7 +95,14 @@ const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedD
             onChange={(e) => setFilter(e.target.value)}
             style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--glass-border)', padding: '12px 20px', borderRadius: '30px', color: '#FFF', outline: 'none', appearance: 'none', cursor: 'pointer' }}
           >
-            {categories.map(c => <option key={c} value={c} style={{ background: '#121b27' }}>{c}</option>)}
+            {categories.map(c => {
+              let label = c;
+              if (c === 'All') label = t("learnAll");
+              else if (c === 'Recommandés') label = t("learnRecommended");
+              else if (c === 'À Réviser') label = t("learnToReview");
+              else label = t(c);
+              return <option key={c} value={c} style={{ background: '#121b27' }}>{label}</option>
+            })}
           </select>
         </div>
       </div>
@@ -102,6 +112,7 @@ const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedD
           const isLearned = learnedWords.includes(vocab.id);
           const stats = masteryData[vocab.id];
           const isWeak = stats && stats.attempts > 0 && (stats.correct / stats.attempts) < 0.5;
+          const wordTranslation = lang === 'FR' ? vocab.french : lang === 'EN' ? vocab.english : vocab.french; // fallback
           
           return (
             <div key={vocab.id} className="myth-card" style={{ height: '220px' }}>
@@ -118,22 +129,22 @@ const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedD
                   </div>
                   
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '2px', position: 'absolute', top: '15px', left: '15px' }}>
-                    {vocab.category}
+                    {t(vocab.categoryKey)}
                   </span>
 
                   <h3 style={{ fontSize: '2.5rem', margin: '0', color: '#FFF' }}>{vocab.darija}</h3>
                   
                   <p style={{ position: 'absolute', bottom: '15px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                    Survolez pour traduire
+                    {t("learnHoverTranslate")}
                   </p>
                 </div>
                 
                 {/* Back of Card: Translation */}
                 <div className="myth-back" style={{ borderColor: 'var(--amazigh-amber)' }}>
-                  <h3 style={{ fontSize: '1.8rem', marginBottom: '15px', color: 'var(--amazigh-amber)' }}>{vocab.french}</h3>
+                  <h3 style={{ fontSize: '1.8rem', marginBottom: '15px', color: 'var(--amazigh-amber)' }}>{wordTranslation}</h3>
                   
                   <div style={{ marginBottom: '20px', fontSize: '0.8rem', color: 'var(--text-muted)', letterSpacing: '2px' }}>
-                    DIFFICULTÉ : <span style={{ color: 'var(--text-primary)' }}>{vocab.difficulty === 1 ? 'I' : vocab.difficulty === 2 ? 'II' : 'III'} / III</span>
+                    {t("learnDifficulty")} : <span style={{ color: 'var(--text-primary)' }}>{vocab.difficulty === 1 ? 'I' : vocab.difficulty === 2 ? 'II' : 'III'} / III</span>
                   </div>
 
                   {!isLearned ? (
@@ -143,7 +154,7 @@ const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedD
                       onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 122, 0, 0.15)'; e.currentTarget.style.borderColor = 'rgba(255, 122, 0, 0.4)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255, 122, 0, 0.08)'; e.currentTarget.style.borderColor = 'rgba(255, 122, 0, 0.2)'; e.currentTarget.style.transform = 'translateY(0)' }}
                     >
-                      Marquer comme acquis
+                      {t("learnMarkLearned")}
                     </button>
                   ) : (
                     <div style={{ display: 'flex', gap: '10px' }}>
@@ -153,13 +164,13 @@ const DarijaLessons = ({ onXpEarned, learnedWords = [], onMarkLearned, selectedD
                         onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.8)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
                         onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)' }}
                       >
-                        À Réviser
+                        {t("learnToReview")}
                       </button>
                       <button 
                         onClick={(e) => handleRevision(vocab.id, true, e)}
                         style={{ background: 'rgba(255, 122, 0, 0.12)', border: '1px solid rgba(255, 122, 0, 0.24)', color: 'var(--amazigh-amber)', padding: '8px 15px', borderRadius: '30px', cursor: 'pointer', fontSize: '0.9rem' }}
                       >
-                        Connu
+                        {t("learnKnown")}
                       </button>
                     </div>
                   )}

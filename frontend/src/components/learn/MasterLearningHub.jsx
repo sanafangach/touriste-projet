@@ -129,7 +129,7 @@ const MasterLearningHub = () => {
                       textAlign: 'left', cursor: 'pointer'
                     }}
                   >
-                    Toutes les destinations
+                    {t("learnAllDestinations")}
                   </button>
                   {DESTINATIONS.map(dest => (
                     <button
@@ -155,15 +155,15 @@ const MasterLearningHub = () => {
           <div className="learn-hero-metrics" style={{ marginTop: '30px' }}>
             <div className="learn-metric">
               <strong>{stats.xp}</strong>
-              <span>XP cumulés</span>
+              <span>{t("learnXpCumulated")}</span>
             </div>
             <div className="learn-metric">
               <strong>{stats.streak}</strong>
-              <span>jours actifs</span>
+              <span>{t("learnActiveDays")}</span>
             </div>
             <div className="learn-metric">
-              <strong>{currentRank.title}</strong>
-              <span>rang actuel</span>
+              <strong>{t(currentRank.titleKey) || currentRank.title}</strong>
+              <span>{t("learnCurrentRank")}</span>
             </div>
           </div>
         </section>
@@ -184,9 +184,9 @@ const MasterLearningHub = () => {
             <h2 className="learn-path-card__title">{t("learnPathDarijaTitle")}</h2>
             <p className="learn-path-card__desc">{t("learnPathDarijaDesc")}</p>
             <div className="learn-path-card__tags">
-              <span className="learn-tag">aéroport</span>
-              <span className="learn-tag">café</span>
-              <span className="learn-tag">urgences</span>
+              <span className="learn-tag">{t("learnTagAirport")}</span>
+              <span className="learn-tag">{t("learnTagCafe")}</span>
+              <span className="learn-tag">{t("learnTagEmergencies")}</span>
             </div>
             <span className="learn-path-card__cta">{t("learnPathDarijaCTA")}</span>
           </button>
@@ -204,9 +204,9 @@ const MasterLearningHub = () => {
             <h2 className="learn-path-card__title">{t("learnPathTifinaghTitle")}</h2>
             <p className="learn-path-card__desc">{t("learnPathTifinaghDesc")}</p>
             <div className="learn-path-card__tags">
-              <span className="learn-tag">alphabet</span>
-              <span className="learn-tag">calligraphie</span>
-              <span className="learn-tag">villes</span>
+              <span className="learn-tag">{t("learnTagAlphabet")}</span>
+              <span className="learn-tag">{t("learnTagCalligraphy")}</span>
+              <span className="learn-tag">{t("learnTagCities")}</span>
             </div>
             <span className="learn-path-card__cta learn-path-card__cta--secondary">
               {t("learnPathTifinaghCTA")}
@@ -227,9 +227,9 @@ const MasterLearningHub = () => {
             <h2 className="learn-path-card__title">{t("learnPathTipsTitle")}</h2>
             <p className="learn-path-card__desc">{t("learnPathTipsDesc")}</p>
             <div className="learn-path-card__tags">
-              <span className="learn-tag">négociation</span>
-              <span className="learn-tag">savoir-vivre</span>
-              <span className="learn-tag">thé</span>
+              <span className="learn-tag">{t("learnTagNegotiation")}</span>
+              <span className="learn-tag">{t("learnTagEtiquette")}</span>
+              <span className="learn-tag">{t("learnTagTea")}</span>
             </div>
             <span className="learn-path-card__cta" style={{ color: '#4A90E2' }}>
               {t("learnPathTipsCTA")}
@@ -253,16 +253,16 @@ const MasterLearningHub = () => {
               ))
             ) : (
               <>
-                <span className="learn-guide-pill">Salam (Bonjour)</span>
-                <span className="learn-guide-pill">Labas? (Ça va ?)</span>
-                <span className="learn-guide-pill">Shukran (Merci)</span>
-                <span className="learn-guide-pill">Bslama (Au revoir)</span>
+                <span className="learn-guide-pill">{t("learnFallbackPhrase1")}</span>
+                <span className="learn-guide-pill">{t("learnFallbackPhrase2")}</span>
+                <span className="learn-guide-pill">{t("learnFallbackPhrase3")}</span>
+                <span className="learn-guide-pill">{t("learnFallbackPhrase4")}</span>
               </>
             )}
             <p style={{ marginTop: '10px' }}>
               {currentDest 
-                ? `L'ambiance à ${t(currentDest.nameKey)} est ${currentDest.atmosphere}. Ces phrases vous aideront.`
-                : "Ces phrases de base fonctionnent partout au Maroc. Entrez dans la section Darija pour plus."}
+                ? `${t("learnAtmosphereIs")} ${t(currentDest.nameKey)} ${t("learnAtmosphereHelp")} ${t(currentDest.atmosphereKey || currentDest.atmosphere)} ${t("learnAtmosphereTheseHelp")}`
+                : t("learnBasicPhrasesWork")}
             </p>
           </div>
         </section>

@@ -4,8 +4,10 @@
 import React, { useState } from "react";
 import { Calendar, BookOpen, Share2 } from "lucide-react";
 import { timelineEvents, mythologyCards, proverbs } from "./data/culturalData";
+import { useLanguage } from "../accueil/LanguageContext";
 
 const CulturalImmersion = ({ unlockedCards = ['anzar'], userXp = 0 }) => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("mythology");
   const [activeProverb, setActiveProverb] = useState(0);
 
@@ -21,21 +23,21 @@ const CulturalImmersion = ({ unlockedCards = ['anzar'], userXp = 0 }) => {
           onClick={() => setActiveTab("mythology")} 
           style={{ background: activeTab === "mythology" ? "rgba(255,255,255,0.05)" : "transparent", color: activeTab === "mythology" ? "#FFF" : "var(--text-muted)", border: activeTab === "mythology" ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent' }}
         >
-          Mythologie
+          {t("learnMythology")}
         </button>
         <button 
           className="learn-tab-btn" 
           onClick={() => setActiveTab("timeline")}
           style={{ background: activeTab === "timeline" ? "rgba(255,255,255,0.05)" : "transparent", color: activeTab === "timeline" ? "#FFF" : "var(--text-muted)", border: activeTab === "timeline" ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent' }}
         >
-          <Calendar size={16} /> Chronologie
+          <Calendar size={16} /> {t("learnTimeline")}
         </button>
         <button 
           className="learn-tab-btn" 
           onClick={() => setActiveTab("proverbs")}
           style={{ background: activeTab === "proverbs" ? "rgba(255,255,255,0.05)" : "transparent", color: activeTab === "proverbs" ? "#FFF" : "var(--text-muted)", border: activeTab === "proverbs" ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent' }}
         >
-          <BookOpen size={16} /> Proverbes
+          <BookOpen size={16} /> {t("learnProverbs")}
         </button>
       </div>
 
@@ -53,19 +55,19 @@ const CulturalImmersion = ({ unlockedCards = ['anzar'], userXp = 0 }) => {
                     
                     {!isUnlocked && (
                       <div style={{ marginTop: '20px', fontSize: '0.8rem', color: 'var(--text-muted)', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                        {card.unlockXp} XP requis
+                        {card.unlockXp} XP {t("learnRequired")}
                       </div>
                     )}
                     {isUnlocked && (
                       <div style={{ position: 'absolute', bottom: '20px', fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                        Survolez pour lire
+                        {t("learnHoverRead")}
                       </div>
                     )}
                   </div>
                   
                   {isUnlocked && (
                     <div className="myth-back">
-                      <h4 style={{ color: 'var(--text-primary)', marginBottom: '15px', fontSize: '1rem', fontWeight: '500', letterSpacing: '2px', textTransform: 'uppercase' }}>La Légende</h4>
+                      <h4 style={{ color: 'var(--text-primary)', marginBottom: '15px', fontSize: '1rem', fontWeight: '500', letterSpacing: '2px', textTransform: 'uppercase' }}>{t("learnLegend")}</h4>
                       <p style={{ fontSize: '0.9rem', lineHeight: '1.7', color: 'var(--text-muted)', textAlign: 'justify' }}>
                         {card.story}
                       </p>
@@ -80,8 +82,8 @@ const CulturalImmersion = ({ unlockedCards = ['anzar'], userXp = 0 }) => {
 
       {activeTab === "timeline" && (
         <div className="learn-glass-panel">
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '10px', fontWeight: '400' }}>3000 Ans d'Histoire</h2>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '30px', fontSize: '0.9rem' }}>Faites défiler pour explorer l'héritage amazigh à travers les âges.</p>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '10px', fontWeight: '400' }}>{t("learnHistoryYears")}</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '30px', fontSize: '0.9rem' }}>{t("learnTimelineDesc")}</p>
           
           <div className="timeline-container">
             {timelineEvents.map((ev, index) => (
@@ -110,11 +112,11 @@ const CulturalImmersion = ({ unlockedCards = ['anzar'], userXp = 0 }) => {
           
           <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
             <button className="btn-primary" style={{ maxWidth: '200px' }} onClick={nextProverb}>
-              Suivante
+              {t("learnNext")}
             </button>
             <button className="btn-primary" style={{ maxWidth: '200px' }}>
               <Share2 size={16} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '8px' }} />
-              Partager
+              {t("learnShare")}
             </button>
           </div>
         </div>

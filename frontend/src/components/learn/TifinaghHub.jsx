@@ -185,12 +185,12 @@ const TifinaghHub = ({ onBack, selectedDestination, onXpEarned: externalOnXpEarn
               <ArrowLeft size={20} />
             </button>
             <h1 className="learn-title">
-              Héritage Tifinagh
+              {t("learnTifinaghHeritage")}
             </h1>
           </div>
           
           <div className="learn-stats-bar">
-            <div className="stat-item" style={{ color: 'var(--amazigh-amber)' }} title="Points d'Expérience">
+            <div className="stat-item" style={{ color: 'var(--amazigh-amber)' }} title={t("learnXpPoints")}>
               <Sparkles size={18} />
               <span>{stats.xp} XP</span>
             </div>
@@ -213,7 +213,7 @@ const TifinaghHub = ({ onBack, selectedDestination, onXpEarned: externalOnXpEarn
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ fontSize: '1.5rem' }}>{destContext.emoji}</span>
                 <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#FFF' }}>
-                  Héritage Tifinagh à {t(destContext.nameKey)}
+                  {t("learnTifinaghHeritageIn")} {t(destContext.nameKey)}
                 </h3>
               </div>
             </div>
@@ -222,35 +222,35 @@ const TifinaghHub = ({ onBack, selectedDestination, onXpEarned: externalOnXpEarn
 
         <div className="learn-tabs">
           <button className={`learn-tab-btn ${activeTab === 'alphabet' ? 'active' : ''}`} onClick={() => setActiveTab('alphabet')}>
-            <BookOpen size={16} /> Alphabet
+            <BookOpen size={16} /> {t("learnAlphabet")}
           </button>
           {selectedDestination && (
             <button className={`learn-tab-btn ${activeTab === 'city' ? 'active' : ''}`} onClick={() => setActiveTab('city')} style={{ color: activeTab === 'city' ? 'var(--amazigh-amber)' : '' }}>
-              <Globe size={16} /> Dans la ville
+              <Globe size={16} /> {t("learnInCity")}
             </button>
           )}
           <button className={`learn-tab-btn ${activeTab === 'quiz' ? 'active' : ''}`} onClick={() => setActiveTab('quiz')}>
-            Arène Quiz
+            {t("learnQuizArena")}
           </button>
           <button className={`learn-tab-btn ${activeTab === 'culture' ? 'active' : ''}`} onClick={() => setActiveTab('culture')}>
-            <Globe size={16} /> Immersion
+            <Globe size={16} /> {t("learnImmersion")}
           </button>
           <button className={`learn-tab-btn ${activeTab === 'name' ? 'active' : ''}`} onClick={() => setActiveTab('name')}>
-            Calligraphie
+            {t("learnCalligraphy")}
           </button>
           <button className={`learn-tab-btn ${activeTab === 'audio' ? 'active' : ''}`} onClick={() => setActiveTab('audio')}>
-            <Mic size={16} /> Labo Audio
+            <Mic size={16} /> {t("learnAudioLab")}
           </button>
           <button className={`learn-tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
-            Progression
+            {t("learnProgress")}
           </button>
         </div>
 
         <div className="learn-active-view">
           {activeTab === 'alphabet' && (
             <div className="learn-glass-panel">
-              <h2 style={{ fontSize: '1.8rem', marginBottom: '10px', fontWeight: '500' }}>Le Néo-Tifinagh</h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Explorez les 33 caractères standards. Cliquez pour écouter et marquer comme acquis.</p>
+              <h2 style={{ fontSize: '1.8rem', marginBottom: '10px', fontWeight: '500' }}>{t("learnNeoTifinagh")}</h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{t("learnTifinaghDesc")}</p>
               <AlphabetSystem learnedLetters={learnedLetters} onMarkLearned={handleMarkLearned} />
             </div>
           )}

@@ -4,8 +4,10 @@
 import React, { useState, useEffect } from "react";
 import { Volume2, X, CheckCircle } from "lucide-react";
 import { tifinaghAlphabet } from "./data/tifnaghData";
+import { useLanguage } from "../accueil/LanguageContext";
 
 const AlphabetSystem = ({ learnedLetters, onMarkLearned }) => {
+  const { t } = useLanguage();
   const [selectedLetter, setSelectedLetter] = useState(null);
   const [filter, setFilter] = useState("all");
 
@@ -25,10 +27,10 @@ const AlphabetSystem = ({ learnedLetters, onMarkLearned }) => {
   };
 
   const categories = [
-    { id: "all", label: "Toutes les lettres" },
-    { id: "voyelles", label: "Voyelles" },
-    { id: "consonnes", label: "Consonnes" },
-    { id: "emphatiques", label: "Emphatiques" }
+    { id: "all", label: t("learnCatAll") },
+    { id: "voyelles", label: t("learnCatVowels") },
+    { id: "consonnes", label: t("learnCatConsonants") },
+    { id: "emphatiques", label: t("learnCatEmphatics") }
   ];
 
   const filteredAlphabet = filter === "all" 
@@ -102,32 +104,32 @@ const AlphabetSystem = ({ learnedLetters, onMarkLearned }) => {
             <button 
               className="modal-audio-btn"
               onClick={() => playAudio(selectedLetter.ipa, selectedLetter.name, "ar-SA")}
-              title="Écouter la prononciation"
+              title={t("learnListenPronunciation")}
             >
               <Volume2 size={28} />
             </button>
 
             <div className="modal-details">
               <div>
-                <span>Latin</span>
+                <span>{t("learnLatin")}</span>
                 <strong>{selectedLetter.transliteration.toUpperCase()}</strong>
               </div>
               <div>
-                <span>Nom</span>
+                <span>{t("learnName")}</span>
                 <strong>{selectedLetter.name}</strong>
               </div>
               <div>
-                <span>IPA (Phonétique)</span>
+                <span>{t("learnPhonetics")}</span>
                 <strong>/{selectedLetter.ipa}/</strong>
               </div>
               <div>
-                <span>Darija équivalent</span>
+                <span>{t("learnDarijaEquivalent")}</span>
                 <strong>{selectedLetter.da}</strong>
               </div>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.05)', padding: '20px', borderRadius: '12px', marginBottom: '30px' }}>
-              <span style={{ fontSize: '0.85rem', color: '#ADB5BD', textTransform: 'uppercase', display: 'block', marginBottom: '10px' }}>Exemple</span>
+              <span style={{ fontSize: '0.85rem', color: '#ADB5BD', textTransform: 'uppercase', display: 'block', marginBottom: '10px' }}>{t("learnExample")}</span>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
                 <span style={{ fontSize: '2.5rem', fontFamily: 'Arial, sans-serif' }}>{selectedLetter.example}</span>
                 <button 
@@ -148,7 +150,7 @@ const AlphabetSystem = ({ learnedLetters, onMarkLearned }) => {
                   setSelectedLetter(null);
                 }}
               >
-                Marquer comme acquis
+                {t("learnMarkLearned")}
               </button>
             ) : (
               <button 
@@ -157,7 +159,7 @@ const AlphabetSystem = ({ learnedLetters, onMarkLearned }) => {
                 onClick={() => setSelectedLetter(null)}
               >
                 <CheckCircle size={18} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '8px' }} />
-                Lettre acquise
+                {t("learnLetterAcquired")}
               </button>
             )}
           </div>

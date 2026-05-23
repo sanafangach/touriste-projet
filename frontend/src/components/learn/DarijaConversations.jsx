@@ -4,8 +4,10 @@
 import React, { useState } from "react";
 import { MessageCircle, MapPin, Coffee, CheckCircle, XCircle, Lock, Store } from "lucide-react";
 import { darijaConversations } from "./data/darijaData";
+import { useLanguage } from "../accueil/LanguageContext";
 
 const DarijaConversations = ({ onXpEarned, unlockedAchievements, onAchievementUnlock, currentLevel = 1, selectedDestination }) => {
+  const { t } = useLanguage();
   const [activeScenario, setActiveScenario] = useState(null);
   const [stepIndex, setStepIndex] = useState(0);
   const [feedback, setFeedback] = useState(null);
@@ -69,8 +71,8 @@ const DarijaConversations = ({ onXpEarned, unlockedAchievements, onAchievementUn
     return (
       <div className="darija-scenarios">
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>Scénarios de Vie</h2>
-          <p style={{ color: 'var(--text-muted)' }}>Mettez en pratique votre Darija dans des situations réelles au Maroc.</p>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>{t("learnLifeScenarios")}</h2>
+          <p style={{ color: 'var(--text-muted)' }}>{t("learnPracticeDarija")}</p>
         </div>
 
         <div className="quiz-modes">
@@ -83,7 +85,7 @@ const DarijaConversations = ({ onXpEarned, unlockedAchievements, onAchievementUn
                 <div className="quiz-mode-icon">
                   {scenario.id.includes('cafe') ? <Coffee size={48} color="var(--amazigh-amber)" /> : <MapPin size={48} color="var(--amazigh-amber)" />}
                 </div>
-                {isDestSpecific && <div style={{ fontSize: '0.7rem', color: 'var(--amazigh-amber)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '5px' }}>Recommandé</div>}
+                {isDestSpecific && <div style={{ fontSize: '0.7rem', color: 'var(--amazigh-amber)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '5px' }}>{t("learnRecommended")}</div>}
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{scenario.title}</h3>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '15px' }}>{scenario.description}</p>
                 
@@ -95,7 +97,7 @@ const DarijaConversations = ({ onXpEarned, unlockedAchievements, onAchievementUn
                 {isLocked && (
                   <div className="padlock-overlay">
                     <Lock size={24} color="var(--amazigh-amber)" />
-                    <span style={{ color: 'var(--amazigh-amber)', fontWeight: 'bold' }}>Niveau {scenario.id === 'souk_marrakech' ? '5' : '2'} requis</span>
+                    <span style={{ color: 'var(--amazigh-amber)', fontWeight: 'bold' }}>{t("learnLevelRequired")} {scenario.id === 'souk_marrakech' ? '5' : '2'} {t("learnRequired")}</span>
                   </div>
                 )}
               </div>
@@ -112,13 +114,13 @@ const DarijaConversations = ({ onXpEarned, unlockedAchievements, onAchievementUn
         <div style={{ position: 'absolute', top: '-50%', left: '-50%', right: '-50%', bottom: '-50%', background: 'radial-gradient(circle at center, rgba(255, 122, 0, 0.15), transparent 60%)', zIndex: 0, animation: 'pulseHeat 4s infinite alternate' }}></div>
         <div style={{ position: 'relative', zIndex: 1 }}>
           <MessageCircle size={80} color="var(--amazigh-amber)" style={{ margin: '0 auto 30px', filter: 'drop-shadow(0 0 30px rgba(255, 122, 0, 0.32))' }} />
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '15px', fontWeight: '500', color: '#FFF' }}>Scénario Complété</h2>
-          <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', marginBottom: '30px' }}>Vous avez géré la situation avec élégance.</p>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '15px', fontWeight: '500', color: '#FFF' }}>{t("learnScenarioCompleted")}</h2>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', marginBottom: '30px' }}>{t("learnScenarioSuccess")}</p>
           <div style={{ fontSize: '2rem', color: 'var(--amazigh-amber)', fontWeight: '300', marginBottom: '40px', letterSpacing: '2px' }}>
             +{activeScenario.xpReward} XP
           </div>
           <button className="btn-primary" onClick={() => setActiveScenario(null)} style={{ maxWidth: '300px' }}>
-            Retour aux Scénarios
+            {t("learnBackToScenarios")}
           </button>
         </div>
       </div>
@@ -132,7 +134,7 @@ const DarijaConversations = ({ onXpEarned, unlockedAchievements, onAchievementUn
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', borderBottom: '1px solid var(--glass-border)', paddingBottom: '15px' }}>
         <h3 style={{ color: 'var(--amazigh-amber)', fontSize: '1.2rem' }}>{activeScenario.title}</h3>
-        <span style={{ color: 'var(--text-muted)' }}>Étape {stepIndex + 1} / {activeScenario.steps.length}</span>
+        <span style={{ color: 'var(--text-muted)' }}>{t("learnStep")} {stepIndex + 1} / {activeScenario.steps.length}</span>
       </div>
 
       <div className={shake ? "haptic-shake" : ""} style={{ display: 'flex', gap: '20px', marginBottom: '40px', position: 'relative' }}>
@@ -152,7 +154,7 @@ const DarijaConversations = ({ onXpEarned, unlockedAchievements, onAchievementUn
         </div>
       </div>
 
-      <h4 style={{ marginBottom: '20px', color: 'var(--text-muted)' }}>Que répondez-vous ?</h4>
+      <h4 style={{ marginBottom: '20px', color: 'var(--text-muted)' }}>{t("learnWhatReply")}</h4>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         {currentStep.options.map((opt, i) => {
@@ -216,7 +218,7 @@ const DarijaConversations = ({ onXpEarned, unlockedAchievements, onAchievementUn
           </p>
           {feedback.option.moodImpact && (
             <p style={{ marginTop: '5px', color: 'var(--text-primary)', fontSize: '0.8rem', letterSpacing: '1px', textTransform: 'uppercase' }}>
-              RÉACTION: {feedback.option.moodImpact}
+              {t("learnReaction")}: {feedback.option.moodImpact}
             </p>
           )}
         </div>
