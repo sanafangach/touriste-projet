@@ -16,6 +16,10 @@ import Card from "./components/pages/card";
 import Destination from "./components/pages/destination";
 import Languages from "./components/pages/languages";
 import Login from "./components/pages/login";
+import Saved from "./components/pages/saved";
+import Chatbot from "./components/Chatbot/Chatbot";
+import AdminDashboard from "./components/pages/adminDashboard";
+import Pack from "./components/pages/pack";
 
 import Profile from "./components/pages/Profile";
 import Saved from "./components/pages/saved";
