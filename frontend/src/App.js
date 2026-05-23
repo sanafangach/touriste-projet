@@ -18,7 +18,6 @@ import Languages from "./components/pages/languages";
 import Login from "./components/pages/login";
 import Footer from "./components/accueil/Footer"
 import Chatbot from "./components/Chatbot/Chatbot";
-import AdminDashboard from "./components/pages/adminDashboard";
 import EmailVerification from './components/auth/EmailVerification';
 import VerifyCode from './components/auth/VerifyCode';
 import ForgotPassword from './components/auth/ForgotPassword';
@@ -26,7 +25,6 @@ import ResetPassword from './components/auth/ResetPassword';
 import GoogleCallback from './components/auth/GoogleCallback';
 import ProtectedRoute from "./components/pages/ProtectedRoute";
 import Saved from "./components/pages/saved";
-import Chatbot from "./components/Chatbot/Chatbot";
 import AdminDashboard from "./components/pages/adminDashboard";
 import Pack from "./components/pages/pack";
 
