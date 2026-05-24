@@ -7,6 +7,7 @@ import PopularDestination from "./section";
 import AboutSite from "./sectiondescription";
 import PopularActivities from "./sectionactivite";
 import LearningSection from "./sectionlearning";
+import Footer from "./Footer";
 
 import img1 from "../../assets/img1.jpg";
 import img2 from "../../assets/img2.jpeg";
