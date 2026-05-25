@@ -11,11 +11,14 @@ import { LanguageProvider } from "./components/accueil/LanguageContext";
 import { AuthProvider } from "./context/AuthContext";
 
 import Menu from "./components/accueil/Menu";
+import Footer from "./components/accueil/Footer";
+
 import Home from "./components/accueil/home";
 import Card from "./components/pages/card";
 import Destination from "./components/pages/destination";
 import Languages from "./components/pages/languages";
 import Login from "./components/pages/login";
+import Chatbot from "./components/Chatbot/Chatbot";
 
 import Profile from "./components/pages/Profile";
 import Saved from "./components/pages/saved";
@@ -47,7 +50,10 @@ function AppContent() {
         <Route path="/destination/casablanca" element={<Casablanca />} />
         <Route path="/destination/marrakech" element={<Marrakech />} />
         <Route path="/destination/fes" element={<Fes />} />
-        <Route path="/destination/chefchaouen" element={<Chefchaouen />} />
+        <Route
+          path="/destination/chefchaouen"
+          element={<Chefchaouen />}
+        />
         <Route path="/destination/essaouira" element={<Essaouira />} />
 
         <Route path="/login" element={<Login />} />
@@ -57,6 +63,9 @@ function AppContent() {
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+
+      {showMenu && <Chatbot />}
+      {showMenu && <Footer />}
     </>
   );
 }

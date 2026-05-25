@@ -1,4 +1,5 @@
 <?php
+// app/Models/User.php
 
 namespace App\Models;
 
@@ -15,8 +16,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -24,13 +23,17 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    public function isAdmin()
+    protected function casts(): array
     {
-        return $this->role === 'admin';
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    // Relation m3a profil
+    public function profil()
+    {
+        return $this->hasOne(Profil::class);
     }
 }

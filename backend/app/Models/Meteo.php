@@ -4,17 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Restaurant extends Model
+class Meteo extends Model
 {
     protected $fillable = [
         'city_id',
-        'name',
-        'image',
-        'cuisine',
-        'rating',
-        'description',
-        'phone',
-        'opening_hours'
+        'temperature',
+        'weather',
+        'humidity',
+        'wind'
     ];
 
     public function city()
