@@ -1,7 +1,7 @@
-<?php
+<?php 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfilController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('/profile/upload-image/{id}', [ProfilController::class, 'uploadImage']);
+Route::get('/profile/{id}', [ProfilController::class, 'show']);

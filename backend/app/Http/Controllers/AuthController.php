@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\VerificationCode;
-use App\Models\PasswordReset; // ✅ HADI! KHAS T-ZIDHA
+use App\Models\PasswordReset; //
 use App\Mail\VerificationCodeMail;
-use App\Mail\ResetPasswordMail;      // ✅ ZID HADI (ila mazal)
+use App\Mail\ResetPasswordMail;     
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str; // ✅ HADI L-ERREUR! KHAS T-ZIDHA
+use Illuminate\Support\Str; 
 
 
 class AuthController extends Controller
