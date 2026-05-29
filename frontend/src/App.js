@@ -67,7 +67,10 @@ function AppContent() {
         <Route path="/destination/casablanca" element={<Casablanca />} />
         <Route path="/destination/marrakech" element={<Marrakech />} />
         <Route path="/destination/fes" element={<Fes />} />
-        <Route path="/destination/chefchaouen" element={<Chefchaouen />} />
+        <Route
+          path="/destination/chefchaouen"
+          element={<Chefchaouen />}
+        />
         <Route path="/destination/essaouira" element={<Essaouira />} />
 
                 {/* Login page */}
