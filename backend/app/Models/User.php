@@ -1,4 +1,5 @@
 <?php
+// app/Models/User.php
 
 namespace App\Models;
 
@@ -29,13 +30,22 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    // Relation m3a profil
+    public function profil()
+    {
+        return $this->hasOne(Profil::class);
     }
 }

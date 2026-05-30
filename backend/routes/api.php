@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SocialAuthController;
-use App\Http\Controllers\FavoriteController;
+
+
 
 // PUBLIC
 Route::post('/login', [AuthController::class, 'login']);
@@ -33,11 +34,3 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/stats', [AdminController::class, 'getStats']);
     });
 });
-
-
-
-Route::get('/favorites', [FavoriteController::class, 'index']);
-
-Route::post('/favorites', [FavoriteController::class, 'store']);
-
-Route::delete('/favorites/{id}', [FavoriteController::class, 'destroy']);
