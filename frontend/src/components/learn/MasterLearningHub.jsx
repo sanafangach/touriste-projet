@@ -1,29 +1,68 @@
-import React, { useState, useEffect } from "react";
-import { Compass, Map, MessageCircle, Sparkles, MapPin, Coffee, Info, ChevronDown } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ChevronDown, Coffee, Compass, Info, MapPin, MessageCircle, Sparkles } from "lucide-react";
 import TifinaghHub from "./TifinaghHub";
 import DarijaHub from "./DarijaHub";
 import TravelTipsHub from "./TravelTipsHub";
 import { loadProgress } from "./data/gamificationEngine";
 import { useLanguage } from "../accueil/LanguageContext";
-import { DESTINATIONS, getSelectedDestination, setSelectedDestination as saveDestination } from "./data/destinationContext";
+import {
+  DESTINATIONS,
+  getSelectedDestination,
+  setSelectedDestination as saveDestination
+} from "./data/destinationContext";
 import "./LearnHub.css";
 
+const LEARNING_PATHS = [
+  {
+    id: "darija",
+    icon: MessageCircle,
+    cardClass: "learn-path-card learn-path-card--primary",
+    iconClass: "learn-path-card__icon",
+    eyebrowKey: "learnPathDarijaEyebrow",
+    titleKey: "learnPathDarijaTitle",
+    descKey: "learnPathDarijaDesc",
+    ctaKey: "learnPathDarijaCTA",
+    tags: ["learnTagAirport", "learnTagCafe", "learnTagEmergencies"]
+  },
+  {
+    id: "tifinagh",
+    icon: Compass,
+    cardClass: "learn-path-card learn-path-card--heritage",
+    iconClass: "learn-path-card__icon learn-path-card__icon--secondary",
+    eyebrowKey: "learnPathTifinaghEyebrow",
+    titleKey: "learnPathTifinaghTitle",
+    descKey: "learnPathTifinaghDesc",
+    ctaKey: "learnPathTifinaghCTA",
+    tags: ["learnTagAlphabet", "learnTagCalligraphy", "learnTagCities"]
+  },
+  {
+    id: "tips",
+    icon: Coffee,
+    cardClass: "learn-path-card learn-path-card--travel",
+    iconClass: "learn-path-card__icon learn-path-card__icon--travel",
+    eyebrowKey: "learnPathTipsEyebrow",
+    titleKey: "learnPathTipsTitle",
+    descKey: "learnPathTipsDesc",
+    ctaKey: "learnPathTipsCTA",
+    tags: ["learnTagNegotiation", "learnTagEtiquette", "learnTagTea"]
+  }
+];
+
 const MasterLearningHub = () => {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const [activeHub, setActiveHub] = useState(null);
   const [stats, setStats] = useState(null);
   const [currentRank, setCurrentRank] = useState(null);
-  
-  // Destination state
   const [selectedDestId, setSelectedDestId] = useState(null);
   const [isDestSelectorOpen, setIsDestSelectorOpen] = useState(false);
+  const selectorRef = useRef(null);
 
   useEffect(() => {
-    // Load destination
-    const dest = getSelectedDestination();
-    if (dest) setSelectedDestId(dest.id);
+    const destination = getSelectedDestination();
+    if (destination) {
+      setSelectedDestId(destination.id);
+    }
 
-    // Load gamification progress
     if (!activeHub) {
       const progress = loadProgress();
       setStats(progress.stats);
@@ -31,36 +70,77 @@ const MasterLearningHub = () => {
     }
   }, [activeHub]);
 
+  useEffect(() => {
+    const handlePointerDown = (event) => {
+      if (selectorRef.current && !selectorRef.current.contains(event.target)) {
+        setIsDestSelectorOpen(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsDestSelectorOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   const handleDestinationChange = (id) => {
     setSelectedDestId(id);
     saveDestination(id);
     setIsDestSelectorOpen(false);
   };
 
-  const handleXpEarned = (amount) => {
-    // To update stats immediately when coming back
+  const handleXpEarned = () => {
     const progress = loadProgress();
     setStats(progress.stats);
     setCurrentRank(progress.currentRank);
   };
 
   if (activeHub === "tifinagh") {
-    return <TifinaghHub onBack={() => setActiveHub(null)} selectedDestination={selectedDestId} onXpEarned={handleXpEarned} />;
+    return (
+      <TifinaghHub
+        onBack={() => setActiveHub(null)}
+        selectedDestination={selectedDestId}
+        onXpEarned={handleXpEarned}
+      />
+    );
   }
 
   if (activeHub === "darija") {
-    return <DarijaHub onBack={() => setActiveHub(null)} selectedDestination={selectedDestId} onXpEarned={handleXpEarned} />;
+    return (
+      <DarijaHub
+        onBack={() => setActiveHub(null)}
+        selectedDestination={selectedDestId}
+        onXpEarned={handleXpEarned}
+      />
+    );
   }
 
   if (activeHub === "tips") {
     return (
-      <div className="learn-hub-container">
+      <div className="learn-hub-container learn-hub-container--master">
         <div className="learn-content-z learn-portal-shell">
-          <div style={{ marginBottom: "20px" }}>
-            <button className="btn-secondary" onClick={() => setActiveHub(null)} style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-              <span>← Retour</span>
-            </button>
-          </div>
+          <section className="learn-stage-hero learn-stage-hero--compact">
+            <div className="learn-stage-hero__main">
+              <button type="button" className="learn-back-btn" onClick={() => setActiveHub(null)} aria-label="Back">
+                <ArrowLeft size={18} />
+              </button>
+              <div className="learn-stage-kicker">
+                <Coffee size={14} />
+                <span>{t("learnPathTipsEyebrow")}</span>
+              </div>
+              <h1 className="learn-stage-hero__title">{t("learnPathTipsTitle")}</h1>
+              <p className="learn-stage-hero__copy">{t("learnPathTipsDesc")}</p>
+            </div>
+          </section>
           <TravelTipsHub selectedDestination={selectedDestId} onXpEarned={handleXpEarned} />
         </div>
       </div>
@@ -71,185 +151,131 @@ const MasterLearningHub = () => {
     return <div className="learn-loading">Chargement...</div>;
   }
 
-  const currentDest = selectedDestId ? DESTINATIONS.find(d => d.id === selectedDestId) : null;
+  const currentDest = selectedDestId ? DESTINATIONS.find((destination) => destination.id === selectedDestId) : null;
+  const quickStripStyle = {
+    "--learn-destination-accent": currentDest ? currentDest.accentColor : "rgba(255, 255, 255, 0.04)"
+  };
 
   return (
-    <div className="learn-hub-container">
+    <div className="learn-hub-container learn-hub-container--master">
       <div className="learn-content-z learn-portal-shell">
-        
-        <section className="learn-hero-band" style={{ position: 'relative', overflow: 'visible' }}>
-          
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-            <div style={{ flex: 1, minWidth: '300px' }}>
+        <section className="learn-hero-band learn-hero-band--master">
+          <div className="learn-hero-layout">
+            <div className="learn-hero-content">
               <div className="learn-kicker">
                 <Sparkles size={14} />
                 <span>{t("languages")}</span>
               </div>
               <h1 className="learn-hero-title">{t("learnHeroTitle")}</h1>
               <p className="learn-hero-copy">{t("learnHeroCopy")}</p>
+
+              <div className="learn-hero-metrics">
+                <div className="learn-metric">
+                  <strong>{stats.xp}</strong>
+                  <span>{t("learnXpCumulated")}</span>
+                </div>
+                <div className="learn-metric">
+                  <strong>{stats.streak}</strong>
+                  <span>{t("learnActiveDays")}</span>
+                </div>
+                <div className="learn-metric">
+                  <strong>{t(currentRank.titleKey) || currentRank.title}</strong>
+                  <span>{t("learnCurrentRank")}</span>
+                </div>
+              </div>
             </div>
 
-            {/* Destination Selector */}
-            <div style={{ position: 'relative', zIndex: 100 }}>
-              <button 
-                onClick={() => setIsDestSelectorOpen(!isDestSelectorOpen)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '10px',
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  padding: '12px 20px', borderRadius: '12px',
-                  color: '#FFF', cursor: 'pointer',
-                  transition: 'all 0.3s'
-                }}
-              >
-                <MapPin size={18} color="var(--amazigh-amber)" />
-                <span style={{ fontWeight: 500 }}>
-                  {currentDest ? t(currentDest.nameKey) : t("learnDestinationSelect")}
-                </span>
-                <ChevronDown size={16} />
-              </button>
+            <aside className="learn-hero-aside" ref={selectorRef}>
+              <div className="learn-hero-card">
+                <p className="learn-selector-heading">{t("learnDestinationSelect")}</p>
+                <button
+                  type="button"
+                  className="learn-destination-trigger"
+                  onClick={() => setIsDestSelectorOpen((open) => !open)}
+                >
+                  <MapPin size={18} color="var(--amazigh-amber)" />
+                  <span className="learn-destination-trigger__label">
+                    {currentDest ? t(currentDest.nameKey) : t("learnDestinationSelect")}
+                  </span>
+                  <ChevronDown size={16} className={isDestSelectorOpen ? "is-open" : ""} />
+                </button>
 
-              {isDestSelectorOpen && (
-                <div style={{
-                  position: 'absolute', top: '100%', right: 0, marginTop: '10px',
-                  background: 'rgba(15, 20, 35, 0.95)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '16px', padding: '10px',
-                  width: 'max-content', minWidth: '200px',
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-                  display: 'flex', flexDirection: 'column', gap: '5px'
-                }}>
-                  <button 
-                    onClick={() => handleDestinationChange(null)}
-                    style={{
-                      background: !selectedDestId ? 'rgba(255,122,0,0.1)' : 'transparent',
-                      color: !selectedDestId ? 'var(--amazigh-amber)' : '#FFF',
-                      border: 'none', padding: '10px 15px', borderRadius: '8px',
-                      textAlign: 'left', cursor: 'pointer'
-                    }}
-                  >
-                    {t("learnAllDestinations")}
-                  </button>
-                  {DESTINATIONS.map(dest => (
+                {isDestSelectorOpen && (
+                  <div className="learn-destination-menu">
                     <button
-                      key={dest.id}
-                      onClick={() => handleDestinationChange(dest.id)}
-                      style={{
-                        background: selectedDestId === dest.id ? dest.accentColor : 'transparent',
-                        color: '#FFF',
-                        border: 'none', padding: '10px 15px', borderRadius: '8px',
-                        textAlign: 'left', cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', gap: '8px'
-                      }}
+                      type="button"
+                      className={`learn-destination-option ${!selectedDestId ? "active" : ""}`}
+                      onClick={() => handleDestinationChange(null)}
                     >
-                      <span>{dest.emoji}</span>
-                      {t(dest.nameKey)}
+                      {t("learnAllDestinations")}
                     </button>
+                    {DESTINATIONS.map((destination) => (
+                      <button
+                        key={destination.id}
+                        type="button"
+                        className={`learn-destination-option ${selectedDestId === destination.id ? "active" : ""}`}
+                        style={{ "--learn-option-accent": destination.accentColor }}
+                        onClick={() => handleDestinationChange(destination.id)}
+                      >
+                        <span>{destination.emoji}</span>
+                        {t(destination.nameKey)}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                <p className="learn-destination-caption">
+                  {currentDest
+                    ? `${t("learnPhrasesFor")} ${t(currentDest.nameKey)}`
+                    : t("learnUniversalPhrases")}
+                </p>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section className="learn-path-grid">
+          {LEARNING_PATHS.map((path) => {
+            const Icon = path.icon;
+
+            return (
+              <button
+                key={path.id}
+                type="button"
+                className={path.cardClass}
+                onClick={() => setActiveHub(path.id)}
+              >
+                <div className={path.iconClass}>
+                  <Icon size={26} />
+                </div>
+                <div className="learn-path-card__eyebrow">{t(path.eyebrowKey)}</div>
+                <h2 className="learn-path-card__title">{t(path.titleKey)}</h2>
+                <p className="learn-path-card__desc">{t(path.descKey)}</p>
+                <div className="learn-path-card__tags">
+                  {path.tags.map((tagKey) => (
+                    <span key={tagKey} className="learn-tag">
+                      {t(tagKey)}
+                    </span>
                   ))}
                 </div>
-              )}
-            </div>
-          </div>
-
-          <div className="learn-hero-metrics" style={{ marginTop: '30px' }}>
-            <div className="learn-metric">
-              <strong>{stats.xp}</strong>
-              <span>{t("learnXpCumulated")}</span>
-            </div>
-            <div className="learn-metric">
-              <strong>{stats.streak}</strong>
-              <span>{t("learnActiveDays")}</span>
-            </div>
-            <div className="learn-metric">
-              <strong>{t(currentRank.titleKey) || currentRank.title}</strong>
-              <span>{t("learnCurrentRank")}</span>
-            </div>
-          </div>
+                <span className="learn-path-card__cta">{t(path.ctaKey)}</span>
+              </button>
+            );
+          })}
         </section>
 
-        {/* Path Grid: 3 Pillars */}
-        <section className="learn-path-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-          
-          {/* Darija */}
-          <button
-            type="button"
-            className="learn-path-card learn-path-card--primary"
-            onClick={() => setActiveHub("darija")}
-          >
-            <div className="learn-path-card__icon">
-              <MessageCircle size={26} />
-            </div>
-            <div className="learn-path-card__eyebrow">{t("learnPathDarijaEyebrow")}</div>
-            <h2 className="learn-path-card__title">{t("learnPathDarijaTitle")}</h2>
-            <p className="learn-path-card__desc">{t("learnPathDarijaDesc")}</p>
-            <div className="learn-path-card__tags">
-              <span className="learn-tag">{t("learnTagAirport")}</span>
-              <span className="learn-tag">{t("learnTagCafe")}</span>
-              <span className="learn-tag">{t("learnTagEmergencies")}</span>
-            </div>
-            <span className="learn-path-card__cta">{t("learnPathDarijaCTA")}</span>
-          </button>
-
-          {/* Tifinagh */}
-          <button
-            type="button"
-            className="learn-path-card"
-            onClick={() => setActiveHub("tifinagh")}
-          >
-            <div className="learn-path-card__icon learn-path-card__icon--secondary">
-              <Compass size={26} />
-            </div>
-            <div className="learn-path-card__eyebrow">{t("learnPathTifinaghEyebrow")}</div>
-            <h2 className="learn-path-card__title">{t("learnPathTifinaghTitle")}</h2>
-            <p className="learn-path-card__desc">{t("learnPathTifinaghDesc")}</p>
-            <div className="learn-path-card__tags">
-              <span className="learn-tag">{t("learnTagAlphabet")}</span>
-              <span className="learn-tag">{t("learnTagCalligraphy")}</span>
-              <span className="learn-tag">{t("learnTagCities")}</span>
-            </div>
-            <span className="learn-path-card__cta learn-path-card__cta--secondary">
-              {t("learnPathTifinaghCTA")}
-            </span>
-          </button>
-
-          {/* Travel Tips */}
-          <button
-            type="button"
-            className="learn-path-card"
-            onClick={() => setActiveHub("tips")}
-            style={{ borderColor: 'rgba(74, 144, 226, 0.3)' }}
-          >
-            <div className="learn-path-card__icon" style={{ background: 'rgba(74, 144, 226, 0.1)', color: '#4A90E2', borderColor: 'rgba(74, 144, 226, 0.2)' }}>
-              <Coffee size={26} />
-            </div>
-            <div className="learn-path-card__eyebrow" style={{ color: '#4A90E2' }}>{t("learnPathTipsEyebrow")}</div>
-            <h2 className="learn-path-card__title">{t("learnPathTipsTitle")}</h2>
-            <p className="learn-path-card__desc">{t("learnPathTipsDesc")}</p>
-            <div className="learn-path-card__tags">
-              <span className="learn-tag">{t("learnTagNegotiation")}</span>
-              <span className="learn-tag">{t("learnTagEtiquette")}</span>
-              <span className="learn-tag">{t("learnTagTea")}</span>
-            </div>
-            <span className="learn-path-card__cta" style={{ color: '#4A90E2' }}>
-              {t("learnPathTipsCTA")}
-            </span>
-          </button>
-        </section>
-
-        {/* Quick Phrases Contextual Strip */}
-        <section className="learn-glass-panel learn-guide-strip" style={{ 
-          background: currentDest ? currentDest.accentColor : 'rgba(255,255,255,0.02)',
-          border: `1px solid ${currentDest ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)'}`
-        }}>
+        <section className="learn-glass-panel learn-guide-strip" style={quickStripStyle}>
           <div className="learn-guide-strip__label">
             <Info size={18} />
             <span>{currentDest ? `${t("learnPhrasesFor")} ${t(currentDest.nameKey)}` : t("learnUniversalPhrases")}</span>
           </div>
+
           <div className="learn-guide-strip__content">
             {currentDest ? (
-              currentDest.quickPhrases.map((qp, idx) => (
-                <span key={idx} className="learn-guide-pill" title={t(qp.key)}>{qp.darija}</span>
+              currentDest.quickPhrases.map((quickPhrase, index) => (
+                <span key={index} className="learn-guide-pill" title={t(quickPhrase.key)}>
+                  {quickPhrase.darija}
+                </span>
               ))
             ) : (
               <>
@@ -259,14 +285,14 @@ const MasterLearningHub = () => {
                 <span className="learn-guide-pill">{t("learnFallbackPhrase4")}</span>
               </>
             )}
-            <p style={{ marginTop: '10px' }}>
-              {currentDest 
+
+            <p>
+              {currentDest
                 ? `${t("learnAtmosphereIs")} ${t(currentDest.nameKey)} ${t("learnAtmosphereHelp")} ${t(currentDest.atmosphereKey || currentDest.atmosphere)} ${t("learnAtmosphereTheseHelp")}`
                 : t("learnBasicPhrasesWork")}
             </p>
           </div>
         </section>
-
       </div>
     </div>
   );

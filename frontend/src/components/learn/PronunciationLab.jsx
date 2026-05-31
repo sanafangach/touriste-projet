@@ -1,8 +1,5 @@
-// Pronunciation and Audio Wave Lab
-// Designed for the AMUDUX Immersive Learning Platform
-
-import React, { useState, useEffect, useRef } from "react";
-import { Play, Square, Settings, RefreshCcw } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Play, RefreshCcw, Settings, Square } from "lucide-react";
 import { tifinaghAlphabet } from "./data/tifnaghData";
 import { useLanguage } from "../accueil/LanguageContext";
 
@@ -14,41 +11,31 @@ const PronunciationLab = () => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
 
-  // Draws a simulated audio waveform on the canvas
   const drawWaveform = (active = false) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+
+    const ctx = canvas.getContext("2d");
     const width = canvas.width;
     const height = canvas.height;
-    
+
     ctx.clearRect(0, 0, width, height);
-    
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
-    
+
     const time = Date.now() / 200;
-    
-    for (let i = 0; i < width; i++) {
-      let amplitude = active ? (Math.random() * 40 + 10) : 2;
-      
-      // Smooth sine wave formula
-      const y = height / 2 + Math.sin(i * 0.05 + time) * amplitude * Math.sin(time * 0.5);
-      
-      ctx.lineTo(i, y);
+
+    for (let index = 0; index < width; index += 1) {
+      const amplitude = active ? Math.random() * 40 + 10 : 2;
+      const y = height / 2 + Math.sin(index * 0.05 + time) * amplitude * Math.sin(time * 0.5);
+      ctx.lineTo(index, y);
     }
-    
-    ctx.strokeStyle = active ? '#D4A843' : 'rgba(212, 168, 67, 0.2)';
+
+    ctx.strokeStyle = active ? "#ff9d4d" : "rgba(255, 157, 77, 0.22)";
     ctx.lineWidth = active ? 3 : 1;
     ctx.stroke();
-
-    // Add glow
-    if (active) {
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = 'rgba(212, 168, 67, 0.6)';
-    } else {
-      ctx.shadowBlur = 0;
-    }
+    ctx.shadowBlur = active ? 15 : 0;
+    ctx.shadowColor = active ? "rgba(255, 157, 77, 0.45)" : "transparent";
 
     if (active) {
       animationRef.current = requestAnimationFrame(() => drawWaveform(true));
@@ -56,146 +43,136 @@ const PronunciationLab = () => {
   };
 
   useEffect(() => {
-    // Setup initial flat wave
     const canvas = canvasRef.current;
     if (canvas) {
-      // Fix high-DPI blurriness
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width * window.devicePixelRatio;
       canvas.height = rect.height * window.devicePixelRatio;
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
-      
       drawWaveform(false);
     }
+
     return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
+    // drawWaveform is intentionally recreated with component state and only used for initial canvas bootstrapping here.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePlayAudio = () => {
     if (word.length === 0) return;
-    
+
     setIsPlaying(true);
     drawWaveform(true);
 
-    const fullTextToSpeak = word.map(w => w.name).join(" ");
-    
-    if ('speechSynthesis' in window) {
+    const fullTextToSpeak = word.map((item) => item.name).join(" ");
+
+    if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(fullTextToSpeak);
       utterance.lang = "fr-FR";
       utterance.rate = playbackSpeed;
-      
+
       utterance.onend = () => {
         setIsPlaying(false);
-        if (animationRef.current) cancelAnimationFrame(animationRef.current);
+        if (animationRef.current) {
+          cancelAnimationFrame(animationRef.current);
+        }
         drawWaveform(false);
       };
-      
+
       window.speechSynthesis.speak(utterance);
-    } else {
-      // Fallback
-      setTimeout(() => {
-        setIsPlaying(false);
-        if (animationRef.current) cancelAnimationFrame(animationRef.current);
-        drawWaveform(false);
-      }, 2000);
+      return;
     }
+
+    setTimeout(() => {
+      setIsPlaying(false);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+      drawWaveform(false);
+    }, 2000);
   };
 
   const addLetterToWord = (letter) => {
     if (word.length < 8) {
-      setWord([...word, letter]);
+      setWord((previous) => [...previous, letter]);
     }
   };
 
   const clearWord = () => {
     setWord([]);
-    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
     setIsPlaying(false);
-    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
     drawWaveform(false);
   };
 
   return (
     <div className="pronunciation-lab learn-glass-panel">
-      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h2 style={{ fontSize: '2.2rem', marginBottom: '10px', fontWeight: '500', color: '#FFF' }}>{t("learnPhoneticLab")}</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{t("learnLabDesc")}</p>
+      <div className="learn-panel-intro learn-panel-intro--centered">
+        <h2>{t("learnPhoneticLab")}</h2>
+        <p>{t("learnLabDesc")}</p>
       </div>
 
-      <canvas ref={canvasRef} className="wave-canvas" style={{ width: '100%', height: '150px' }}></canvas>
+      <canvas ref={canvasRef} className="wave-canvas" />
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '40px' }}>
-        <button 
-          className="btn-primary" 
-          onClick={handlePlayAudio} 
+      <div className="pronunciation-lab__controls">
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={handlePlayAudio}
           disabled={isPlaying || word.length === 0}
-          style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '10px' }}
         >
-          {isPlaying ? <Square size={20} /> : <Play size={20} />}
+          {isPlaying ? <Square size={18} /> : <Play size={18} />}
           {isPlaying ? t("learnAnalysisInProgress") : t("learnListen")}
         </button>
-        
-        <button 
-          className="btn-primary" 
-          onClick={clearWord}
-          style={{ width: 'auto', background: 'rgba(255,255,255,0.1)', color: '#FFF' }}
-        >
-          <RefreshCcw size={20} />
+
+        <button type="button" className="btn-primary btn-primary--ghost" onClick={clearWord}>
+          <RefreshCcw size={18} />
         </button>
       </div>
 
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <div style={{ background: 'rgba(255,255,255,0.02)', minHeight: '100px', border: '1px dashed rgba(212, 168, 67, 0.4)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', gap: '10px', boxShadow: 'inset 0 0 20px rgba(212, 168, 67, 0.05)' }}>
+      <div className="pronunciation-lab__composer">
+        <div className="pronunciation-lab__word">
           {word.length === 0 ? (
-            <span style={{ color: 'var(--text-muted)' }}>{t("learnClickToBuild")}</span>
+            <span>{t("learnClickToBuild")}</span>
           ) : (
-            word.map((w, i) => (
-              <span key={i} style={{ fontSize: '3.5rem', fontFamily: 'var(--font-tifinagh)', color: '#FFF' }}>
-                {w.char}
-              </span>
+            word.map((item, index) => (
+              <strong key={index}>{item.char}</strong>
             ))
           )}
         </div>
-        {word.length > 0 && (
-          <div style={{ marginTop: '10px', color: 'var(--text-muted)', fontSize: '1.2rem', letterSpacing: '2px' }}>
-            {word.map(w => w.transliteration).join('')}
-          </div>
-        )}
+
+        {word.length > 0 && <div className="pronunciation-lab__latin">{word.map((item) => item.transliteration).join("")}</div>}
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '1.2rem' }}>{t("learnPhoneticKeyboard")}</h3>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Settings size={18} color="var(--text-muted)" />
-          <span style={{ color: 'var(--text-muted)' }}>{t("learnSpeed")} </span>
-          <select 
-            value={playbackSpeed} 
-            onChange={(e) => setPlaybackSpeed(parseFloat(e.target.value))}
-            style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--amazigh-amber)', border: '1px solid rgba(255,255,255,0.1)', padding: '5px 10px', borderRadius: '8px', cursor: 'pointer' }}
-          >
+      <div className="pronunciation-lab__head">
+        <h3>{t("learnPhoneticKeyboard")}</h3>
+        <label className="pronunciation-lab__speed">
+          <Settings size={16} />
+          <span>{t("learnSpeed")}</span>
+          <select value={playbackSpeed} onChange={(event) => setPlaybackSpeed(parseFloat(event.target.value))} className="learn-select">
             <option value="0.5">{t("learnSpeedSlow")}</option>
             <option value="0.85">{t("learnSpeedNormal")}</option>
             <option value="1.5">{t("learnSpeedFast")}</option>
           </select>
-        </div>
+        </label>
       </div>
 
-      <div className="alphabet-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '10px' }}>
+      <div className="alphabet-grid alphabet-grid--compact">
         {tifinaghAlphabet.map((item, index) => (
-          <button 
+          <button
             key={index}
-            className="letter-card"
-            style={{
-              padding: '15px 5px',
-              fontFamily: 'var(--font-tifinagh)',
-              fontSize: '2rem',
-              color: '#FFF',
-              border: '1px solid rgba(255,255,255,0.05)'
-            }}
+            type="button"
+            className="letter-card letter-card--keyboard"
             onClick={() => addLetterToWord(item)}
           >
             {item.char}

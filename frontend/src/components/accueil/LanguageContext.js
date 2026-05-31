@@ -143,9 +143,11 @@ const translations = {
     learnVocabScenesFor: "Vocabulaire et scènes pour",
     learnDays: "Jours",
     learnJourney: "Parcours",
-    learnDays: "Jours",
-    learnJourney: "Parcours",
     learnAchievements: "Accomplissements",
+    learnMarkLearned: "Marquer comme acquis",
+    learnLevelRequired: "Niveau",
+    learnRequired: "requis",
+    learnRecommended: "Recommandé",
 
     // Tifinagh Hub
     learnTifinaghHeritage: "Héritage Tifinagh",
@@ -172,14 +174,6 @@ const translations = {
     learnAccuracy: "Précision",
     learnMaxCombo: "Combo Max",
     learnQuit: "Quitter",
-
-    // General Gamification & Utility
-    learnMarkLearned: "Marquer comme acquis",
-    learnNewTierReached: "Nouveau Palier Atteint",
-    learnContinueAdventure: "Continuer l'Aventure",
-    learnLevelRequired: "Niveau",
-    learnRequired: "requis",
-    learnRecommended: "Recommandé",
 
     // Alphabet
     learnCatAll: "Toutes les lettres",
@@ -549,9 +543,11 @@ const translations = {
     learnVocabScenesFor: "Vocabulary and scenes for",
     learnDays: "Days",
     learnJourney: "Journey",
-    learnDays: "Days",
-    learnJourney: "Journey",
     learnAchievements: "Achievements",
+    learnMarkLearned: "Mark as learned",
+    learnLevelRequired: "Level",
+    learnRequired: "required",
+    learnRecommended: "Recommended",
 
     // Tifinagh Hub
     learnTifinaghHeritage: "Tifinagh Heritage",
@@ -578,14 +574,6 @@ const translations = {
     learnAccuracy: "Accuracy",
     learnMaxCombo: "Max Combo",
     learnQuit: "Quit",
-
-    // General Gamification & Utility
-    learnMarkLearned: "Mark as learned",
-    learnNewTierReached: "New Tier Reached",
-    learnContinueAdventure: "Continue Adventure",
-    learnLevelRequired: "Level",
-    learnRequired: "required",
-    learnRecommended: "Recommended",
 
     // Alphabet
     learnCatAll: "All letters",
@@ -955,9 +943,11 @@ const translations = {
     learnVocabScenesFor: "مفردات ومشاهد لـ",
     learnDays: "أيام",
     learnJourney: "المسار",
-    learnDays: "أيام",
-    learnJourney: "المسار",
     learnAchievements: "الإنجازات",
+    learnMarkLearned: "تحديد كمكتسب",
+    learnLevelRequired: "مستوى",
+    learnRequired: "مطلوب",
+    learnRecommended: "مُوصى به",
 
     // Tifinagh Hub
     learnTifinaghHeritage: "تراث تيفيناغ",
@@ -984,14 +974,6 @@ const translations = {
     learnAccuracy: "الدقة",
     learnMaxCombo: "أقصى كومبو",
     learnQuit: "مغادرة",
-
-    // General Gamification & Utility
-    learnMarkLearned: "تحديد كمكتسب",
-    learnNewTierReached: "الوصول إلى مستوى جديد",
-    learnContinueAdventure: "متابعة المغامرة",
-    learnLevelRequired: "مستوى",
-    learnRequired: "مطلوب",
-    learnRecommended: "مُوصى به",
 
     // Alphabet
     learnCatAll: "كل الحروف",
