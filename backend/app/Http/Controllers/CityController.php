@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CityController extends Controller
 {
-   public function show($slug)
+  public function show($slug)
 {
     $city = City::with([
         'activities',
@@ -29,6 +29,5 @@ class CityController extends Controller
         'places' => $city->places,
         'hidden_gems' => $city->hiddenGems
     ]);
-
-    }
+}
 }
