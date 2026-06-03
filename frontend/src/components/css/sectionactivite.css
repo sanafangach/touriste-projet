@@ -1,6 +1,8 @@
-/* =============================== 
-   SECTION ACTIVITÉS - CARD HOVER ANIMATION
+/* ===============================
+   SECTION ACTIVITÉS - MODERN ABOUT STYLE + HOVER BUTTON
+   (Modifié bhal image 2 - gradient orange animation + cards twal)
 ================================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +12,7 @@
 .section-activite {
   width: 100%;
   padding: 90px 7%;
-  background: linear-gradient(135deg, #f8f9fc, #eef2f7);
+  background: linear-gradient(135deg,#f8f9fc,#eef2f7);
   font-family: 'Poppins', sans-serif;
   transition: background 0.4s ease;
   overflow: hidden;
@@ -26,16 +28,21 @@
 }
 
 .dark .activite-mini {
-  color: #ffb36b;
+  color: #ff7a00;
 }
 
 .dark .activite-card {
-  background: rgba(20, 20, 20, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #1a1a1a;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.dark .activite-card__nom {
+  color: #fff;
 }
 
 .dark .activite-card__lieu {
-  color: rgba(255, 255, 255, 0.6);
+  color: #999;
 }
 
 /* ================= HEADER ================= */
@@ -61,23 +68,25 @@
   font-size: 42px;
   font-weight: 700;
   color: #111;
-  line-height: 1.2;
   transition: color 0.4s ease;
 }
 
-/* ================= BUTTON ================= */
+/* ================= BUTTON HEADER ================= */
 .activite-voir-tout {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 14px 32px;
   border-radius: 999px;
+
   background: #fff3ec;
   border: 1.5px solid #ff7a00;
   color: #ff7a00;
+
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+
   transition: all 0.3s ease;
   box-shadow: 0 6px 18px rgba(255, 122, 0, 0.12);
 }
@@ -86,8 +95,9 @@
   background: linear-gradient(135deg, #ff7a00, #ff5100);
   color: #fff;
   border-color: transparent;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(255, 122, 0, 0.25);
+
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px rgba(255, 122, 0, 0.35);
 }
 
 /* ================= GRID ================= */
@@ -97,98 +107,75 @@
   gap: 20px;
 }
 
-/* ================= CARD ================= */
+/* ================= CARD (TWAL BHAL IMAGE 2) ================= */
 .activite-card {
   position: relative;
+  height: 420px; /* TZAD MN 340px → 420px (bhal image 2) */
   border-radius: 22px;
   overflow: hidden;
   cursor: pointer;
-  height: 340px;
-  background: #111;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-  opacity: 0;
-  animation: fadeUp 0.7s ease forwards;
+
+  background: white;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+
+  transition: 0.3s ease;
 }
 
 .activite-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.10);
 }
 
-/* SHADOW ALWAYS VISIBLE */
-.activite-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0.4) 45%,
-    transparent 100%
-  );
-}
-
-/* ORANGE EFFECT FROM BOTTOM TO TOP */
-.activite-card::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 45%; /* زيدي أو نقصي هنا */
-
-  z-index: 2;
-  pointer-events: none;
-
-  background: linear-gradient(
-    to top,
-    #ff8c00 0%,
-    #ffb300 35%,
-    rgba(255, 215, 0, 0.55) 75%,
-    transparent 100%  
-  );
-
-  transform: translateY(100%);
-  transition: transform 0.55s ease;
-}
-
-.activite-card:hover::before {
-  transform: translateY(0);
-}
-
-/* ================= IMAGE ================= */
+/* IMAGE */
 .activite-card__img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s ease, filter 0.7s ease;
-  z-index: 0;
+  transition: transform 0.7s ease;
 }
 
 .activite-card:hover .activite-card__img {
-  transform: scale(1.12);
-  filter: brightness(0.65);
+  transform: scale(1.1);
+  filter: brightness(0.75);
 }
 
-/* ================= BADGE ================= */
-.activite-card__badge {
+/* OVERLAY PREMIUM (default - dark) */
+.activite-card::after {
+  content: "";
   position: absolute;
-  top: 14px;
-  left: 14px;
-  background: rgba(255, 122, 0, 0.25);
-  border: 1px solid rgba(255, 122, 0, 0.4);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 50px;
-  backdrop-filter: blur(10px);
-  z-index: 5;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.65) 0%,
+    rgba(0,0,0,0.25) 50%,
+    transparent 100%
+  );
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+/* ========== GRADIENT ORANGE ANIMATION F CARD (bhal image 2) ========== */
+.activite-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(255,122,0,0.9) 0%,
+    rgba(255,81,0,0.7) 25%,
+    rgba(255,122,0,0.3) 50%,
+    transparent 80%
+  );
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.activite-card:hover::before {
+  opacity: 1;
 }
 
 /* ================= INFO ================= */
@@ -197,65 +184,98 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 16px 18px 20px;
-  z-index: 5;
-  transition: transform 0.3s ease;
+  padding: 22px;
+  z-index: 3;
+
+  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+  transition: all 0.4s ease;
 }
 
 .activite-card:hover .activite-card__info {
-  transform: translateY(-6px);
+  background: transparent; /* gradient orange kaykafi */
 }
 
+/* ================= TITLE ================= */
 .activite-card__nom {
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
   color: #fff;
+
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+
+  text-shadow: 0 6px 18px rgba(0,0,0,0.6);
   margin-bottom: 4px;
+  position: relative;
+  z-index: 4;
 }
 
+/* ================= CITY ================= */
 .activite-card__lieu {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+
+  letter-spacing: 0.5px;
+
+  text-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 4;
 }
 
-/* ================= BUTTON ================= */
+/* ================= BADGE ================= */
+.activite-card__badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 5px 12px;
+
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 50px;
+
+  background: rgba(255,122,0,0.15);
+  border: 1px solid rgba(255,122,0,0.3);
+  color: #ff7a00;
+  z-index: 4;
+}
+
+/* ================= BUTTON (bhal image 2 - transparent) ================= */
 .activite-card__btn {
   margin-top: 12px;
-  padding: 8px 18px;
+  padding: 10px 22px;
+  border: 1.5px solid rgba(255,255,255,0.6);
   border-radius: 50px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-  color: #fff;
+
+  background: transparent;
+  color: white;
+
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+
   opacity: 0;
-  transform: translateY(10px);
-  transition: 0.3s ease;
+  transform: translateY(15px);
+
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  position: relative;
+  z-index: 4;
 }
 
+/* يظهر غير ف hover ديال card */
 .activite-card:hover .activite-card__btn {
   opacity: 1;
   transform: translateY(0);
 }
 
+/* Hover effect bhal image 2 */
 .activite-card__btn:hover {
-  background: #fff;
-  color: #ff7a00;
+  background: linear-gradient(135deg, #ff7a00, #ff5100);
   border-color: transparent;
-}
-
-/* ================= ANIMATION ================= */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255,122,0,0.25);
 }
 
 /* ================= RESPONSIVE ================= */
@@ -274,13 +294,13 @@
     padding: 70px 5%;
   }
 
-  .activite-title {
-    font-size: 30px;
-  }
-
   .activite-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .activite-title {
+    font-size: 30px;
   }
 }
 
@@ -294,6 +314,6 @@
   }
 
   .activite-card {
-    height: 300px;
+    height: 350px; /* Responsive: chwiiya twal men 300px */
   }
 }
