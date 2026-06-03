@@ -7,7 +7,7 @@ import "../css/destination.css";
 
 // Import de TES images depuis assets
 import atlanticImg from "../../assets/atlantic.jpg";
-import atlasImg from "../../assets/img1.jpg";
+import atlasImg from "../../assets/atlas.png";
 import casablancaImg from "../../assets/casa.jpg";
 import fezImg from "../../assets/fes.jpg";
 import marrakechImg from "../../assets/Marrakech.jpg";
@@ -17,7 +17,7 @@ import merzougaImg from "../../assets/Merzouga.jpg";
 import rabatImg from "../../assets/rabat.jpg";
 import tangierImg from "../../assets/taghazot.png";
 import tiznitImg from "../../assets/tiznit.jpg";
-import camelImg from "../../assets/camel.jpg";
+import camelImg from "../../assets/place3.png";
 import backgroundImg from "../../assets/background2.jpg"; // Image par défaut
 
 // Map des images par ville
@@ -38,18 +38,18 @@ const cityImages = {
 
 const destinationsData = [
   { id: 1, name: "Agadir", slug: "agadir", rating: 4.7, reviews: 312, activities: 12, location: "Souss-Massa", featured: true },
-  { id: 2, name: "Atlantic Coast", slug: "atlantic-coast", rating: 4.7, reviews: 274, activities: 16, location: "Coastal Region", featured: true },
-  { id: 3, name: "Atlas Mountains", slug: "atlas-mountains", rating: 4.8, reviews: 342, activities: 18, location: "High Atlas", featured: true },
-  { id: 4, name: "Casablanca", slug: "casablanca", rating: 4.8, reviews: 528, activities: 15, location: "Casablanca-Settat", featured: true },
-  { id: 5, name: "Fez", slug: "fes", rating: 4.7, reviews: 345, activities: 18, location: "Fès-Meknès", featured: true },
-  { id: 6, name: "Marrakech", slug: "marrakech", rating: 4.9, reviews: 892, activities: 34, location: "Marrakech-Safi", featured: true },
-  { id: 7, name: "Chefchaouen", slug: "chefchaouen", rating: 4.9, reviews: 567, activities: 14, location: "Tangier-Tetouan", featured: false },
-  { id: 8, name: "Essaouira", slug: "essaouira", rating: 4.6, reviews: 298, activities: 11, location: "Marrakech-Safi", featured: false },
-  { id: 9, name: "Merzouga", slug: "merzouga", rating: 4.8, reviews: 421, activities: 19, location: "Draa-Tafilalet", featured: false },
-  { id: 10, name: "Rabat", slug: "rabat", rating: 4.5, reviews: 234, activities: 10, location: "Rabat-Salé-Kénitra", featured: false },
-  { id: 11, name: "Tangier", slug: "tangier", rating: 4.6, reviews: 378, activities: 13, location: "Tangier-Tetouan", featured: false },
-  { id: 12, name: "Tiznit", slug: "tiznit", rating: 4.8, reviews: 412, activities: 22, location: "Sous Massa", featured: false }
-].map(city => ({
+  { id: 2, name: "Atlas Mountains", slug: "atlas-mountains", rating: 4.8, reviews: 342, activities: 18, location: "High Atlas", featured: true },
+  { id: 3, name: "Casablanca", slug: "casablanca", rating: 4.8, reviews: 528, activities: 15, location: "Casablanca-Settat", featured: true },
+  { id: 4, name: "Fez", slug: "fes", rating: 4.7, reviews: 345, activities: 18, location: "Fès-Meknès", featured: true },
+  { id: 5, name: "Marrakech", slug: "marrakech", rating: 4.9, reviews: 892, activities: 34, location: "Marrakech-Safi", featured: true },
+  { id: 6, name: "Chefchaouen", slug: "chefchaouen", rating: 4.9, reviews: 567, activities: 14, location: "Tangier-Tetouan", featured: false },
+  { id: 7, name: "Essaouira", slug: "essaouira", rating: 4.6, reviews: 298, activities: 11, location: "Marrakech-Safi", featured: false },  
+  { id: 8, name: "Merzouga", slug: "merzouga", rating: 4.8, reviews: 421, activities: 19, location: "Draa-Tafilalet", featured: false },
+  { id: 9, name: "Rabat", slug: "rabat", rating: 4.5, reviews: 234, activities: 10, location: "Rabat-Salé-Kénitra", featured: false },
+  { id: 10, name: "Tangier", slug: "tangier", rating: 4.6, reviews: 378, activities: 13, location: "Tangier-Tetouan", featured: false },
+  { id: 11 , name: "Tiznit", slug: "tiznit", rating: 4.8, reviews: 412, activities: 22, location: "Sous Massa", featured: false }
+]
+.map(city => ({
   ...city,
   image: cityImages[city.name] || backgroundImg // fallback si image non trouvée
 }));
