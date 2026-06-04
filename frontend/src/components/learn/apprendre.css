@@ -30,18 +30,18 @@
 }
 
 html.dark {
-  /* Core Colors - Dark Mode (Premium Dark aesthetic) */
-  --apprendre-bg: #030712;
+  /* Core Colors - Dark Mode */
+  --apprendre-bg: #0f172a;
   --apprendre-surface: #111827;
-  --apprendre-text-primary: #f9fafb;
-  --apprendre-text-secondary: #9ca3af;
-  --apprendre-text-muted: #6b7280;
+  --apprendre-text-primary: #f8fafc;
+  --apprendre-text-secondary: #cbd5e1;
+  --apprendre-text-muted: #94a3b8;
   
-  --apprendre-border: #1f2937;
-  --apprendre-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-  --apprendre-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --apprendre-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --apprendre-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  --apprendre-border: #1e293b;
+  --apprendre-shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+  --apprendre-shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  --apprendre-shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+  --apprendre-shadow-hover: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
   
   /* Brand Colors adjust slightly for dark mode contrast */
   --apprendre-brand-light: rgba(217, 119, 6, 0.1);
@@ -136,6 +136,9 @@ html.dark {
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .apprendre-foundation.rtl .apprendre-card {
@@ -148,28 +151,84 @@ html.dark {
 }
 
 .apprendre-card.darija-card {
-  border: 1px solid rgba(217, 119, 6, 0.2);
+  border: 1px solid rgba(217, 119, 6, 0.4);
 }
 .apprendre-card.darija-card:hover {
-  border-color: rgba(217, 119, 6, 0.5);
-  box-shadow: 0 20px 40px -8px rgba(217, 119, 6, 0.12), 0 10px 15px -3px rgba(217, 119, 6, 0.06);
+  border-color: var(--apprendre-icon-darija-color);
+  box-shadow: 0 20px 40px -8px rgba(217, 119, 6, 0.15), 0 10px 15px -3px rgba(217, 119, 6, 0.08);
+}
+html.dark .apprendre-card.darija-card {
+  border-color: rgba(217, 119, 6, 0.15);
+  box-shadow: 0 8px 30px -5px rgba(217, 119, 6, 0.05);
+}
+html.dark .apprendre-card.darija-card:hover {
+  border-color: rgba(217, 119, 6, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(217, 119, 6, 0.15), 0 0 25px 0 rgba(217, 119, 6, 0.1);
 }
 
 .apprendre-card.tifinagh-card {
-  border: 1px solid rgba(3, 105, 161, 0.2);
+  border: 1px solid rgba(3, 105, 161, 0.4);
 }
 .apprendre-card.tifinagh-card:hover {
-  border-color: rgba(3, 105, 161, 0.5);
-  box-shadow: 0 20px 40px -8px rgba(3, 105, 161, 0.12), 0 10px 15px -3px rgba(3, 105, 161, 0.06);
+  border-color: var(--apprendre-icon-tifinagh-color);
+  box-shadow: 0 20px 40px -8px rgba(3, 105, 161, 0.15), 0 10px 15px -3px rgba(3, 105, 161, 0.08);
+}
+html.dark .apprendre-card.tifinagh-card {
+  border-color: rgba(3, 105, 161, 0.15);
+  box-shadow: 0 8px 30px -5px rgba(3, 105, 161, 0.05);
+}
+html.dark .apprendre-card.tifinagh-card:hover {
+  border-color: rgba(3, 105, 161, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(3, 105, 161, 0.15), 0 0 25px 0 rgba(3, 105, 161, 0.1);
 }
 
 .apprendre-card.culture-card {
-  border: 1px solid rgba(21, 128, 61, 0.2);
+  border: 1px solid rgba(21, 128, 61, 0.4);
 }
 .apprendre-card.culture-card:hover {
-  border-color: rgba(21, 128, 61, 0.5);
-  box-shadow: 0 20px 40px -8px rgba(21, 128, 61, 0.12), 0 10px 15px -3px rgba(21, 128, 61, 0.06);
+  border-color: var(--apprendre-icon-culture-color);
+  box-shadow: 0 20px 40px -8px rgba(21, 128, 61, 0.15), 0 10px 15px -3px rgba(21, 128, 61, 0.08);
 }
+html.dark .apprendre-card.culture-card {
+  border-color: rgba(21, 128, 61, 0.15);
+  box-shadow: 0 8px 30px -5px rgba(21, 128, 61, 0.05);
+}
+html.dark .apprendre-card.culture-card:hover {
+  border-color: rgba(21, 128, 61, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(21, 128, 61, 0.15), 0 0 25px 0 rgba(21, 128, 61, 0.1);
+}
+
+.card-decoration {
+  position: absolute;
+  bottom: -10%;
+  right: -5%;
+  width: 200px;
+  height: 200px;
+  opacity: 0.06;
+  z-index: -1;
+  pointer-events: none;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.apprendre-card.darija-card .card-decoration {
+  color: var(--apprendre-icon-darija-color);
+}
+.apprendre-card.tifinagh-card .card-decoration {
+  color: var(--apprendre-icon-tifinagh-color);
+}
+.apprendre-card.culture-card .card-decoration {
+  color: var(--apprendre-icon-culture-color);
+}
+html.dark .card-decoration {
+  opacity: 0.08;
+}
+.apprendre-card:hover .card-decoration {
+  transform: scale(1.05) translate(-5%, -5%);
+  opacity: 0.1;
+}
+html.dark .apprendre-card:hover .card-decoration {
+  opacity: 0.15;
+}
+
 
 .card-header {
   display: flex;
@@ -236,8 +295,6 @@ html.dark {
 /* Call to Action Button inside Card */
 .card-btn {
   background-color: transparent;
-  color: var(--apprendre-text-primary);
-  border: 1px solid var(--apprendre-border);
   border-radius: 18px;
   padding: 16px 24px;
   font-size: 1.0625rem;
@@ -250,18 +307,30 @@ html.dark {
   width: 100%;
 }
 
+.apprendre-card.darija-card .card-btn {
+  color: var(--apprendre-icon-darija-color);
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
 .apprendre-card.darija-card:hover .card-btn {
   background-color: var(--apprendre-icon-darija-color);
   color: #ffffff;
   border-color: var(--apprendre-icon-darija-color);
 }
 
+.apprendre-card.tifinagh-card .card-btn {
+  color: var(--apprendre-icon-tifinagh-color);
+  border: 1px solid rgba(3, 105, 161, 0.3);
+}
 .apprendre-card.tifinagh-card:hover .card-btn {
   background-color: var(--apprendre-icon-tifinagh-color);
   color: #ffffff;
   border-color: var(--apprendre-icon-tifinagh-color);
 }
 
+.apprendre-card.culture-card .card-btn {
+  color: var(--apprendre-icon-culture-color);
+  border: 1px solid rgba(21, 128, 61, 0.3);
+}
 .apprendre-card.culture-card:hover .card-btn {
   background-color: var(--apprendre-icon-culture-color);
   color: #ffffff;
