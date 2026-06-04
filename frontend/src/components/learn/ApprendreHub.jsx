@@ -55,16 +55,23 @@ const ApprendreHub = () => {
         animate="visible"
       >
         {/* Darija Card */}
-        <motion.div className="apprendre-card darija-card" variants={itemVariants}>
+        <motion.div 
+          className="apprendre-card darija-card cursor-pointer" 
+          variants={itemVariants}
+          onClick={() => navigate("/languages/darija/mission-1")}
+        >
           <div className="card-header">
             <div className="card-icon-wrapper darija-icon">
               <MessageCircle size={32} strokeWidth={1.5} />
             </div>
-            <span className="card-eyebrow">{t("learnPathDarijaEyebrow")}</span>
+            <div className="card-header-meta">
+              <span className="card-status available">{t("statusAvailable") || "Available"}</span>
+              <span className="card-eyebrow">{t("learnPathDarijaEyebrow")}</span>
+            </div>
           </div>
           <h2 className="card-title">{t("learnPathDarijaTitle")}</h2>
           <p className="card-desc">{t("learnPathDarijaDesc")}</p>
-          <button className="card-btn group" onClick={() => navigate("/learn/darija/mission-1")}>
+          <button className="card-btn group">
             <span>{t("learnPathDarijaCTA")}</span>
             <ArrowRight size={20} className={`transition-transform duration-300 ${isRTL ? "rotate-180 group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
           </button>
@@ -81,16 +88,23 @@ const ApprendreHub = () => {
         </motion.div>
 
         {/* Tifinagh Card */}
-        <motion.div className="apprendre-card tifinagh-card" variants={itemVariants}>
+        <motion.div 
+          className="apprendre-card tifinagh-card cursor-pointer" 
+          variants={itemVariants}
+          onClick={() => navigate("/languages/tifinagh/mission-1")}
+        >
           <div className="card-header">
             <div className="card-icon-wrapper tifinagh-icon">
               <Type size={32} strokeWidth={1.5} />
             </div>
-            <span className="card-eyebrow">{t("learnPathTifinaghEyebrow")}</span>
+            <div className="card-header-meta">
+              <span className="card-status available">{t("statusAvailable") || "Available"}</span>
+              <span className="card-eyebrow">{t("learnPathTifinaghEyebrow")}</span>
+            </div>
           </div>
           <h2 className="card-title">{t("learnPathTifinaghTitle")}</h2>
           <p className="card-desc">{t("learnPathTifinaghDesc")}</p>
-          <button className="card-btn group" onClick={() => navigate("/learn/tifinagh/mission-1")}>
+          <button className="card-btn group">
             <span>{t("learnPathTifinaghCTA")}</span>
             <ArrowRight size={20} className={`transition-transform duration-300 ${isRTL ? "rotate-180 group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
           </button>
@@ -103,12 +117,19 @@ const ApprendreHub = () => {
         </motion.div>
 
         {/* Culture Card */}
-        <motion.div className="apprendre-card culture-card" variants={itemVariants}>
+        <motion.div 
+          className="apprendre-card culture-card cursor-pointer" 
+          variants={itemVariants}
+          onClick={() => navigate("/languages/culture/mission-1")}
+        >
           <div className="card-header">
             <div className="card-icon-wrapper culture-icon">
               <Compass size={32} strokeWidth={1.5} />
             </div>
-            <span className="card-eyebrow">{t("learnPathTipsEyebrow")}</span>
+            <div className="card-header-meta">
+              <span className="card-status available">{t("statusAvailable") || "Available"}</span>
+              <span className="card-eyebrow">{t("learnPathTipsEyebrow")}</span>
+            </div>
           </div>
           <h2 className="card-title">{t("learnPathTipsTitle")}</h2>
           <p className="card-desc">{t("learnPathTipsDesc")}</p>

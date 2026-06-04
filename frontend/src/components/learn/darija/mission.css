@@ -259,6 +259,15 @@ html.dark .vocab-card:hover {
   background: rgba(217, 119, 6, 0.1);
 }
 
+/* Audio spinner animation */
+@keyframes audio-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.audio-spin {
+  animation: audio-spin 1s linear infinite;
+}
+
 .rtl .vocab-audio-btn {
   right: auto;
   left: 16px;

@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, Volume2, Plane, CheckCircle, ArrowRight, ArrowLeft, Award, Lock, MessageCircle } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, MessageCircle, CheckCircle, Plane, Lock, Award } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
+import { AudioButton } from "../common/AudioButton";
 import "./mission.css"; // We created this file for Mission specific CSS
 
 const vocabData = [
-  { darija: "Salam", fr: "Bonjour", en: "Hello", ar: "سلام", context: { en: "Used as a friendly greeting when meeting anyone.", fr: "Utilisé comme salutation amicale pour tout le monde.", ar: "يستخدم كتحية ودية عند لقاء أي شخص." } },
-  { darija: "Shukran", fr: "Merci", en: "Thank you", ar: "شكرا", context: { en: "Essential for showing appreciation, e.g. to a taxi driver.", fr: "Essentiel pour montrer votre appréciation, ex. à un chauffeur.", ar: "أساسي لإظهار التقدير، مثل سائق التاكسي." } },
-  { darija: "Fin...?", fr: "Où est...?", en: "Where is...?", ar: "أين...؟", context: { en: "Crucial for asking directions, like 'Fin l'aéroport?'", fr: "Crucial pour demander son chemin, comme 'Fin l'aéroport?'", ar: "مهم جداً لطلب الاتجاهات، مثل 'فين المطار؟'" } },
-  { darija: "Labas?", fr: "Ça va ?", en: "How are you?", ar: "لاباس؟", context: { en: "Standard follow-up to Salam. Reply with 'Labas, shukran'.", fr: "Suite standard après Salam. Répondez par 'Labas, shukran'.", ar: "سؤال معتاد بعد السلام. الرد بـ 'لاباس، شكرا'." } },
-  { darija: "Naam", fr: "Oui", en: "Yes", ar: "نعم", context: { en: "Used to agree or accept an offer.", fr: "Utilisé pour être d'accord ou accepter une offre.", ar: "يستخدم للموافقة أو قبول عرض." } },
-  { darija: "La", fr: "Non", en: "No", ar: "لا", context: { en: "Polite refusal. Often combined as 'La, shukran'.", fr: "Refus poli. Souvent combiné en 'La, shukran'.", ar: "رفض مهذب. غالباً ما يجمع كـ 'لا، شكرا'." } }
+  { darija: "Salam", arabicText: "سلام", fr: "Bonjour", en: "Hello", ar: "سلام", context: { en: "Used as a friendly greeting when meeting anyone.", fr: "Utilisé comme salutation amicale pour tout le monde.", ar: "يستخدم كتحية ودية عند لقاء أي شخص." } },
+  { darija: "Shukran", arabicText: "شكرا", fr: "Merci", en: "Thank you", ar: "شكرا", context: { en: "Essential for showing appreciation, e.g. to a taxi driver.", fr: "Essentiel pour montrer votre appréciation, ex. à un chauffeur.", ar: "أساسي لإظهار التقدير، مثل سائق التاكسي." } },
+  { darija: "Fin...?", arabicText: "فين؟", fr: "Où est...?", en: "Where is...?", ar: "أين...؟", context: { en: "Crucial for asking directions, like 'Fin l'aéroport?'", fr: "Crucial pour demander son chemin, comme 'Fin l'aéroport?'", ar: "مهم جداً لطلب الاتجاهات، مثل 'فين المطار؟'" } },
+  { darija: "Labas?", arabicText: "لاباس؟", fr: "Ça va ?", en: "How are you?", ar: "لاباس؟", context: { en: "Standard follow-up to Salam. Reply with 'Labas, shukran'.", fr: "Suite standard après Salam. Répondez par 'Labas, shukran'.", ar: "سؤال معتاد بعد السلام. الرد بـ 'لاباس، شكرا'." } },
+  { darija: "Naam", arabicText: "نعم", fr: "Oui", en: "Yes", ar: "نعم", context: { en: "Used to agree or accept an offer.", fr: "Utilisé pour être d'accord ou accepter une offre.", ar: "يستخدم للموافقة أو قبول عرض." } },
+  { darija: "La", arabicText: "لا", fr: "Non", en: "No", ar: "لا", context: { en: "Polite refusal. Often combined as 'La, shukran'.", fr: "Refus poli. Souvent combiné en 'La, shukran'.", ar: "رفض مهذب. غالباً ما يجمع كـ 'لا، شكرا'." } }
 ];
 
 const expressionsData = [
-  { darija: "Salam, labas?", fr: "Bonjour, ça va ?", en: "Hello, how are you?", ar: "سلام، لاباس؟", context: { en: "The golden standard for starting any interaction.", fr: "Le standard pour commencer toute interaction.", ar: "المعيار الذهبي لبدء أي محادثة." } },
-  { darija: "Fin l'aéroport?", fr: "Où est l'aéroport ?", en: "Where is the airport?", ar: "أين المطار؟", context: { en: "Useful when looking for your terminal or transport.", fr: "Utile pour chercher votre terminal ou transport.", ar: "مفيد عند البحث عن محطتك أو وسيلة النقل." } },
-  { darija: "Shukran bzaf", fr: "Merci beaucoup", en: "Thank you very much", ar: "شكرا بزاف", context: { en: "Adds 'bzaf' (a lot) for extra gratitude.", fr: "Ajoute 'bzaf' (beaucoup) pour plus de gratitude.", ar: "يضيف 'بزاف' (كثيراً) لمزيد من الامتنان." } }
+  { darija: "Salam, labas?", arabicText: "سلام، لاباس؟", fr: "Bonjour, ça va ?", en: "Hello, how are you?", ar: "سلام، لاباس؟", context: { en: "The golden standard for starting any interaction.", fr: "Le standard pour commencer toute interaction.", ar: "المعيار الذهبي لبدء أي محادثة." } },
+  { darija: "Fin l'aéroport?", arabicText: "فين المطار؟", fr: "Où est l'aéroport ?", en: "Where is the airport?", ar: "أين المطار؟", context: { en: "Useful when looking for your terminal or transport.", fr: "Utile pour chercher votre terminal ou transport.", ar: "مفيد عند البحث عن محطتك أو وسيلة النقل." } },
+  { darija: "Shukran bzaf", arabicText: "شكرا بزاف", fr: "Merci beaucoup", en: "Thank you very much", ar: "شكرا بزاف", context: { en: "Adds 'bzaf' (a lot) for extra gratitude.", fr: "Ajoute 'bzaf' (beaucoup) pour plus de gratitude.", ar: "يضيف 'بزاف' (كثيراً) لمزيد من الامتنان." } }
 ];
 
 const conversationData = [
-  { speaker: "Traveler", darija: "Salam", fr: "Bonjour", en: "Hello", isRight: true },
-  { speaker: "Staff", darija: "Salam, labas?", fr: "Bonjour, ça va ?", en: "Hello, how are you?", isRight: false },
-  { speaker: "Traveler", darija: "Labas, shukran. Fin l'aéroport?", fr: "Ça va, merci. Où est l'aéroport ?", en: "Fine, thanks. Where is the airport?", isRight: true },
-  { speaker: "Staff", darija: "L'aéroport hnaya.", fr: "L'aéroport est ici.", en: "The airport is here.", isRight: false },
-  { speaker: "Traveler", darija: "Shukran bzaf!", fr: "Merci beaucoup !", en: "Thank you very much!", isRight: true },
+  { speaker: "Traveler", darija: "Salam", arabicText: "سلام", fr: "Bonjour", en: "Hello", isRight: true },
+  { speaker: "Staff", darija: "Salam, labas?", arabicText: "سلام، لاباس؟", fr: "Bonjour, ça va ?", en: "Hello, how are you?", isRight: false },
+  { speaker: "Traveler", darija: "Labas, shukran. Fin l'aéroport?", arabicText: "لاباس، شكرا. فين المطار؟", fr: "Ça va, merci. Où est l'aéroport ?", en: "Fine, thanks. Where is the airport?", isRight: true },
+  { speaker: "Staff", darija: "L'aéroport hnaya.", arabicText: "المطار هنايا.", fr: "L'aéroport est ici.", en: "The airport is here.", isRight: false },
+  { speaker: "Traveler", darija: "Shukran bzaf!", arabicText: "شكرا بزاف!", fr: "Merci beaucoup !", en: "Thank you very much!", isRight: true },
 ];
 
 const quizData = [
@@ -76,12 +77,6 @@ function Mission1() {
     }
   };
 
-  const playAudio = (text) => {
-    // Placeholder for future audio implementation
-    console.log("Playing audio for:", text);
-    // You can add a subtle UI pop or sound here later
-  };
-
   const handleQuizAnswer = (idx) => {
     if (selectedOption !== null) return; // Prevent multiple clicks
     setSelectedOption(idx);
@@ -118,7 +113,7 @@ function Mission1() {
     <div className={`mission-container ${isRTL ? "rtl" : "ltr"}`}>
       {/* Header / Progress */}
       <div className="mission-header">
-        <button className="mission-close" onClick={() => navigate("/learn")}>
+        <button className="mission-close" onClick={() => navigate("/languages")}>
           <X size={24} />
         </button>
         <div className="mission-progress-bar">
@@ -168,9 +163,7 @@ function Mission1() {
               <div className="vocab-grid">
                 {vocabData.map((word, idx) => (
                   <div key={idx} className="vocab-card">
-                    <button className="vocab-audio-btn" onClick={() => playAudio(word.darija)}>
-                      <Volume2 size={20} />
-                    </button>
+                    <AudioButton text={word.darija} ttsText={word.arabicText} overrideLang="AR" />
                     <div className="vocab-word">{word.darija}</div>
                     <div className="vocab-translations">
                       <span className="vocab-trans-item">
@@ -202,9 +195,7 @@ function Mission1() {
               <div className="expressions-list">
                 {expressionsData.map((exp, idx) => (
                   <div key={idx} className="expression-card">
-                    <button className="vocab-audio-btn" style={{position:'static', flexShrink:0}} onClick={() => playAudio(exp.darija)}>
-                      <Volume2 size={20} />
-                    </button>
+                    <AudioButton text={exp.darija} ttsText={exp.arabicText} overrideLang="AR" style={{position:'static', flexShrink:0}} />
                     <div className="expression-content">
                       <div className="exp-darija">{exp.darija}</div>
                       <div className="exp-trans">{lang === "FR" ? exp.fr : lang === "AR" ? exp.ar : exp.en}</div>
@@ -241,9 +232,7 @@ function Mission1() {
                         <div>{line.darija}</div>
                         <div className="chat-trans">{lang === "FR" ? line.fr : lang === "AR" ? line.ar : line.en}</div>
                       </div>
-                      <button className="vocab-audio-btn" style={{position:'static', width:32, height:32, flexShrink:0}} onClick={() => playAudio(line.darija)}>
-                        <Volume2 size={16} />
-                      </button>
+                      <AudioButton text={line.darija} ttsText={line.arabicText} overrideLang="AR" style={{position:'static', width:32, height:32, flexShrink:0}} />
                     </div>
                   </div>
                 ))}
@@ -316,17 +305,21 @@ function Mission1() {
                  "You have mastered the basics for arriving in Morocco. You're ready for the next step."}
               </p>
               
-              <div className="next-mission-card">
-                <div className="next-icon">
+              <div 
+                className="next-mission-card" 
+                style={{ cursor: 'pointer', borderColor: 'var(--learn-accent)' }}
+                onClick={() => navigate("/languages/darija/mission-2")}
+              >
+                <div className="next-icon" style={{ background: 'var(--learn-accent)', color: 'white' }}>
                   <Lock size={24} />
                 </div>
                 <div className="next-info">
-                  <h4>{lang === "FR" ? "Prochaine Mission" : lang === "AR" ? "المهمة القادمة" : "Next Mission"}</h4>
-                  <p>{lang === "FR" ? "Trajet en Taxi (Bientôt)" : lang === "AR" ? "رحلة التاكسي (قريباً)" : "Taxi Journey (Coming soon)"}</p>
+                  <h4>{lang === "FR" ? "Prochaine Mission Débloquée" : lang === "AR" ? "تم فتح المهمة القادمة" : "Next Mission Unlocked"}</h4>
+                  <p style={{ fontWeight: 600, color: 'var(--learn-text)' }}>{lang === "FR" ? "Trajet en Taxi" : lang === "AR" ? "رحلة التاكسي" : "Taxi Journey"}</p>
                 </div>
               </div>
 
-              <button className="mission-btn" style={{marginTop: '40px'}} onClick={() => navigate("/learn")}>
+              <button className="mission-btn" style={{marginTop: '40px'}} onClick={() => navigate("/languages")}>
                 <CheckCircle size={20} />
                 {lang === "FR" ? "Retour à l'accueil" : lang === "AR" ? "العودة للرئيسية" : "Return to Hub"}
               </button>

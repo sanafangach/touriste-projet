@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, Volume2, Type, CheckCircle, ArrowRight, ArrowLeft, Award, Lock } from "lucide-react";
+import { X, CheckCircle, Type, ArrowRight, ArrowLeft, Award, Lock } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
+import { AudioButton } from "../common/AudioButton";
 import "../darija/mission.css"; // Reuse the mission styling system
 
 const tifinaghSymbols = [
@@ -54,10 +55,6 @@ function TifinaghMission1() {
     }
   };
 
-  const playAudio = (text) => {
-    console.log("Playing audio for:", text);
-  };
-
   const handleQuizAnswer = (idx) => {
     if (selectedOption !== null) return;
     setSelectedOption(idx);
@@ -91,7 +88,7 @@ function TifinaghMission1() {
   return (
     <div className={`mission-container tifinagh-theme ${isRTL ? "rtl" : "ltr"}`}>
       <div className="mission-header">
-        <button className="mission-close" onClick={() => navigate("/learn")}>
+        <button className="mission-close" onClick={() => navigate("/languages")}>
           <X size={24} />
         </button>
         <div className="mission-progress-bar">
@@ -170,11 +167,9 @@ function TifinaghMission1() {
               
               <div className="vocab-grid">
                 {tifinaghSymbols.map((sym, idx) => (
-                  <div key={idx} className="vocab-card" style={{alignItems: 'center', textAlign: 'center'}}>
-                    <button className="vocab-audio-btn" onClick={() => playAudio(sym.pronunciation)}>
-                      <Volume2 size={20} />
-                    </button>
-                    <div className="vocab-word" style={{fontSize: '4rem', margin: '20px 0'}}>{sym.symbol}</div>
+                  <div key={idx} className="vocab-card tifinagh-card-override" style={{alignItems: 'center', textAlign: 'center'}}>
+                    <AudioButton text={sym.pronunciation} overrideLang={lang === 'AR' ? 'AR' : 'FR'} />
+                    <div className="vocab-word" style={{fontSize: '4rem', margin: '20px 0', fontFamily: 'Tifinagh, sans-serif'}}>{sym.symbol}</div>
                     <div className="vocab-translations" style={{width: '100%', alignItems: 'center'}}>
                       <span className="vocab-trans-item" style={{fontSize: '1.2rem', fontWeight: 'bold'}}>
                         {sym.pronunciation}
@@ -286,7 +281,7 @@ function TifinaghMission1() {
                 </div>
               </div>
 
-              <button className="mission-btn" style={{marginTop: '40px'}} onClick={() => navigate("/learn")}>
+              <button className="mission-btn" style={{marginTop: '40px'}} onClick={() => navigate("/languages")}>
                 <CheckCircle size={20} />
                 {lang === "FR" ? "Retour à l'accueil" : lang === "AR" ? "العودة للرئيسية" : "Return to Hub"}
               </button>
