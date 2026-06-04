@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { 
   Star, MapPin, Clock, Heart, Share2, ArrowLeft, 
   ChevronRight, Utensils, Building2, Mountain, 
-  Sun, Camera, Award, Users, Phone, Globe,
-  Navigation, Calendar, DollarSign, Wifi, 
+  Sun, Camera, Award, Phone,
+  Navigation, DollarSign, 
   Wind, Waves, Bike
 } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
@@ -24,7 +24,7 @@ import hidden2 from "../../../assets/cities/Agadir/hidden2.png";
 
 function Agadir() {
   const navigate = useNavigate();
-  const { t, lang, isRTL } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState("activities");
   const [scrolled, setScrolled] = useState(false);

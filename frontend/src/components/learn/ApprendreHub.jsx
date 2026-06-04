@@ -1,157 +1,107 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { MessageCircle, Compass, Coffee, MapPin, ArrowRight } from 'lucide-react';
-import { useLanguage } from '../accueil/LanguageContext';
-import { loadProgress } from './data/gamificationEngine';
-
-import LearnHero from './components/LearnHero';
-import StatsBar from './components/StatsBar';
-import DailyCard from './components/DailyCard';
-import ThemeToggle from './components/ThemeToggle';
-import './apprendre.css';
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { MessageCircle, Type, Compass, ArrowRight } from "lucide-react";
+import { useLanguage } from "../accueil/LanguageContext";
+import "./apprendre.css";
 
 const ApprendreHub = () => {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const navigate = useNavigate();
-  const [stats, setStats] = useState(null);
-  
+
   useEffect(() => {
-    const progress = loadProgress();
-    setStats(progress.stats);
+    window.scrollTo(0, 0);
   }, []);
 
-  if (!stats) return <div className="ap-loading">Loading...</div>;
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 24 }
+    },
+  };
 
   return (
-    <div className="ap-root">
-      <div className="ap-container">
-        
-        {/* ─── HERO: Emotional first impression ─── */}
-        <LearnHero 
-          kickerText="Your Travel Companion"
-          title="Discover Morocco through its languages and culture"
-          description="Learn the words, sounds, and traditions that will transform your journey from sightseeing into a genuine cultural experience."
-        >
-          <StatsBar stats={stats} />
-        </LearnHero>
+    <div className={`apprendre-foundation ${isRTL ? "rtl" : "ltr"}`}>
+      <motion.div 
+        className="apprendre-hero"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <span className="apprendre-badge">Amudux Learning</span>
+        <h1 className="apprendre-title">{t("learnHeroTitle")}</h1>
+        <p className="apprendre-subtitle">
+          {t("learnHeroCopy")}
+        </p>
+      </motion.div>
 
-        {/* ─── MAIN LEARNING PATHS: 3 pillars ─── */}
-        <section className="ap-section">
-          <div className="ap-grid ap-grid--3">
-            
-            {/* Darija */}
-            <button 
-              className="ap-card ap-card--path ap-animate ap-animate-1" 
-              onClick={() => navigate('/languages/darija')}
-              aria-label="Learn Darija"
-            >
-              <div className="ap-card__icon ap-card__icon--orange">
-                <MessageCircle size={22} />
-              </div>
-              <div className="ap-card__eyebrow">Language</div>
-              <h3 className="ap-card__title">Learn Darija</h3>
-              <p className="ap-card__desc">
-                Speak like a local. Essential phrases, conversations, and vocabulary for every moment of your trip.
-              </p>
-              <div className="ap-card__cta">
-                Begin learning <ArrowRight size={15} />
-              </div>
-            </button>
-            
-            {/* Tifinagh */}
-            <button 
-              className="ap-card ap-card--path ap-animate ap-animate-2" 
-              onClick={() => navigate('/languages/tifinagh')}
-              aria-label="Learn Tifinagh"
-            >
-              <div className="ap-card__icon ap-card__icon--blue">
-                <Compass size={22} />
-              </div>
-              <div className="ap-card__eyebrow">Script</div>
-              <h3 className="ap-card__title">Learn Tifinagh</h3>
-              <p className="ap-card__desc">
-                Read the ancient Amazigh alphabet. Decode the signs, monuments, and inscriptions you'll encounter.
-              </p>
-              <div className="ap-card__cta">
-                Start reading <ArrowRight size={15} />
-              </div>
-            </button>
-            
-            {/* Culture */}
-            <button 
-              className="ap-card ap-card--path ap-animate ap-animate-3" 
-              onClick={() => navigate('/languages/culture')}
-              aria-label="Culture & Travel Tips"
-            >
-              <div className="ap-card__icon ap-card__icon--green">
-                <Coffee size={22} />
-              </div>
-              <div className="ap-card__eyebrow">Culture</div>
-              <h3 className="ap-card__title">Culture & Tips</h3>
-              <p className="ap-card__desc">
-                Understand the customs, etiquette, and traditions that will earn you respect and genuine connections.
-              </p>
-              <div className="ap-card__cta">
-                Explore culture <ArrowRight size={15} />
-              </div>
-            </button>
+      <motion.div 
+        className="apprendre-cards-container"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Darija Card */}
+        <motion.div className="apprendre-card darija-card" variants={itemVariants}>
+          <div className="card-header">
+            <div className="card-icon-wrapper darija-icon">
+              <MessageCircle size={32} strokeWidth={1.5} />
+            </div>
+            <span className="card-eyebrow">{t("learnPathDarijaEyebrow")}</span>
           </div>
-        </section>
+          <h2 className="card-title">{t("learnPathDarijaTitle")}</h2>
+          <p className="card-desc">{t("learnPathDarijaDesc")}</p>
+          <button className="card-btn group" onClick={() => navigate("/learn/darija/mission-1")}>
+            <span>{t("learnPathDarijaCTA")}</span>
+            <ArrowRight size={20} className={`transition-transform duration-300 ${isRTL ? "rotate-180 group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
+          </button>
+        </motion.div>
 
-        {/* ─── DAILY DISCOVERY ─── */}
-        <section className="ap-section ap-animate ap-animate-4">
-          <div className="ap-section__header">
-            <h2 className="ap-section__title">Today's Discovery</h2>
+        {/* Tifinagh Card */}
+        <motion.div className="apprendre-card tifinagh-card" variants={itemVariants}>
+          <div className="card-header">
+            <div className="card-icon-wrapper tifinagh-icon">
+              <Type size={32} strokeWidth={1.5} />
+            </div>
+            <span className="card-eyebrow">{t("learnPathTifinaghEyebrow")}</span>
           </div>
-          
-          <div className="ap-grid ap-grid--2">
-            <DailyCard 
-              icon={MessageCircle}
-              label="Phrase of the Day"
-              title="Bchhal hada?"
-              subtitle="How much is this? — Essential for navigating the souks."
-            />
-            <DailyCard 
-              icon={MapPin}
-              label="Did You Know"
-              title="The Art of Atay"
-              subtitle="Moroccan mint tea is poured from a height to create a light foam — a sign of hospitality."
-            />
+          <h2 className="card-title">{t("learnPathTifinaghTitle")}</h2>
+          <p className="card-desc">{t("learnPathTifinaghDesc")}</p>
+          <button className="card-btn group" onClick={() => navigate("/learn/tifinagh/mission-1")}>
+            <span>{t("learnPathTifinaghCTA")}</span>
+            <ArrowRight size={20} className={`transition-transform duration-300 ${isRTL ? "rotate-180 group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
+          </button>
+        </motion.div>
+
+        {/* Culture Card */}
+        <motion.div className="apprendre-card culture-card" variants={itemVariants}>
+          <div className="card-header">
+            <div className="card-icon-wrapper culture-icon">
+              <Compass size={32} strokeWidth={1.5} />
+            </div>
+            <span className="card-eyebrow">{t("learnPathTipsEyebrow")}</span>
           </div>
-        </section>
-        
-        {/* ─── QUICK ACCESS ─── */}
-        <section className="ap-section ap-animate ap-animate-4">
-          <div className="ap-section__header">
-            <h2 className="ap-section__title">Continue Practicing</h2>
-            <button className="ap-section__link" onClick={() => navigate('/languages/quizzes')}>
-              Quiz Arena <ArrowRight size={14} />
-            </button>
-          </div>
-          
-          <div className="ap-grid ap-grid--2">
-            <button className="ap-card" onClick={() => navigate('/languages/quizzes')}>
-              <div className="ap-card__icon ap-card__icon--orange">
-                <MessageCircle size={22} />
-              </div>
-              <h3 className="ap-card__title">Vocabulary Quiz</h3>
-              <p className="ap-card__desc">Test your Darija knowledge with quick challenges.</p>
-              <div className="ap-card__cta">Start quiz <ArrowRight size={15} /></div>
-            </button>
-            
-            <button className="ap-card" onClick={() => navigate('/languages/progress')}>
-              <div className="ap-card__icon ap-card__icon--blue">
-                <Compass size={22} />
-              </div>
-              <h3 className="ap-card__title">Your Progress</h3>
-              <p className="ap-card__desc">Track your journey, achievements, and learning streaks.</p>
-              <div className="ap-card__cta">View progress <ArrowRight size={15} /></div>
-            </button>
-          </div>
-        </section>
-      </div>
-      
-      <ThemeToggle />
+          <h2 className="card-title">{t("learnPathTipsTitle")}</h2>
+          <p className="card-desc">{t("learnPathTipsDesc")}</p>
+          <button className="card-btn group">
+            <span>{t("learnPathTipsCTA")}</span>
+            <ArrowRight size={20} className={`transition-transform duration-300 ${isRTL ? "rotate-180 group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
+          </button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

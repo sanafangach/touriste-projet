@@ -66,7 +66,7 @@ function Login() {
         try {
             if (isRegister) {
                 // Step 1: Sifet verification code
-                const response = await api.post('/register-send-code', {
+                await api.post('/register-send-code', {
                     name: formData.name,
                     email: formData.email,
                     password: formData.password,

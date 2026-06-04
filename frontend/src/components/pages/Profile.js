@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useLanguage } from "../accueil/LanguageContext";
-import { Camera, Save, User, Mail, Loader2, Phone, MapPin, Edit3, Award, Globe } from "lucide-react";
+import { Camera, Save, User, Mail, Loader2, Phone, MapPin, Edit3, Award } from "lucide-react";
 import "../css/Profile.css";
 
 function Profile() {

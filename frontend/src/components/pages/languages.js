@@ -1,26 +1,18 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "../learn/contexts/ThemeContext";
 
 import ApprendreHub from "../learn/ApprendreHub";
-import TifinaghPage from "../learn/TifinaghPage";
-import DarijaPage from "../learn/DarijaPage";
-import CulturePage from "../learn/CulturePage";
-import QuizzesPage from "../learn/QuizzesPage";
-import ProgressPage from "../learn/ProgressPage";
+import Mission1 from "../learn/darija/Mission1";
+import TifinaghMission1 from "../learn/tifinagh/Mission1";
 
 function Languages() {
   return (
-    <ThemeProvider>
-      <Routes>
-        <Route path="/" element={<ApprendreHub />} />
-        <Route path="tifinagh" element={<TifinaghPage />} />
-        <Route path="darija" element={<DarijaPage />} />
-        <Route path="culture" element={<CulturePage />} />
-        <Route path="quizzes" element={<QuizzesPage />} />
-        <Route path="progress" element={<ProgressPage />} />
-      </Routes>
-    </ThemeProvider>
+    <Routes>
+      <Route path="darija/mission-1" element={<Mission1 />} />
+      <Route path="tifinagh/mission-1" element={<TifinaghMission1 />} />
+      {/* Since we are starting fresh, all nested routes gracefully fall back to the Hub */}
+      <Route path="*" element={<ApprendreHub />} />
+    </Routes>
   );
 }
 

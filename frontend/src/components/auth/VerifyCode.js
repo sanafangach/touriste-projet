@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { CheckCircle, AlertCircle, Loader, ArrowRight } from 'lucide-react';
+import { CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../accueil/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';

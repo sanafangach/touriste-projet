@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, ArrowRight, AlertCircle, CheckCircle, Loader } from 'lucide-react';
+import { Mail, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '../accueil/LanguageContext';
 import api from '../../services/api';
 import '../css/Login.css';

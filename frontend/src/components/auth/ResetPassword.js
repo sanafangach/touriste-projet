@@ -83,7 +83,7 @@ function ResetPassword() {
         };
 
         verifyToken();
-    }, [token, email]);
+    }, [token, email, t.invalidLink]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

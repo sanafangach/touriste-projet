@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Shield, Trash2, UserCheck, LogOut, BarChart3, Crown, TrendingUp, UserPlus } from 'lucide-react';
+import { Users, Shield, Trash2, LogOut, BarChart3, Crown, TrendingUp, UserPlus } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../accueil/LanguageContext';
 import api from '../../services/api';
@@ -21,7 +21,7 @@ function AdminDashboard() {
             return;
         }
         fetchData();
-    }, []);
+    }, [isAdmin, navigate]);
 
     const fetchData = async () => {
         try {

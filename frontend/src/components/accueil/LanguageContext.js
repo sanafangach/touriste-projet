@@ -144,10 +144,6 @@ const translations = {
     learnDays: "Jours",
     learnJourney: "Parcours",
     learnAchievements: "Accomplissements",
-    learnMarkLearned: "Marquer comme acquis",
-    learnLevelRequired: "Niveau",
-    learnRequired: "requis",
-    learnRecommended: "Recommandé",
 
     // Tifinagh Hub
     learnTifinaghHeritage: "Héritage Tifinagh",
@@ -544,10 +540,6 @@ const translations = {
     learnDays: "Days",
     learnJourney: "Journey",
     learnAchievements: "Achievements",
-    learnMarkLearned: "Mark as learned",
-    learnLevelRequired: "Level",
-    learnRequired: "required",
-    learnRecommended: "Recommended",
 
     // Tifinagh Hub
     learnTifinaghHeritage: "Tifinagh Heritage",
@@ -944,10 +936,6 @@ const translations = {
     learnDays: "أيام",
     learnJourney: "المسار",
     learnAchievements: "الإنجازات",
-    learnMarkLearned: "تحديد كمكتسب",
-    learnLevelRequired: "مستوى",
-    learnRequired: "مطلوب",
-    learnRecommended: "مُوصى به",
 
     // Tifinagh Hub
     learnTifinaghHeritage: "تراث تيفيناغ",
