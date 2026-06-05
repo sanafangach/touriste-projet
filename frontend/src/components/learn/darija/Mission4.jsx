@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, Navigation, CheckCircle, ArrowRight, ArrowLeft, Award, BedDouble } from "lucide-react";
+import { X, Navigation, CheckCircle, ArrowRight, ArrowLeft, Award, Coffee } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css";
 
 const STEPS = ["intro", "vocab", "expressions", "conversation", "situations", "quiz", "recap", "completion"];
 
-function Mission3() {
+function Mission4() {
   const { t, lang, isRTL } = useLanguage();
   const navigate = useNavigate();
 
@@ -44,67 +44,67 @@ function Mission3() {
 
   // ── Vocabulary Data ──
   const vocabList = [
-    { word: t("darijaM3Vocab1Word"), trans: t("darijaM3Vocab1Trans"), ar: t("darijaM3Vocab1Arabic"), ctx: t("darijaM3Vocab1Context") },
-    { word: t("darijaM3Vocab2Word"), trans: t("darijaM3Vocab2Trans"), ar: t("darijaM3Vocab2Arabic"), ctx: t("darijaM3Vocab2Context") },
-    { word: t("darijaM3Vocab3Word"), trans: t("darijaM3Vocab3Trans"), ar: t("darijaM3Vocab3Arabic"), ctx: t("darijaM3Vocab3Context") },
-    { word: t("darijaM3Vocab4Word"), trans: t("darijaM3Vocab4Trans"), ar: t("darijaM3Vocab4Arabic"), ctx: t("darijaM3Vocab4Context") },
-    { word: t("darijaM3Vocab5Word"), trans: t("darijaM3Vocab5Trans"), ar: t("darijaM3Vocab5Arabic"), ctx: t("darijaM3Vocab5Context") },
-    { word: t("darijaM3Vocab6Word"), trans: t("darijaM3Vocab6Trans"), ar: t("darijaM3Vocab6Arabic"), ctx: t("darijaM3Vocab6Context") },
+    { word: t("darijaM4Vocab1Word"), trans: t("darijaM4Vocab1Trans"), ar: t("darijaM4Vocab1Arabic"), ctx: t("darijaM4Vocab1Context") },
+    { word: t("darijaM4Vocab2Word"), trans: t("darijaM4Vocab2Trans"), ar: t("darijaM4Vocab2Arabic"), ctx: t("darijaM4Vocab2Context") },
+    { word: t("darijaM4Vocab3Word"), trans: t("darijaM4Vocab3Trans"), ar: t("darijaM4Vocab3Arabic"), ctx: t("darijaM4Vocab3Context") },
+    { word: t("darijaM4Vocab4Word"), trans: t("darijaM4Vocab4Trans"), ar: t("darijaM4Vocab4Arabic"), ctx: t("darijaM4Vocab4Context") },
+    { word: t("darijaM4Vocab5Word"), trans: t("darijaM4Vocab5Trans"), ar: t("darijaM4Vocab5Arabic"), ctx: t("darijaM4Vocab5Context") },
+    { word: t("darijaM4Vocab6Word"), trans: t("darijaM4Vocab6Trans"), ar: t("darijaM4Vocab6Arabic"), ctx: t("darijaM4Vocab6Context") },
   ];
 
   // ── Expressions Data ──
   const expressionsList = [
-    { darija: t("darijaM3Exp1Darija"), trans: t("darijaM3Exp1Trans") },
-    { darija: t("darijaM3Exp2Darija"), trans: t("darijaM3Exp2Trans") },
-    { darija: t("darijaM3Exp3Darija"), trans: t("darijaM3Exp3Trans") },
-    { darija: t("darijaM3Exp4Darija"), trans: t("darijaM3Exp4Trans") }
+    { darija: t("darijaM4Exp1Darija"), trans: t("darijaM4Exp1Trans") },
+    { darija: t("darijaM4Exp2Darija"), trans: t("darijaM4Exp2Trans") },
+    { darija: t("darijaM4Exp3Darija"), trans: t("darijaM4Exp3Trans") },
+    { darija: t("darijaM4Exp4Darija"), trans: t("darijaM4Exp4Trans") }
   ];
 
   // ── Conversation Data ──
   const conversationData = [
-    { role: "traveler", name: t("darijaM3ConvRole1"), text: t("darijaM3ConvLine1"), trans: t("darijaM3ConvLine1Trans") },
-    { role: "receptionist", name: t("darijaM3ConvRole2"), text: t("darijaM3ConvLine2"), trans: t("darijaM3ConvLine2Trans") },
-    { role: "traveler", name: t("darijaM3ConvRole1"), text: t("darijaM3ConvLine3"), trans: t("darijaM3ConvLine3Trans") },
-    { role: "receptionist", name: t("darijaM3ConvRole2"), text: t("darijaM3ConvLine4"), trans: t("darijaM3ConvLine4Trans") },
-    { role: "traveler", name: t("darijaM3ConvRole1"), text: t("darijaM3ConvLine5"), trans: t("darijaM3ConvLine5Trans") },
-    { role: "receptionist", name: t("darijaM3ConvRole2"), text: t("darijaM3ConvLine6"), trans: t("darijaM3ConvLine6Trans") },
-    { role: "traveler", name: t("darijaM3ConvRole1"), text: t("darijaM3ConvLine7"), trans: t("darijaM3ConvLine7Trans") }
+    { role: "traveler", name: t("darijaM4ConvRole1"), text: t("darijaM4ConvLine1"), trans: t("darijaM4ConvLine1Trans") },
+    { role: "waiter", name: t("darijaM4ConvRole2"), text: t("darijaM4ConvLine2"), trans: t("darijaM4ConvLine2Trans") },
+    { role: "traveler", name: t("darijaM4ConvRole1"), text: t("darijaM4ConvLine3"), trans: t("darijaM4ConvLine3Trans") },
+    { role: "waiter", name: t("darijaM4ConvRole2"), text: t("darijaM4ConvLine4"), trans: t("darijaM4ConvLine4Trans") },
+    { role: "traveler", name: t("darijaM4ConvRole1"), text: t("darijaM4ConvLine5"), trans: t("darijaM4ConvLine5Trans") },
+    { role: "traveler", name: t("darijaM4ConvRole1"), text: t("darijaM4ConvLine6"), trans: t("darijaM4ConvLine6Trans") },
+    { role: "waiter", name: t("darijaM4ConvRole2"), text: t("darijaM4ConvLine7"), trans: t("darijaM4ConvLine7Trans") }
   ];
 
   // ── Situations Data ──
   const situationsData = [
     {
-      q: t("darijaM3Sit1Q"),
-      options: [t("darijaM3Sit1A1"), t("darijaM3Sit1A2")],
+      q: t("darijaM4Sit1Q"),
+      options: [t("darijaM4Sit1A1"), t("darijaM4Sit1A2")],
       correctIdx: 0,
-      feedbackCorrect: t("darijaM3Sit1FeedbackCorrect"),
-      feedbackWrong: t("darijaM3Sit1FeedbackWrong"),
+      feedbackCorrect: t("darijaM4Sit1FeedbackCorrect"),
+      feedbackWrong: t("darijaM4Sit1FeedbackWrong"),
     },
     {
-      q: t("darijaM3Sit2Q"),
-      options: [t("darijaM3Sit2A1"), t("darijaM3Sit2A2")],
+      q: t("darijaM4Sit2Q"),
+      options: [t("darijaM4Sit2A1"), t("darijaM4Sit2A2")],
       correctIdx: 1,
-      feedbackCorrect: t("darijaM3Sit2FeedbackCorrect"),
-      feedbackWrong: t("darijaM3Sit2FeedbackWrong"),
+      feedbackCorrect: t("darijaM4Sit2FeedbackCorrect"),
+      feedbackWrong: t("darijaM4Sit2FeedbackWrong"),
     }
   ];
 
   // ── Quiz Data ──
   const quizData = [
     {
-      q: t("darijaM3QuizQ1"),
-      options: [t("darijaM3QuizQ1O1"), t("darijaM3QuizQ1O2"), t("darijaM3QuizQ1O3")],
-      answer: 0
-    },
-    {
-      q: t("darijaM3QuizQ2"),
-      options: [t("darijaM3QuizQ2O1"), t("darijaM3QuizQ2O2"), t("darijaM3QuizQ2O3")],
+      q: t("darijaM4QuizQ1"),
+      options: [t("darijaM4QuizQ1O1"), t("darijaM4QuizQ1O2"), t("darijaM4QuizQ1O3")],
       answer: 1
     },
     {
-      q: t("darijaM3QuizQ3"),
-      options: [t("darijaM3QuizQ3O1"), t("darijaM3QuizQ3O2"), t("darijaM3QuizQ3O3")],
-      answer: 2
+      q: t("darijaM4QuizQ2"),
+      options: [t("darijaM4QuizQ2O1"), t("darijaM4QuizQ2O2"), t("darijaM4QuizQ2O3")],
+      answer: 0
+    },
+    {
+      q: t("darijaM4QuizQ3"),
+      options: [t("darijaM4QuizQ3O1"), t("darijaM4QuizQ3O2"), t("darijaM4QuizQ3O3")],
+      answer: 1
     }
   ];
 
@@ -173,10 +173,10 @@ function Mission3() {
           {step === "intro" && (
             <div className="intro-step">
               <div className="intro-icon">
-                <BedDouble size={40} />
+                <Coffee size={40} />
               </div>
-              <h1 className="intro-title">{t("darijaM3Title")}</h1>
-              <p className="intro-desc">{t("darijaM3IntroDesc")}</p>
+              <h1 className="intro-title">{t("darijaM4Title")}</h1>
+              <p className="intro-desc">{t("darijaM4IntroDesc")}</p>
               <button className="mission-btn" onClick={handleNext}>
                 {lang === "FR" ? "Commencer la mission" : lang === "AR" ? "ابدأ المهمة" : "Start Mission"}
               </button>
@@ -188,8 +188,8 @@ function Mission3() {
               ══════════════════════════════════════════ */}
           {step === "vocab" && (
             <div>
-              <h2 className="step-title">{t("darijaM3VocabTitle")}</h2>
-              <p className="step-subtitle">{t("darijaM3VocabDesc")}</p>
+              <h2 className="step-title">{t("darijaM4VocabTitle")}</h2>
+              <p className="step-subtitle">{t("darijaM4VocabDesc")}</p>
 
               <div className="vocab-grid">
                 {vocabList.map((item, idx) => (
@@ -213,8 +213,8 @@ function Mission3() {
               ══════════════════════════════════════════ */}
           {step === "expressions" && (
             <div>
-              <h2 className="step-title">{t("darijaM3ExpTitle")}</h2>
-              <p className="step-subtitle">{t("darijaM3ExpDesc")}</p>
+              <h2 className="step-title">{t("darijaM4ExpTitle")}</h2>
+              <p className="step-subtitle">{t("darijaM4ExpDesc")}</p>
 
               <div className="expressions-list">
                 {expressionsList.map((exp, idx) => (
@@ -235,8 +235,8 @@ function Mission3() {
               ══════════════════════════════════════════ */}
           {step === "conversation" && (
             <div>
-              <h2 className="step-title">{t("darijaM3ConvTitle")}</h2>
-              <p className="step-subtitle">{t("darijaM3ConvDesc")}</p>
+              <h2 className="step-title">{t("darijaM4ConvTitle")}</h2>
+              <p className="step-subtitle">{t("darijaM4ConvDesc")}</p>
 
               <div className="conversation-container">
                 {conversationData.map((msg, idx) => (
@@ -263,9 +263,9 @@ function Mission3() {
             const currentSit = situationsData[currentSituationIndex];
             return (
               <div>
-                <h2 className="step-title" style={{ textAlign: "center" }}>{t("darijaM3SitTitle")}</h2>
+                <h2 className="step-title" style={{ textAlign: "center" }}>{t("darijaM4SitTitle")}</h2>
                 <p className="step-subtitle" style={{ textAlign: "center" }}>
-                  {t("darijaM3SitDesc")} ({currentSituationIndex + 1}/{situationsData.length})
+                  {t("darijaM4SitDesc")} ({currentSituationIndex + 1}/{situationsData.length})
                 </p>
 
                 <div className="quiz-card" style={{ maxWidth: 600, margin: "0 auto" }}>
@@ -317,7 +317,7 @@ function Mission3() {
               ══════════════════════════════════════════ */}
           {step === "quiz" && (
             <div>
-              <h2 className="step-title" style={{ textAlign: "center" }}>{t("darijaM3QuizTitle")}</h2>
+              <h2 className="step-title" style={{ textAlign: "center" }}>{t("darijaM4QuizTitle")}</h2>
               <p className="step-subtitle" style={{ textAlign: "center" }}>
                 {lang === "FR" ? `Question ${quizQuestionIndex + 1} sur ${quizData.length}` :
                   lang === "AR" ? `السؤال ${quizQuestionIndex + 1} من ${quizData.length}` :
@@ -367,26 +367,20 @@ function Mission3() {
               <div className="intro-icon">
                 <Navigation size={40} />
               </div>
-              <h2 className="step-title">{t("darijaM3RecapTitle")}</h2>
-              <p className="step-subtitle">{t("darijaM3RecapDesc")}</p>
+              <h2 className="step-title">{t("darijaM4RecapTitle")}</h2>
+              <p className="step-subtitle">{t("darijaM4RecapDesc")}</p>
 
               <div className="expressions-list" style={{ maxWidth: 500, margin: "0 auto 40px", textAlign: "left" }}>
                 <div className="expression-card">
                   <div className="expression-content">
-                    <div className="exp-darija">3ndi rizirvassyon</div>
-                    <div className="exp-trans">{lang === "FR" ? "J'ai une réservation" : lang === "AR" ? "لدي حجز" : "I have a reservation"}</div>
+                    <div className="exp-darija">Bghit atay.</div>
+                    <div className="exp-trans">{lang === "FR" ? "Je voudrais du thé." : lang === "AR" ? "أريد شاياً." : "I would like tea."}</div>
                   </div>
                 </div>
                 <div className="expression-card">
                   <div className="expression-content">
-                    <div className="exp-darija">Fin kayn l'bit dyali?</div>
-                    <div className="exp-trans">{lang === "FR" ? "Où est ma chambre ?" : lang === "AR" ? "أين هي غرفتي؟" : "Where is my room?"}</div>
-                  </div>
-                </div>
-                <div className="expression-card">
-                  <div className="expression-content">
-                    <div className="exp-darija">M3ash l'ftour?</div>
-                    <div className="exp-trans">{lang === "FR" ? "À quelle heure le petit déjeuner ?" : lang === "AR" ? "في أي وقت الفطور؟" : "What time is breakfast?"}</div>
+                    <div className="exp-darija">3afak l7sab.</div>
+                    <div className="exp-trans">{lang === "FR" ? "L'addition s'il vous plaît." : lang === "AR" ? "الحساب من فضلك." : "The bill please."}</div>
                   </div>
                 </div>
               </div>
@@ -406,43 +400,22 @@ function Mission3() {
               <div className="completion-icon">
                 <Award size={48} />
               </div>
-              <h1 className="intro-title">{t("darijaM3CompleteTitle")}</h1>
-              <p className="intro-desc">{t("darijaM3CompleteDesc")}</p>
+              <h1 className="intro-title">{t("darijaM4CompleteTitle")}</h1>
+              <p className="intro-desc">{t("darijaM4CompleteDesc")}</p>
 
-              {/* Progression */}
-              <div style={{ marginTop: '30px', textAlign: 'left', background: 'var(--learn-surface)', padding: '20px', borderRadius: '16px', border: '1px solid var(--learn-border)', width: '100%', maxWidth: '400px' }}>
-                <h4 style={{ marginBottom: '16px', fontSize: '1.1rem', fontWeight: 600 }}>
-                  {lang === "FR" ? "Progression" : lang === "AR" ? "التقدم" : "Progression"}
-                </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
-                    <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 1 : Aéroport" : lang === "AR" ? "المهمة 1: المطار" : "Mission 1: Airport"} ✅</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
-                    <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 2 : Trajet en Taxi" : lang === "AR" ? "المهمة 2: رحلة التاكسي" : "Mission 2: Taxi Journey"} ✅</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
-                    <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 3 : Arrivée à l'Hôtel" : lang === "AR" ? "المهمة 3: تسجيل الدخول في الفندق" : "Mission 3: Hotel Check-In"} ✅</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-text)' }}>
-                    <span style={{ fontSize: '1.2rem', width: 20, textAlign: 'center' }}>🔓</span>
-                    <span style={{ fontWeight: 500 }}>{t("darijaM3NextUnlock")}</span>
-                  </div>
+              <div className="next-mission-card">
+                <div className="next-icon">
+                  <span style={{ fontSize: "1.5rem" }}>🔓</span>
+                </div>
+                <div className="next-info">
+                  <h4>{t("darijaM4NextUnlock")}</h4>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '16px', marginTop: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
-                  {lang === "FR" ? "Accueil" : lang === "AR" ? "الرئيسية" : "Hub"}
-                </button>
-                <button className="mission-btn" onClick={() => navigate("/languages/darija/mission-4")}>
-                  {lang === "FR" ? "Commencer la Mission 4" : lang === "AR" ? "ابدأ المهمة 4" : "Start Mission 4"}
-                  <ArrowRight size={20} style={{ marginLeft: 8 }} />
-                </button>
-              </div>
+              <button className="mission-btn" style={{ marginTop: 40 }} onClick={() => navigate("/languages")}>
+                <CheckCircle size={20} />
+                {lang === "FR" ? "Retour à l'accueil" : lang === "AR" ? "العودة للرئيسية" : "Return to Hub"}
+              </button>
             </div>
           )}
         </motion.div>
@@ -465,4 +438,4 @@ function Mission3() {
   );
 }
 
-export default Mission3;
+export default Mission4;
