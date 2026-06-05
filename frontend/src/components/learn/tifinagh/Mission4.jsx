@@ -336,13 +336,13 @@ function Mission4() {
                     <div key={idx} style={{
                       width: '60px', height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '2rem', fontWeight: 'bold', borderRadius: '12px',
-                      background: assembledIds[idx] ? 'var(--learn-surface)' : 'rgba(59,130,246,0.08)',
-                      border: `2px solid ${assembledIds[idx] ? 'var(--learn-primary)' : 'var(--learn-border)'}`,
-                      color: assembledIds[idx] ? 'var(--learn-primary)' : 'var(--learn-text-secondary)',
+                      background: idx < assembledIds.length ? 'var(--learn-surface)' : 'rgba(59,130,246,0.08)',
+                      border: `2px solid ${idx < assembledIds.length ? 'var(--learn-primary)' : 'var(--learn-border)'}`,
+                      color: idx < assembledIds.length ? 'var(--learn-primary)' : 'var(--learn-text-secondary)',
                       fontFamily: '"Noto Sans Tifinagh", "Segoe UI Symbol", "Arial Unicode MS", sans-serif',
                       transition: 'all 0.2s'
                     }}>
-                      {assembledIds[idx] ? buildingLetters.find(l => l.id === assembledIds[idx]).char : "?"}
+                      {idx < assembledIds.length ? buildingLetters.find(l => l.id === assembledIds[idx]).char : "?"}
                     </div>
                   ))}
                 </div>

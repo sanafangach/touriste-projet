@@ -13,6 +13,7 @@
   --learn-border: var(--apprendre-border, #e2e8f0);
   --learn-accent: #d97706; /* Refined Orange for Darija */
   --learn-accent-rgb: 217, 119, 6;
+  --learn-primary: var(--learn-accent);
   --learn-success: #10b981;
   --learn-success-rgb: 16, 185, 129;
   --learn-error: #ef4444;
@@ -26,11 +27,12 @@
 
 html.dark {
   --learn-bg: var(--apprendre-bg, #030712);
-  --learn-text: var(--apprendre-text-primary, #f9fafb);
-  --learn-text-secondary: var(--apprendre-text-secondary, #9ca3af);
+  --learn-text: var(--apprendre-text-primary, #E5E7EB);
+  --learn-text-secondary: var(--apprendre-text-secondary, #CBD5E1);
   --learn-surface: var(--apprendre-surface, #111827);
   --learn-card-bg: var(--apprendre-surface, #111827);
   --learn-border: var(--apprendre-border, #1f2937);
+  --learn-primary: var(--learn-accent);
   --learn-success: #34d399;
   --learn-error: #f87171;
   --learn-warning: #f59e0b;
@@ -490,10 +492,11 @@ html.dark .vocab-card:hover {
   border-radius: 16px;
   padding: 20px;
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
+  color: var(--learn-text);
 }
 
 .quiz-option:focus-visible {
@@ -592,12 +595,14 @@ html.dark .vocab-card:hover {
 
 .next-info h4 {
   font-size: 1.2rem;
+  font-weight: 700;
   margin-bottom: 4px;
 }
 
 .next-info p {
   color: var(--learn-text-secondary);
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 /* ==============================
