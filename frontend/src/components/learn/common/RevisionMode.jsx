@@ -19,13 +19,36 @@ function RevisionMode({ lang, isRTL, onClose }) {
 
   const currentItem = shuffled[currentIndex];
 
+  const extractTifinagh = (word) => {
+    if (!word) return "";
+    const match = word.match(/[\u2D30-\u2D7F]+/g);
+    return match ? match.join(" ") : word;
+  };
+
+  const extractMeaning = (item) => {
+    if (item.translation) return item.translation;
+    const word = item.word || "";
+    const parenMatch = word.match(/\(([^)]+)\)/);
+    if (parenMatch) {
+      const content = parenMatch[1];
+      const parts = content.split(/[—–-]/);
+      return parts[parts.length - 1].trim();
+    }
+    return "";
+  };
+
   const resetQuiz = () => {
     setQuizAnswer(null);
     setQuizFeedback(null);
   };
 
   const generateOptions = (correct, count = 4) => {
-    const others = allItems.filter(i => i.id !== correct.id);
+    const isQuiz = mode === "quiz";
+    const others = allItems.filter(i => {
+      if (i.id === correct.id) return false;
+      const label = isQuiz ? extractMeaning(i) : extractTifinagh(i.word);
+      return label && label.trim().length > 0;
+    });
     const shuffledOthers = [...others].sort(() => Math.random() - 0.5).slice(0, count - 1);
     const options = [...shuffledOthers, correct].sort(() => Math.random() - 0.5);
     return options;
@@ -236,21 +259,22 @@ function RevisionMode({ lang, isRTL, onClose }) {
         border: "2px solid var(--apprendre-border)", padding: "32px 24px",
         marginBottom: "20px"
       }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: "1rem", fontWeight: 500, color: "var(--apprendre-text-secondary)", marginBottom: "12px" }}>
-            {mode === "quiz"
-              ? ui("Que signifie ce mot ?", "What does this word mean?", "ماذا تعني هذه الكلمة؟")
-              : ui("Quel mot correspond ?", "Which word matches?", "أي كلمة تطابق؟")}
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: "1rem", fontWeight: 500, color: "var(--apprendre-text-secondary)", marginBottom: "12px" }}>
+              {mode === "quiz"
+                ? ui("Que signifie ce mot ?", "What does this word mean?", "ماذا تعني هذه الكلمة؟")
+                : ui("Quel mot correspond ?", "Which word matches?", "أي كلمة تطابق؟")}
+            </div>
+            <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "var(--apprendre-text-primary)" }}>
+              {mode === "quiz" ? extractTifinagh(currentItem.word) : extractMeaning(currentItem)}
+            </div>
           </div>
-          <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "var(--apprendre-text-primary)" }}>
-            {mode === "quiz" ? currentItem.word : currentItem.translation}
-          </div>
-        </div>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {quizOptions.map((opt, idx) => {
-          const label = mode === "quiz" ? opt.translation : opt.word;
+          const label = mode === "quiz" ? extractMeaning(opt) : extractTifinagh(opt.word);
+          if (!label || label.trim().length === 0) return null;
           let btnClass = "quiz-option";
           if (quizAnswer === idx) {
             btnClass += quizFeedback === "correct" ? " correct" : " wrong";

@@ -62,6 +62,7 @@ const buildingLetters = [
 ];
 const buildingTarget = "ⴰⵎⴰⵏ";
 const buildingLatin = "Aman";
+const buildingMeaning = { en: "Water", fr: "Eau", ar: "ماء" };
 
 const recognitionData = [
   {
@@ -341,36 +342,91 @@ function Mission4() {
                 {lang === "FR" ? `Assemblez "${buildingLatin}" en sélectionnant les symboles dans le bon ordre.` : lang === "AR" ? `قم بتجميع "${buildingLatin}" عن طريق اختيار الرموز بالترتيب الصحيح.` : `Assemble "${buildingLatin}" by selecting the symbols in the correct order.`}
               </p>
 
-              {/* Target Word Display */}
-              <div className="chat-container" style={{ textAlign: 'center', background: 'rgba(59,130,246,0.03)', padding: '24px', borderRadius: '16px', marginBottom: '20px' }}>
-                <div style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '16px', color: 'var(--learn-text-secondary)' }}>
-                  {lang === "FR" ? "Construisez :" : lang === "AR" ? "قم ببناء:" : "Build:"}
+              {/* Target Info */}
+              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                <div style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--learn-text)' }}>
+                  {buildingLatin}
                 </div>
+                <div style={{ fontSize: '1rem', color: 'var(--learn-text-secondary)', marginTop: '4px' }}>
+                  {lang === "FR" ? buildingMeaning.fr : lang === "AR" ? buildingMeaning.ar : buildingMeaning.en}
+                </div>
+              </div>
+
+              {/* Progress Indicator */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', justifyContent: 'center' }}>
+                <div style={{ flex: 1, maxWidth: '300px', height: '8px', background: 'var(--learn-border)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(assembledIds.length / buildingLetters.length) * 100}%` }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    style={{ height: '100%', background: 'linear-gradient(90deg, var(--learn-primary), #38bdf8)', borderRadius: '4px' }}
+                  />
+                </div>
+                <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--learn-text-secondary)', whiteSpace: 'nowrap' }}>
+                  {assembledIds.length}/{buildingLetters.length}
+                  {assembledIds.length < buildingLetters.length
+                    ? (lang === "FR" ? ` — ${buildingLetters.length - assembledIds.length} restant` : lang === "AR" ? ` — ${buildingLetters.length - assembledIds.length} متبقي` : ` — ${buildingLetters.length - assembledIds.length} left`)
+                    : (lang === "FR" ? " — Complet" : lang === "AR" ? " — مكتمل" : " — Complete")}
+                </span>
+              </div>
+
+              {/* Slot Display */}
+              <div className="chat-container" style={{ textAlign: 'center', background: 'rgba(59,130,246,0.03)', padding: '24px', borderRadius: '16px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                  {buildingLetters.map((_, idx) => (
-                    <div key={idx} style={{
-                      width: '60px', height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '2rem', fontWeight: 'bold', borderRadius: '12px',
-                      background: idx < assembledIds.length ? 'var(--learn-surface)' : 'rgba(59,130,246,0.08)',
-                      border: `2px solid ${idx < assembledIds.length ? 'var(--learn-primary)' : 'var(--learn-border)'}`,
-                      color: idx < assembledIds.length ? 'var(--learn-primary)' : 'var(--learn-text-secondary)',
-                      fontFamily: '"Noto Sans Tifinagh", "Segoe UI Symbol", "Arial Unicode MS", sans-serif',
-                      transition: 'all 0.2s'
-                    }}>
-                      {idx < assembledIds.length ? buildingLetters.find(l => l.id === assembledIds[idx]).char : "?"}
-                    </div>
-                  ))}
+                  {buildingLetters.map((_, idx) => {
+                    const filled = idx < assembledIds.length;
+                    return (
+                      <motion.div
+                        key={idx}
+                        animate={filled ? { scale: [0.8, 1.05, 1], borderColor: 'var(--learn-primary)' } : { scale: 1, borderColor: 'var(--learn-border)' }}
+                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                        style={{
+                          width: '60px', height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: '2rem', fontWeight: 'bold', borderRadius: '12px',
+                          background: filled ? 'var(--learn-surface)' : 'rgba(59,130,246,0.08)',
+                          border: `2px solid ${filled ? 'var(--learn-primary)' : 'var(--learn-border)'}`,
+                          color: filled ? 'var(--learn-primary)' : 'var(--learn-text-secondary)',
+                          fontFamily: '"Noto Sans Tifinagh", "Segoe UI Symbol", "Arial Unicode MS", sans-serif',
+                          transition: 'all 0.2s'
+                        }}
+                      >
+                        {filled ? buildingLetters.find(l => l.id === assembledIds[idx]).char : "?"}
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Letter Pool */}
-              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '12px' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--learn-text-secondary)' }}>
+                  {lang === "FR" ? "Sélectionnez la lettre suivante :" : lang === "AR" ? "اختر الحرف التالي:" : "Select the next letter:"}
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
                 {shuffledPool.filter(l => !assembledIds.includes(l.id)).map((letter) => (
-                  <button key={letter.id} className="quiz-option tifinagh-script" onClick={() => handleBuildingSelect(letter)}
-                    style={{ fontSize: '2rem', padding: '16px 24px', fontFamily: '"Noto Sans Tifinagh", "Segoe UI Symbol", "Arial Unicode MS", sans-serif' }}>
+                  <motion.button
+                    key={letter.id}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="quiz-option tifinagh-script"
+                    onClick={() => handleBuildingSelect(letter)}
+                    style={{
+                      fontSize: '2rem', padding: '16px 24px',
+                      fontFamily: '"Noto Sans Tifinagh", "Segoe UI Symbol", "Arial Unicode MS", sans-serif',
+                      cursor: buildingFeedback === 'correct' ? 'default' : 'pointer',
+                      opacity: buildingFeedback === 'correct' ? 0.5 : 1
+                    }}
+                    disabled={buildingFeedback === 'correct'}
+                  >
                     {letter.char}
-                  </button>
+                  </motion.button>
                 ))}
+                {shuffledPool.filter(l => !assembledIds.includes(l.id)).length === 0 && (
+                  <span style={{ fontSize: '0.95rem', color: 'var(--learn-text-secondary)', fontStyle: 'italic' }}>
+                    {lang === "FR" ? "Toutes les lettres placées ! Vérifiez votre réponse." : lang === "AR" ? "تم وضع جميع الحروف! تحقق من إجابتك." : "All letters placed! Check your answer."}
+                  </span>
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -386,10 +442,30 @@ function Mission4() {
                 </button>
               </div>
 
-              <div className={`quiz-feedback ${buildingFeedback ? (buildingFeedback === 'correct' ? 'correct-text' : 'wrong-text') : ''}`} style={{ marginTop: '20px' }}>
-                {buildingFeedback === 'correct' && (lang === "FR" ? `Parfait ! Vous avez écrit "${buildingLatin}" !` : lang === "AR" ? `ممتاز! لقد كتبت "${buildingLatin}"!` : `Perfect! You wrote "${buildingLatin}"!`)}
-                {buildingFeedback === 'wrong' && (lang === "FR" ? `Pas tout à fait. Essayez l'ordre ⴰ → ⵎ → ⴰ → ⵏ.` : lang === "AR" ? `ليس تمامًا. جرب الترتيب ⴰ ← ⵎ ← ⴰ ← ⵏ.` : `Not quite. Try the order ⴰ → ⵎ → ⴰ → ⵏ.`)}
-              </div>
+              {/* Feedback */}
+              <AnimatePresence>
+                {buildingFeedback && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className={`quiz-feedback ${buildingFeedback === 'correct' ? 'correct-text' : 'wrong-text'}`}
+                    style={{ marginTop: '20px' }}
+                  >
+                    {buildingFeedback === 'correct' && (
+                      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                        <CheckCircle size={20} />
+                        {lang === "FR" ? `Parfait ! Vous avez écrit "${buildingLatin}" !` : lang === "AR" ? `ممتاز! لقد كتبت "${buildingLatin}"!` : `Perfect! You wrote "${buildingLatin}"!`}
+                      </span>
+                    )}
+                    {buildingFeedback === 'wrong' && (
+                      <span>
+                        {lang === "FR" ? `Pas tout à fait. Essayez l'ordre ⴰ → ⵎ → ⴰ → ⵏ.` : lang === "AR" ? `ليس تمامًا. جرب الترتيب ⴰ ← ⵎ ← ⴰ ← ⵏ.` : `Not quite. Try the order ⴰ → ⵎ → ⴰ → ⵏ.`}
+                      </span>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
 
