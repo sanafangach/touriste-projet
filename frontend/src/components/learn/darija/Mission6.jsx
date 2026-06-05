@@ -5,6 +5,7 @@ import { X, ArrowRight, ArrowLeft, MessageCircle, CheckCircle, Map, Award, Lock 
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css";
+import { useAutoProgress } from "../../../utils/progress";
 
 const vocabData = [
   { darija: "Fin kayn...?", arabicText: "فين كاين...؟", fr: "Où se trouve...?", en: "Where is...?", ar: "أين يوجد...؟", context: { en: "The essential phrase for asking locations. 'Fin kayn l'hotel?'", fr: "La phrase essentielle pour demander un lieu. 'Fin kayn l'hotel?'", ar: "العبارة الأساسية للسؤال عن الأماكن. 'فين كاين الفندق؟'" } },
@@ -93,6 +94,7 @@ function Mission6() {
   useEffect(() => { window.scrollTo(0, 0); }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => { if (currentStepIndex < STEPS.length - 1) setCurrentStepIndex(prev => prev + 1); };

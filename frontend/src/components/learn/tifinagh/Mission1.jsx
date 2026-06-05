@@ -5,6 +5,7 @@ import { X, CheckCircle, Type, ArrowRight, ArrowLeft, Award, Lock } from "lucide
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "../darija/mission.css"; // Reuse the mission styling system
+import { useAutoProgress } from "../../../utils/progress";
 
 const tifinaghSymbols = [
   { symbol: "ⴰ", pronunciation: "a", name: "Yaz", ar: "أ", context: { en: "The sound 'a'. It often looks like a circle.", fr: "Le son 'a'. Ressemble souvent à un cercle.", ar: "صوت 'أ'. غالباً ما يشبه الدائرة." } },
@@ -50,6 +51,7 @@ function TifinaghMission1() {
   }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => {

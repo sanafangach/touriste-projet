@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { X, ArrowRight, ArrowLeft, CheckCircle, MapPin, Award, Compass, Lock } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import "../darija/mission.css"; // Reuse styling, but with tifinagh-theme class
+import { useAutoProgress } from "../../../utils/progress";
 
 const signsData = [
   { 
@@ -173,6 +174,7 @@ function Mission3() {
   useEffect(() => { window.scrollTo(0, 0); }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => { if (currentStepIndex < STEPS.length - 1) setCurrentStepIndex(prev => prev + 1); };

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import "../darija/mission.css";
+import { useAutoProgress } from "../../../utils/progress";
 
 const STEPS = [
   "intro",
@@ -187,6 +188,7 @@ function TifinaghMission2() {
   }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
   const selectedSymbol = reviewSymbols[selectedReviewSymbol];
 

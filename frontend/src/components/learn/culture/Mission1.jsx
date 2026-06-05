@@ -6,6 +6,7 @@ import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import CultureCompletion from "./CultureCompletion";
 import "../darija/mission.css";
+import { useAutoProgress } from "../../../utils/progress";
 
 const STEPS = ["intro", "tea", "situations", "etiquette", "quiz", "completion"];
 
@@ -29,6 +30,7 @@ function CultureMission1() {
   }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const ui = (fr, en, ar) => (lang === "FR" ? fr : lang === "AR" ? ar : en);

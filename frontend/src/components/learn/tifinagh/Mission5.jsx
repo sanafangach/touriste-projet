@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { X, ArrowRight, ArrowLeft, CheckCircle, Compass, Heart, Mountain, Landmark, Globe, Music, Users, Library, Store, Map, Star, Book, Building2, Sparkles, Trophy } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import "../darija/mission.css";
+import { useAutoProgress } from "../../../utils/progress";
 
 const symbolsData = [
   {
@@ -245,6 +246,7 @@ function Mission5() {
   useEffect(() => { window.scrollTo(0, 0); }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => { if (currentStepIndex < STEPS.length - 1) setCurrentStepIndex(prev => prev + 1); };

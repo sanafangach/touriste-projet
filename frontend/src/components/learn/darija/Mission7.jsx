@@ -5,6 +5,7 @@ import { X, ArrowRight, ArrowLeft, MessageCircle, CheckCircle, ShieldAlert, Awar
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css";
+import { useAutoProgress } from "../../../utils/progress";
 
 const vocabData = [
   { darija: "Mosa3ada", arabicText: "مساعدة", fr: "Aide", en: "Help", ar: "مساعدة", context: { en: "The most important word for emergencies.", fr: "Le mot le plus important pour les urgences.", ar: "أهم كلمة في حالات الطوارئ." } },
@@ -91,6 +92,7 @@ function Mission7() {
   useEffect(() => { window.scrollTo(0, 0); }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => { if (currentStepIndex < STEPS.length - 1) setCurrentStepIndex(prev => prev + 1); };

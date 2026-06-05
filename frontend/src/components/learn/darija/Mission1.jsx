@@ -5,6 +5,7 @@ import { X, ArrowRight, ArrowLeft, MessageCircle, Plane, Lock, Award } from "luc
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css"; // We created this file for Mission specific CSS
+import { useAutoProgress } from "../../../utils/progress";
 
 const vocabData = [
   { darija: "Salam", arabicText: "سلام", fr: "Bonjour", en: "Hello", ar: "سلام", context: { en: "Used as a friendly greeting when meeting anyone.", fr: "Utilisé comme salutation amicale pour tout le monde.", ar: "يستخدم كتحية ودية عند لقاء أي شخص." } },
@@ -72,6 +73,7 @@ function Mission1() {
   }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => {

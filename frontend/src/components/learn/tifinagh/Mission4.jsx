@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { X, ArrowRight, ArrowLeft, MessageCircle, CheckCircle, Award, Droplets, BookOpen, RefreshCw, Undo2, Lock } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import "../darija/mission.css"; // Reuse styling, but with tifinagh-theme class
+import { useAutoProgress } from "../../../utils/progress";
 
 const vocabData = [
   { tifinagh: "ⴰⵣⵓⵍ", latin: "Azul", meaning: { en: "Hello / Welcome", fr: "Bonjour / Bienvenue", ar: "مرحباً / أهلاً" }, context: { en: "The most common Amazigh greeting.", fr: "La salutation amazighe la plus courante.", ar: "التحية الأمازيغية الأكثر شيوعاً." } },
@@ -133,6 +134,7 @@ function Mission4() {
   useEffect(() => { window.scrollTo(0, 0); }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => { if (currentStepIndex < STEPS.length - 1) setCurrentStepIndex(prev => prev + 1); };

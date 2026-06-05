@@ -5,6 +5,7 @@ import { X, Navigation, CheckCircle, ArrowRight, ArrowLeft, Award, Coffee, User,
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css";
+import { useAutoProgress } from "../../../utils/progress";
 
 const STEPS = ["intro", "vocab", "expressions", "conversation", "situations", "quiz", "recap", "completion"];
 
@@ -39,6 +40,7 @@ function Mission4() {
   }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => {

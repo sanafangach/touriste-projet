@@ -5,6 +5,7 @@ import { X, ArrowRight, ArrowLeft, MessageCircle, CheckCircle, ShoppingBag, Awar
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css";
+import { useAutoProgress } from "../../../utils/progress";
 
 const vocabData = [
   { darija: "Souk", arabicText: "سوق", fr: "Marché", en: "Market", ar: "سوق", context: { en: "The traditional open-air market. Every city has one.", fr: "Le marché traditionnel en plein air. Chaque ville en a un.", ar: "السوق التقليدي المفتوح. كل مدينة لديها واحد." } },
@@ -92,6 +93,7 @@ function Mission5() {
   useEffect(() => { window.scrollTo(0, 0); }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const handleNext = () => { if (currentStepIndex < STEPS.length - 1) setCurrentStepIndex(prev => prev + 1); };

@@ -9,6 +9,7 @@ import {
 import { useLanguage } from "../../accueil/LanguageContext";
 import CultureFinalCompletion from "./CultureFinalCompletion";
 import "../darija/mission.css";
+import { useAutoProgress } from "../../../utils/progress";
 
 const STEPS = ["intro", "aware", "transport", "scams", "emergency", "scenarios", "challenge", "quiz", "completion"];
 
@@ -50,6 +51,7 @@ function CultureMission6() {
   }, [currentStepIndex]);
 
   const step = STEPS[currentStepIndex];
+  useAutoProgress(step);
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
   const ui = (fr, en, ar) => (lang === "FR" ? fr : lang === "AR" ? ar : en);
