@@ -319,10 +319,15 @@ function Mission1() {
                 </div>
               </div>
 
-              <button className="mission-btn" style={{marginTop: '40px'}} onClick={() => navigate("/languages")}>
-                <CheckCircle size={20} />
-                {lang === "FR" ? "Retour à l'accueil" : lang === "AR" ? "العودة للرئيسية" : "Return to Hub"}
-              </button>
+              <div style={{ display: 'flex', gap: '16px', marginTop: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
+                  {lang === "FR" ? "Accueil" : lang === "AR" ? "الرئيسية" : "Hub"}
+                </button>
+                <button className="mission-btn" onClick={() => navigate("/languages/darija/mission-2")}>
+                  {lang === "FR" ? "Commencer la Mission 2" : lang === "AR" ? "ابدأ المهمة 2" : "Start Mission 2"}
+                  <ArrowRight size={20} style={{ marginLeft: 8 }} />
+                </button>
+              </div>
             </div>
           )}
         </motion.div>

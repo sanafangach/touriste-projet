@@ -311,6 +311,9 @@ function Mission7() {
                   {lang === "FR" ? "Retourner au tableau de bord" : lang === "AR" ? "العودة إلى لوحة القيادة" : "Return to Dashboard"}
                   <ArrowRight size={24} style={{ marginLeft: 8 }} />
                 </button>
+                <button className="mission-btn secondary" onClick={() => navigate("/languages")} style={{ fontSize: '1.1rem', padding: '14px 28px' }}>
+                  {lang === "FR" ? "Explorer un autre parcours" : lang === "AR" ? "استكشاف مسار آخر" : "Explore Another Learning Path"}
+                </button>
               </div>
             </div>
           )}

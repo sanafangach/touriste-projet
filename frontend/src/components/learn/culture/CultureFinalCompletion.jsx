@@ -58,7 +58,7 @@ function CultureFinalCompletion() {
           {t("cultureM6ReturnHub")}
           <ArrowRight size={20} />
         </button>
-        <button className="mission-btn secondary" onClick={() => navigate("/")}>
+        <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
           {t("cultureM6ExploreOther")}
         </button>
       </div>
