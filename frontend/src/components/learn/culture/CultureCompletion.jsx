@@ -9,7 +9,9 @@ const MISSION_TITLE_KEYS = [
   "cultureM3Title",
   "cultureM4Title",
   "cultureM5Title",
-  "cultureM6Title"
+  "cultureM6Title",
+  "cultureM7Title",
+  "cultureM8Title"
 ];
 
 function CultureCompletion({ missionNumber, completeTitle, completeDesc, nextMissionTitle, nextMissionPath }) {

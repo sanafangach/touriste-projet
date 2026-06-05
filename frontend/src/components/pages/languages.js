@@ -18,6 +18,8 @@ import CultureMission1 from "../learn/culture/Mission1";
 import CultureMission2 from "../learn/culture/Mission2";
 import CultureMission3 from "../learn/culture/Mission3";
 import CultureMission4 from "../learn/culture/Mission4";
+import CultureMission5 from "../learn/culture/Mission5";
+import CultureMission6 from "../learn/culture/Mission6";
 
 function Languages() {
   return (
@@ -38,6 +40,8 @@ function Languages() {
       <Route path="culture/mission-2" element={<CultureMission2 />} />
       <Route path="culture/mission-3" element={<CultureMission3 />} />
       <Route path="culture/mission-4" element={<CultureMission4 />} />
+      <Route path="culture/mission-5" element={<CultureMission5 />} />
+      <Route path="culture/mission-6" element={<CultureMission6 />} />
       {/* Since we are starting fresh, all nested routes gracefully fall back to the Hub */}
       <Route path="*" element={<ApprendreHub />} />
     </Routes>
