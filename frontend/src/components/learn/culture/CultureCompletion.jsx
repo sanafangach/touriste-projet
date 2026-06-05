@@ -23,16 +23,16 @@ function CultureCompletion({ missionNumber, completeTitle, completeDesc, nextMis
       <div className="completion-icon">
         <Award size={48} />
       </div>
-      <h1 className="intro-title">{completeTitle} ✅</h1>
+      <h1 className="intro-title">{completeTitle}</h1>
       <p className="intro-desc">{completeDesc}</p>
 
       {nextMissionPath && nextMissionTitle && (
         <div
           className="next-mission-card"
-          style={{ cursor: "pointer", borderColor: "#15803d", opacity: 1, maxWidth: 460, width: "100%" }}
+          style={{ cursor: "pointer", borderColor: "var(--learn-success)", opacity: 1, maxWidth: 460, width: "100%" }}
           onClick={() => navigate(nextMissionPath)}
         >
-          <div className="next-icon" style={{ background: "#15803d", color: "white" }}>
+          <div className="next-icon" style={{ background: "var(--learn-success)", color: "#ffffff" }}>
             <Lock size={24} />
           </div>
           <div className="next-info">
@@ -55,24 +55,24 @@ function CultureCompletion({ missionNumber, completeTitle, completeDesc, nextMis
             const num = idx + 1;
             if (num <= missionNumber) {
               return (
-                <div key={num} style={{ display: "flex", alignItems: "center", gap: 12, color: "#10b981" }}>
+                <div key={num} className="completion-progress-done" style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <CheckCircle size={20} />
-                  <span style={{ fontWeight: 500 }}>{t(key)} ✅</span>
+                  <span style={{ fontWeight: 500 }}>{t(key)}</span>
                 </div>
               );
             }
             if (num === missionNumber + 1) {
               return (
-                <div key={num} style={{ display: "flex", alignItems: "center", gap: 12, color: "var(--learn-text)" }}>
-                  <span style={{ fontSize: "1.2rem", width: 20, textAlign: "center" }}>🔓</span>
+                <div key={num} className="completion-progress-current" style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <Lock size={20} />
                   <span style={{ fontWeight: 500 }}>{t(key)}</span>
                 </div>
               );
             }
             return (
-              <div key={num} style={{ display: "flex", alignItems: "center", gap: 12, color: "var(--learn-text-secondary)", opacity: 0.7 }}>
+              <div key={num} className="completion-progress-locked" style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <Lock size={20} />
-                <span>{t(key)} 🔒</span>
+                <span>{t(key)}</span>
               </div>
             );
           })}

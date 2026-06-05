@@ -49,6 +49,15 @@ const quizData = [
 
 const STEPS = ["intro", "vocab", "expressions", "conversation", "quiz", "completion"];
 
+const STEP_LABELS = {
+  intro: { FR: "Introduction", EN: "Introduction", AR: "مقدمة" },
+  vocab: { FR: "Vocabulaire", EN: "Vocabulary", AR: "مفردات" },
+  expressions: { FR: "Expressions", EN: "Expressions", AR: "عبارات" },
+  conversation: { FR: "Conversation", EN: "Conversation", AR: "محادثة" },
+  quiz: { FR: "Quiz", EN: "Quiz", AR: "اختبار" },
+  completion: { FR: "Terminé", EN: "Completed", AR: "اكتملت" },
+};
+
 function Mission1() {
   const { lang, isRTL } = useLanguage();
   const navigate = useNavigate();
@@ -130,6 +139,12 @@ function Mission1() {
           transition={{ duration: 0.3 }}
           className="mission-content"
         >
+          {/* Step Indicator */}
+          <div className="step-indicator">
+            <span className="step-indicator-number">{lang === "FR" ? "Étape" : lang === "AR" ? "خطوة" : "Step"} {currentStepIndex + 1}/{STEPS.length}</span>
+            <span className="step-indicator-name">{STEP_LABELS[STEPS[currentStepIndex]][lang]}</span>
+          </div>
+
           {/* STEP 0: INTRO */}
           {step === "intro" && (
             <div className="intro-step">
@@ -310,7 +325,7 @@ function Mission1() {
                 style={{ cursor: 'pointer', borderColor: 'var(--learn-accent)' }}
                 onClick={() => navigate("/languages/darija/mission-2")}
               >
-                <div className="next-icon" style={{ background: 'var(--learn-accent)', color: 'white' }}>
+                <div className="next-icon" style={{ background: 'var(--learn-accent)', color: '#ffffff' }}>
                   <Lock size={24} />
                 </div>
                 <div className="next-info">
@@ -320,12 +335,12 @@ function Mission1() {
               </div>
 
               <div style={{ display: 'flex', gap: '16px', marginTop: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
-                  {lang === "FR" ? "Accueil" : lang === "AR" ? "الرئيسية" : "Hub"}
-                </button>
                 <button className="mission-btn" onClick={() => navigate("/languages/darija/mission-2")}>
-                  {lang === "FR" ? "Commencer la Mission 2" : lang === "AR" ? "ابدأ المهمة 2" : "Start Mission 2"}
+                  {lang === "FR" ? "Continuer vers la Mission 2" : lang === "AR" ? "متابعة إلى المهمة 2" : "Continue to Mission 2"}
                   <ArrowRight size={20} style={{ marginLeft: 8 }} />
+                </button>
+                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
+                  {lang === "FR" ? "Retour au parcours d'apprentissage" : lang === "AR" ? "العودة إلى مسار التعلم" : "Return to Learning Hub"}
                 </button>
               </div>
             </div>

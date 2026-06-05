@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   X, ArrowRight, ArrowLeft, CheckCircle, XCircle, UtensilsCrossed, AlertTriangle,
-  Award, Users, Hand, Share2, Heart, MapPin, Sparkles, Coffee, ChefHat
+  Award, Users, Hand, Share2, Heart, MapPin, Sparkles, Coffee, ChefHat, Home
 } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import CultureCompletion from "./CultureCompletion";
@@ -69,12 +69,12 @@ function CultureMission3() {
   ];
 
   const dishesData = [
-    { emoji: "🍲", title: t("cultureM3Dish1Title"), desc: t("cultureM3Dish1Desc"), significance: t("cultureM3Dish1Significance"), region: t("cultureM3Dish1Region") },
-    { emoji: "🥘", title: t("cultureM3Dish2Title"), desc: t("cultureM3Dish2Desc"), significance: t("cultureM3Dish2Significance"), region: t("cultureM3Dish2Region") },
-    { emoji: "🥧", title: t("cultureM3Dish3Title"), desc: t("cultureM3Dish3Desc"), significance: t("cultureM3Dish3Significance"), region: t("cultureM3Dish3Region") },
-    { emoji: "🍜", title: t("cultureM3Dish4Title"), desc: t("cultureM3Dish4Desc"), significance: t("cultureM3Dish4Significance"), region: t("cultureM3Dish4Region") },
-    { emoji: "🍖", title: t("cultureM3Dish5Title"), desc: t("cultureM3Dish5Desc"), significance: t("cultureM3Dish5Significance"), region: t("cultureM3Dish5Region") },
-    { emoji: "🍵", title: t("cultureM3Dish6Title"), desc: t("cultureM3Dish6Desc"), significance: t("cultureM3Dish6Significance"), region: t("cultureM3Dish6Region") }
+    { icon: "ChefHat", title: t("cultureM3Dish1Title"), desc: t("cultureM3Dish1Desc"), significance: t("cultureM3Dish1Significance"), region: t("cultureM3Dish1Region") },
+    { icon: "UtensilsCrossed", title: t("cultureM3Dish2Title"), desc: t("cultureM3Dish2Desc"), significance: t("cultureM3Dish2Significance"), region: t("cultureM3Dish2Region") },
+    { icon: "ChefHat", title: t("cultureM3Dish3Title"), desc: t("cultureM3Dish3Desc"), significance: t("cultureM3Dish3Significance"), region: t("cultureM3Dish3Region") },
+    { icon: "UtensilsCrossed", title: t("cultureM3Dish4Title"), desc: t("cultureM3Dish4Desc"), significance: t("cultureM3Dish4Significance"), region: t("cultureM3Dish4Region") },
+    { icon: "UtensilsCrossed", title: t("cultureM3Dish5Title"), desc: t("cultureM3Dish5Desc"), significance: t("cultureM3Dish5Significance"), region: t("cultureM3Dish5Region") },
+    { icon: "Coffee", title: t("cultureM3Dish6Title"), desc: t("cultureM3Dish6Desc"), significance: t("cultureM3Dish6Significance"), region: t("cultureM3Dish6Region") }
   ];
 
   const etiquetteCards = [
@@ -86,7 +86,7 @@ function CultureMission3() {
 
   const situationsData = [
     {
-      emoji: "🏠",
+      icon: "Home",
       q: t("cultureM3Sit1Q"),
       options: [t("cultureM3Sit1A1"), t("cultureM3Sit1A2"), t("cultureM3Sit1A3")],
       correctIdx: 1,
@@ -94,7 +94,7 @@ function CultureMission3() {
       feedbackWrong: t("cultureM3Sit1FeedbackWrong")
     },
     {
-      emoji: "🍵",
+      icon: "Coffee",
       q: t("cultureM3Sit2Q"),
       options: [t("cultureM3Sit2A1"), t("cultureM3Sit2A2"), t("cultureM3Sit2A3")],
       correctIdx: 1,
@@ -102,7 +102,7 @@ function CultureMission3() {
       feedbackWrong: t("cultureM3Sit2FeedbackWrong")
     },
     {
-      emoji: "🥘",
+      icon: "UtensilsCrossed",
       q: t("cultureM3Sit3Q"),
       options: [t("cultureM3Sit3A1"), t("cultureM3Sit3A2"), t("cultureM3Sit3A3")],
       correctIdx: 1,
@@ -155,6 +155,10 @@ function CultureMission3() {
     { q: t("cultureM3QuizQ4"), options: [t("cultureM3QuizQ4O1"), t("cultureM3QuizQ4O2"), t("cultureM3QuizQ4O3")], answer: 1 },
     { q: t("cultureM3QuizQ5"), options: [t("cultureM3QuizQ5O1"), t("cultureM3QuizQ5O2"), t("cultureM3QuizQ5O3")], answer: 0 }
   ];
+
+  const iconMap = {
+    ChefHat, UtensilsCrossed, Coffee, Home
+  };
 
   const handleSituationAnswer = (idx) => {
     if (situationFeedback) return;
@@ -218,7 +222,7 @@ function CultureMission3() {
           style={{
             padding: "16px 20px", borderRadius: 16, marginTop: 16,
             background: feedback === "correct" ? "rgba(52,199,89,0.1)" : "rgba(255,59,48,0.1)",
-            color: feedback === "correct" ? "#34c759" : "#ff3b30",
+            color: feedback === "correct" ? "var(--learn-success)" : "var(--learn-error)",
             display: "flex", flexDirection: "column", gap: 12
           }}
         >
@@ -282,7 +286,7 @@ function CultureMission3() {
               </div>
               <h1 className="intro-title">{t("cultureM3Title")}</h1>
               <div className="culture-intro-hero">
-                <Sparkles size={20} style={{ color: "#15803d", marginBottom: 8 }} />
+                <Sparkles size={20} style={{ color: "var(--learn-accent)", marginBottom: 8 }} />
                 <p style={{ margin: 0, fontStyle: "italic" }}>{t("cultureM3IntroStory")}</p>
               </div>
               <p className="intro-desc">{t("cultureM3IntroDesc")}</p>
@@ -320,8 +324,8 @@ function CultureMission3() {
                     style={{ flex: "1 1 80px", maxWidth: 100, padding: 14, cursor: "pointer", textAlign: "center" }}
                     onClick={() => setSelectedDish(idx)}
                   >
-                    <span style={{ fontSize: "1.6rem" }}>{dish.emoji}</span>
-                    <div style={{ fontSize: "0.7rem", fontWeight: 600, marginTop: 6, color: selectedDish === idx ? "#15803d" : "var(--learn-text-secondary)" }}>
+                    {(() => { const Ic = iconMap[dish.icon]; return <Ic size={24} />; })()}
+                    <div style={{ fontSize: "0.7rem", fontWeight: 600, marginTop: 6, color: selectedDish === idx ? "var(--learn-accent)" : "var(--learn-text-secondary)" }}>
                       {dish.title}
                     </div>
                   </button>
@@ -336,8 +340,8 @@ function CultureMission3() {
                 style={{ padding: 28 }}
               >
                 <div style={{ textAlign: "center", marginBottom: 16 }}>
-                  <span style={{ fontSize: "3.5rem" }}>{currentDish.emoji}</span>
-                  <h3 style={{ margin: "12px 0 0", fontSize: "1.35rem", fontWeight: 700, color: "#15803d" }}>{currentDish.title}</h3>
+                  {(() => { const Ic = iconMap[currentDish.icon]; return <Ic size={56} />; })()}
+                  <h3 style={{ margin: "12px 0 0", fontSize: "1.35rem", fontWeight: 700, color: "var(--learn-accent)" }}>{currentDish.title}</h3>
                   <div style={{ fontSize: "0.85rem", color: "var(--learn-text-secondary)", marginTop: 4 }}>{currentDish.region}</div>
                 </div>
                 <p style={{ lineHeight: 1.65, margin: "0 0 14px", color: "var(--learn-text)" }}>{currentDish.desc}</p>
@@ -345,7 +349,7 @@ function CultureMission3() {
                   padding: "14px 18px", borderRadius: 12,
                   background: "rgba(21,128,61,0.06)", border: "1px solid rgba(21,128,61,0.2)"
                 }}>
-                  <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#15803d", marginBottom: 6, textTransform: "uppercase" }}>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--learn-accent)", marginBottom: 6, textTransform: "uppercase" }}>
                     {ui("Signification culturelle", "Cultural significance", "الأهمية الثقافية")}
                   </div>
                   <p style={{ margin: 0, fontSize: "0.92rem", lineHeight: 1.6, color: "var(--learn-text-secondary)" }}>{currentDish.significance}</p>
@@ -368,8 +372,8 @@ function CultureMission3() {
                     style={{ flex: "1 1 120px", maxWidth: 150, padding: 16, cursor: "pointer", textAlign: "center" }}
                     onClick={() => setSelectedEtiquette(idx)}
                   >
-                    <div style={{ color: "#15803d", display: "flex", justifyContent: "center", marginBottom: 8 }}>{card.icon}</div>
-                    <div style={{ fontSize: "0.78rem", fontWeight: 600, color: selectedEtiquette === idx ? "#15803d" : "var(--learn-text-secondary)" }}>
+                    <div style={{ color: "var(--learn-accent)", display: "flex", justifyContent: "center", marginBottom: 8 }}>{card.icon}</div>
+                    <div style={{ fontSize: "0.78rem", fontWeight: 600, color: selectedEtiquette === idx ? "var(--learn-accent)" : "var(--learn-text-secondary)" }}>
                       {card.title}
                     </div>
                   </button>
@@ -384,17 +388,17 @@ function CultureMission3() {
                 style={{ padding: 28 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-                  <div style={{ color: "#15803d", background: "rgba(21,128,61,0.1)", padding: 12, borderRadius: 12 }}>
+                  <div style={{ color: "var(--learn-accent)", background: "rgba(21,128,61,0.1)", padding: 12, borderRadius: 12 }}>
                     {currentEtiq.icon}
                   </div>
-                  <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "#15803d" }}>{currentEtiq.title}</h3>
+                  <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "var(--learn-accent)" }}>{currentEtiq.title}</h3>
                 </div>
                 <p style={{ lineHeight: 1.65, margin: "0 0 16px", color: "var(--learn-text)" }}>{currentEtiq.desc}</p>
                 <div style={{
                   padding: "14px 18px", borderRadius: 12,
                   background: "rgba(21,128,61,0.06)", border: "1px solid rgba(21,128,61,0.2)"
                 }}>
-                  <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#15803d", marginBottom: 6, textTransform: "uppercase" }}>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--learn-accent)", marginBottom: 6, textTransform: "uppercase" }}>
                     {ui("En pratique", "In practice", "عملياً")}
                   </div>
                   <p style={{ margin: 0, fontSize: "0.92rem", lineHeight: 1.6, color: "var(--learn-text-secondary)" }}>{currentEtiq.context}</p>
@@ -415,7 +419,7 @@ function CultureMission3() {
 
                 <div className="vocab-card culture-card-override" style={{ padding: "32px 24px", maxWidth: 600, margin: "0 auto" }}>
                   <div style={{ textAlign: "center", marginBottom: 16 }}>
-                    <span style={{ fontSize: "3rem" }}>{currentSit.emoji}</span>
+                    {(() => { const Ic = iconMap[currentSit.icon]; return <Ic size={48} />; })()}
                   </div>
                   <div className="quiz-question">{currentSit.q}</div>
                   <div className="quiz-options">
@@ -454,7 +458,7 @@ function CultureMission3() {
           {step === "mistakes" && (
             <div>
               <h2 className="step-title" style={{ textAlign: "center" }}>
-                <AlertTriangle size={24} style={{ display: "inline", verticalAlign: "middle", marginRight: 8, color: "#15803d" }} />
+                <AlertTriangle size={24} style={{ display: "inline", verticalAlign: "middle", marginRight: 8, color: "var(--learn-accent)" }} />
                 {t("cultureM3MistakesTitle")}
               </h2>
               <p className="step-subtitle" style={{ textAlign: "center" }}>{t("cultureM3MistakesDesc")}</p>
@@ -479,7 +483,7 @@ function CultureMission3() {
                 className="vocab-card culture-card-override"
                 style={{ padding: 24, maxWidth: 600, margin: "0 auto" }}
               >
-                <h3 style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: 12, color: "#15803d" }}>
+                <h3 style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: 12, color: "var(--learn-accent)" }}>
                   {mistakesData[expandedMistake].title}
                 </h3>
                 <p className="culture-mistake-why">{mistakesData[expandedMistake].why}</p>
@@ -488,16 +492,16 @@ function CultureMission3() {
                   padding: "12px 16px", borderRadius: 12,
                   background: "rgba(255,59,48,0.08)", border: "1px solid rgba(255,59,48,0.2)"
                 }}>
-                  <XCircle size={20} style={{ color: "#ff3b30", flexShrink: 0, marginTop: 2 }} />
-                  <span style={{ color: "#ff3b30", fontWeight: 500, lineHeight: 1.5 }}>{mistakesData[expandedMistake].bad}</span>
+                  <XCircle size={20} style={{ color: "var(--learn-error)", flexShrink: 0, marginTop: 2 }} />
+                  <span style={{ color: "var(--learn-error)", fontWeight: 500, lineHeight: 1.5 }}>{mistakesData[expandedMistake].bad}</span>
                 </div>
                 <div style={{
                   display: "flex", alignItems: "flex-start", gap: 12,
                   padding: "12px 16px", borderRadius: 12,
                   background: "rgba(52,199,89,0.08)", border: "1px solid rgba(52,199,89,0.2)"
                 }}>
-                  <CheckCircle size={20} style={{ color: "#34c759", flexShrink: 0, marginTop: 2 }} />
-                  <span style={{ color: "#34c759", fontWeight: 500, lineHeight: 1.5 }}>{mistakesData[expandedMistake].good}</span>
+                  <CheckCircle size={20} style={{ color: "var(--learn-success)", flexShrink: 0, marginTop: 2 }} />
+                  <span style={{ color: "var(--learn-success)", fontWeight: 500, lineHeight: 1.5 }}>{mistakesData[expandedMistake].good}</span>
                 </div>
               </motion.div>
             </div>
@@ -519,10 +523,10 @@ function CultureMission3() {
                     transition={{ delay: idx * 0.06 }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 14 }}>
-                      <div style={{ color: "#15803d", background: "rgba(21,128,61,0.1)", padding: 10, borderRadius: 12 }}>
+                      <div style={{ color: "var(--learn-accent)", background: "rgba(21,128,61,0.1)", padding: 10, borderRadius: 12 }}>
                         {item.icon}
                       </div>
-                      <h3 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 700, color: "#15803d" }}>{item.title}</h3>
+                      <h3 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 700, color: "var(--learn-accent)" }}>{item.title}</h3>
                     </div>
                     <p style={{ margin: 0, lineHeight: 1.65, fontSize: "0.92rem", color: "var(--learn-text-secondary)" }}>{item.desc}</p>
                   </motion.div>
@@ -581,8 +585,8 @@ function CultureMission3() {
                   )}
                   {allDone && (
                     <div className="culture-challenge-reward">
-                      <Award size={32} style={{ color: "#15803d", marginBottom: 8 }} />
-                      <p style={{ margin: 0, fontWeight: 600, color: "#15803d" }}>{t("cultureM3ChallengeSuccess")}</p>
+                      <Award size={32} style={{ color: "var(--learn-accent)", marginBottom: 8 }} />
+                      <p style={{ margin: 0, fontWeight: 600, color: "var(--learn-accent)" }}>{t("cultureM3ChallengeSuccess")}</p>
                     </div>
                   )}
                 </div>

@@ -23,15 +23,15 @@ function CultureFinalCompletion() {
       <div className="completion-icon">
         <Award size={56} />
       </div>
-      <h1 className="intro-title">{t("cultureM6FinalTitle")} 🎉</h1>
+      <h1 className="intro-title">{t("cultureM6FinalTitle")}</h1>
       <p className="intro-desc">{t("cultureM6FinalDesc")}</p>
 
       <div style={{
         marginTop: 30, textAlign: "left", background: "var(--learn-surface)",
-        padding: 24, borderRadius: 16, border: "2px solid #15803d",
+        padding: 24, borderRadius: 16, border: "2px solid var(--learn-success)",
         width: "100%", maxWidth: 460
       }}>
-        <h4 style={{ marginBottom: 16, fontSize: "1.1rem", fontWeight: 700, color: "#15803d", textAlign: "center" }}>
+        <h4 style={{ marginBottom: 16, fontSize: "1.1rem", fontWeight: 700, color: "var(--learn-accent)", textAlign: "center" }}>
           {ui("Parcours Culturel Marocain", "Moroccan Culture Path", "المسار الثقافي المغربي")}
         </h4>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -39,15 +39,14 @@ function CultureFinalCompletion() {
             <div key={idx} style={{
               display: "flex", alignItems: "center", gap: 14,
               padding: "12px 16px", borderRadius: 12,
-              background: "rgba(21,128,61,0.06)", border: "1px solid rgba(21,128,61,0.15)"
+              background: "rgba(var(--learn-accent-rgb), 0.06)", border: "1px solid rgba(var(--learn-accent-rgb), 0.15)"
             }}>
-              <div style={{ color: "#10b981", flexShrink: 0 }}>
+              <div className="completion-check" style={{ flexShrink: 0 }}>
                 <CheckCircle size={22} />
               </div>
               <div style={{ fontWeight: 500, color: "var(--learn-text)", fontSize: "0.95rem" }}>
                 {t(mission.titleKey)}
               </div>
-              <span style={{ marginLeft: "auto", fontSize: "0.9rem" }}>✅</span>
             </div>
           ))}
         </div>

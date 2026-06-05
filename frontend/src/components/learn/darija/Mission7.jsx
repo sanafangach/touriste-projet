@@ -67,6 +67,16 @@ const quizData = [
 
 const STEPS = ["intro", "vocab", "expressions", "conversation", "situations", "quiz", "completion"];
 
+const STEP_LABELS = {
+  intro: { FR: "Introduction", EN: "Introduction", AR: "مقدمة" },
+  vocab: { FR: "Vocabulaire", EN: "Vocabulary", AR: "مفردات" },
+  expressions: { FR: "Expressions", EN: "Expressions", AR: "عبارات" },
+  conversation: { FR: "Conversation", EN: "Conversation", AR: "محادثة" },
+  situations: { FR: "Situations", EN: "Situations", AR: "مواقف" },
+  quiz: { FR: "Quiz", EN: "Quiz", AR: "اختبار" },
+  completion: { FR: "Terminé", EN: "Completed", AR: "اكتملت" },
+};
+
 function Mission7() {
   const { lang, isRTL } = useLanguage();
   const navigate = useNavigate();
@@ -123,6 +133,11 @@ function Mission7() {
 
       <AnimatePresence mode="wait">
         <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="mission-content">
+          {/* Step Indicator */}
+          <div className="step-indicator">
+            <span className="step-indicator-number">{lang === "FR" ? "Étape" : lang === "AR" ? "خطوة" : "Step"} {currentStepIndex + 1}/{STEPS.length}</span>
+            <span className="step-indicator-name">{STEP_LABELS[STEPS[currentStepIndex]][lang]}</span>
+          </div>
 
           {step === "intro" && (
             <div className="intro-step">
@@ -269,7 +284,7 @@ function Mission7() {
 
           {step === "completion" && (
             <div className="completion-step">
-              <div className="completion-icon" style={{ background: '#f59e0b', color: 'white', padding: '24px', borderRadius: '50%', boxShadow: '0 10px 25px rgba(245, 158, 11, 0.4)' }}>
+              <div className="completion-icon" style={{ background: 'var(--learn-accent)', padding: '24px', borderRadius: '50%', boxShadow: '0 10px 25px rgba(245, 158, 11, 0.4)' }}>
                 <Award size={64} />
               </div>
               <h1 className="intro-title" style={{ fontSize: '2.5rem', marginTop: '20px' }}>
@@ -282,8 +297,8 @@ function Mission7() {
               </p>
               
               {/* FINAL ROADMAP PROGRESSION */}
-              <div style={{ textAlign: 'left', background: 'var(--learn-surface)', padding: '24px', borderRadius: '20px', border: '2px solid #f59e0b', width: '100%', maxWidth: '450px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
-                <h4 style={{ marginBottom: '20px', fontSize: '1.3rem', fontWeight: 700, color: '#f59e0b', textAlign: 'center' }}>
+              <div style={{ textAlign: 'left', background: 'var(--learn-surface)', padding: '24px', borderRadius: '20px', border: '2px solid var(--learn-accent)', width: '100%', maxWidth: '450px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
+                <h4 style={{ marginBottom: '20px', fontSize: '1.3rem', fontWeight: 700, color: 'var(--learn-accent)', textAlign: 'center' }}>
                   {lang === "FR" ? "Parcours Darija Terminé" : lang === "AR" ? "تم إكمال مسار الدارجة" : "Darija Path Completed"}
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -296,7 +311,7 @@ function Mission7() {
                     { fr: "Mission 6 : Demander son Chemin", ar: "المهمة 6: طلب الاتجاهات", en: "Mission 6: Asking Directions" },
                     { fr: "Mission 7 : Urgences", ar: "المهمة 7: حالات الطوارئ", en: "Mission 7: Emergencies" }
                   ].map((mission, idx) => (
-                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#10b981', padding: '8px', background: 'rgba(16, 185, 129, 0.05)', borderRadius: '8px' }}>
+                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '16px', color: 'var(--learn-success)', padding: '8px', background: 'rgba(16, 185, 129, 0.05)', borderRadius: '8px' }}>
                       <CheckCircle size={22} fill="currentColor" color="white" />
                       <span style={{ fontWeight: 600, fontSize: '1.1rem' }}>
                         {lang === "FR" ? mission.fr : lang === "AR" ? mission.ar : mission.en}
@@ -307,12 +322,12 @@ function Mission7() {
               </div>
 
               <div style={{ display: 'flex', gap: '16px', marginTop: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <button className="mission-btn" onClick={() => navigate("/languages")} style={{ fontSize: '1.2rem', padding: '16px 32px' }}>
-                  {lang === "FR" ? "Retourner au tableau de bord" : lang === "AR" ? "العودة إلى لوحة القيادة" : "Return to Dashboard"}
-                  <ArrowRight size={24} style={{ marginLeft: 8 }} />
+                <button className="mission-btn" onClick={() => navigate("/languages")}>
+                  {lang === "FR" ? "Voir tous les parcours" : lang === "AR" ? "عرض جميع المسارات" : "Browse All Courses"}
+                  <ArrowRight size={20} style={{ marginLeft: 8 }} />
                 </button>
-                <button className="mission-btn secondary" onClick={() => navigate("/languages")} style={{ fontSize: '1.1rem', padding: '14px 28px' }}>
-                  {lang === "FR" ? "Explorer un autre parcours" : lang === "AR" ? "استكشاف مسار آخر" : "Explore Another Learning Path"}
+                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
+                  {lang === "FR" ? "Retour au parcours d'apprentissage" : lang === "AR" ? "العودة إلى مسار التعلم" : "Return to Learning Hub"}
                 </button>
               </div>
             </div>

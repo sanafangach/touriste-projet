@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, Navigation, CheckCircle, ArrowRight, ArrowLeft, Award, Coffee } from "lucide-react";
+import { X, Navigation, CheckCircle, ArrowRight, ArrowLeft, Award, Coffee, User, Lock } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css";
 
 const STEPS = ["intro", "vocab", "expressions", "conversation", "situations", "quiz", "recap", "completion"];
+
+const STEP_LABELS = {
+  intro: { FR: "Introduction", EN: "Introduction", AR: "مقدمة" },
+  vocab: { FR: "Vocabulaire", EN: "Vocabulary", AR: "مفردات" },
+  expressions: { FR: "Expressions", EN: "Expressions", AR: "عبارات" },
+  conversation: { FR: "Conversation", EN: "Conversation", AR: "محادثة" },
+  situations: { FR: "Situations", EN: "Situations", AR: "مواقف" },
+  quiz: { FR: "Quiz", EN: "Quiz", AR: "اختبار" },
+  recap: { FR: "Récapitulatif", EN: "Recap", AR: "ملخص" },
+  completion: { FR: "Terminé", EN: "Completed", AR: "اكتملت" },
+};
 
 function Mission4() {
   const { t, lang, isRTL } = useLanguage();
@@ -167,6 +178,12 @@ function Mission4() {
           transition={{ duration: 0.3 }}
           className="mission-content"
         >
+          {/* Step Indicator */}
+          <div className="step-indicator">
+            <span className="step-indicator-number">{lang === "FR" ? "Étape" : lang === "AR" ? "خطوة" : "Step"} {currentStepIndex + 1}/{STEPS.length}</span>
+            <span className="step-indicator-name">{STEP_LABELS[STEPS[currentStepIndex]][lang]}</span>
+          </div>
+
           {/* ══════════════════════════════════════════
               STEP 1 — Introduction
               ══════════════════════════════════════════ */}
@@ -242,7 +259,7 @@ function Mission4() {
                 {conversationData.map((msg, idx) => (
                   <div key={idx} className={`chat-bubble ${msg.role === "traveler" ? "user" : "driver"}`}>
                     <div className="chat-avatar">
-                      {msg.role === "traveler" ? "👨‍🦱" : "🤵"}
+                      <User size={18} className="chat-speaker-icon" />
                     </div>
                     <div className="chat-content">
                       <div className="chat-name">{msg.name}</div>
@@ -409,36 +426,36 @@ function Mission4() {
                   {lang === "FR" ? "Progression" : lang === "AR" ? "التقدم" : "Progression"}
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 1 : Aéroport" : lang === "AR" ? "المهمة 1: المطار" : "Mission 1: Airport"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 1 : Aéroport" : lang === "AR" ? "المهمة 1: المطار" : "Mission 1: Airport"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 2 : Trajet en Taxi" : lang === "AR" ? "المهمة 2: رحلة التاكسي" : "Mission 2: Taxi Journey"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 2 : Trajet en Taxi" : lang === "AR" ? "المهمة 2: رحلة التاكسي" : "Mission 2: Taxi Journey"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 3 : Arrivée à l'Hôtel" : lang === "AR" ? "المهمة 3: تسجيل الدخول في الفندق" : "Mission 3: Hotel Check-In"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 3 : Arrivée à l'Hôtel" : lang === "AR" ? "المهمة 3: تسجيل الدخول في الفندق" : "Mission 3: Hotel Check-In"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 4 : Restaurant & Café" : lang === "AR" ? "المهمة 4: مطعم ومقهى" : "Mission 4: Restaurant & Café"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 4 : Restaurant & Café" : lang === "AR" ? "المهمة 4: مطعم ومقهى" : "Mission 4: Restaurant & Café"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-text)' }}>
-                    <span style={{ fontSize: '1.2rem', width: 20, textAlign: 'center' }}>🔓</span>
+                  <div className="completion-progress-current" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Lock size={20} />
                     <span style={{ fontWeight: 500 }}>{t("darijaM4NextUnlock")}</span>
                   </div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '16px', marginTop: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
-                  {lang === "FR" ? "Accueil" : lang === "AR" ? "الرئيسية" : "Hub"}
-                </button>
                 <button className="mission-btn" onClick={() => navigate("/languages/darija/mission-5")}>
-                  {lang === "FR" ? "Commencer la Mission 5" : lang === "AR" ? "ابدأ المهمة 5" : "Start Mission 5"}
+                  {lang === "FR" ? "Continuer vers la Mission 5" : lang === "AR" ? "متابعة إلى المهمة 5" : "Continue to Mission 5"}
                   <ArrowRight size={20} style={{ marginLeft: 8 }} />
+                </button>
+                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
+                  {lang === "FR" ? "Retour au parcours d'apprentissage" : lang === "AR" ? "العودة إلى مسار التعلم" : "Return to Learning Hub"}
                 </button>
               </div>
             </div>

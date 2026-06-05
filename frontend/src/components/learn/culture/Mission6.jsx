@@ -91,21 +91,21 @@ function CultureMission6() {
 
   const scenariosData = [
     {
-      emoji: "👛",
+      icon: <Wallet size={32} />,
       q: t("cultureM6Scenario1Q"),
       options: [t("cultureM6Scenario1O1"), t("cultureM6Scenario1O2"), t("cultureM6Scenario1O3")],
       correctIdx: 1,
       feedback: t("cultureM6Scenario1Feedback")
     },
     {
-      emoji: "🚕",
+      icon: <Car size={32} />,
       q: t("cultureM6Scenario2Q"),
       options: [t("cultureM6Scenario2O1"), t("cultureM6Scenario2O2"), t("cultureM6Scenario2O3")],
       correctIdx: 1,
       feedback: t("cultureM6Scenario2Feedback")
     },
     {
-      emoji: "🗺️",
+      icon: <MapPin size={32} />,
       q: t("cultureM6Scenario3Q"),
       options: [t("cultureM6Scenario3O1"), t("cultureM6Scenario3O2"), t("cultureM6Scenario3O3")],
       correctIdx: 1,
@@ -205,8 +205,8 @@ function CultureMission6() {
           exit={{ opacity: 0 }}
           style={{
             padding: "16px 20px", borderRadius: 16, marginTop: 16,
-            background: feedback === "correct" ? "rgba(52,199,89,0.1)" : "rgba(255,59,48,0.1)",
-            color: feedback === "correct" ? "#34c759" : "#ff3b30",
+            background: feedback === "correct" ? "rgba(var(--learn-success-rgb),0.1)" : "rgba(var(--learn-error-rgb),0.1)",
+            color: feedback === "correct" ? "var(--learn-success)" : "var(--learn-error)",
             display: "flex", flexDirection: "column", gap: 12
           }}
         >
@@ -239,8 +239,8 @@ function CultureMission6() {
             style={{ flex: "1 1 100px", maxWidth: 130, padding: 16, cursor: "pointer", textAlign: "center" }}
             onClick={() => setSelected(idx)}
           >
-            <div style={{ color: "#15803d", display: "flex", justifyContent: "center", marginBottom: 4 }}>{item.icon}</div>
-            <div style={{ fontSize: "0.75rem", fontWeight: 600, marginTop: 8, color: selected === idx ? "#15803d" : "var(--learn-text-secondary)" }}>
+            <div style={{ color: "var(--learn-accent)", display: "flex", justifyContent: "center", marginBottom: 4 }}>{item.icon}</div>
+            <div style={{ fontSize: "0.75rem", fontWeight: 600, marginTop: 8, color: selected === idx ? "var(--learn-accent)" : "var(--learn-text-secondary)" }}>
               {item.title}
             </div>
           </button>
@@ -328,8 +328,8 @@ function CultureMission6() {
                 (card) => (
                   <>
                     <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-                      <div style={{ color: "#15803d", background: "rgba(21,128,61,0.1)", padding: 12, borderRadius: 12 }}>{card.icon}</div>
-                      <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "#15803d" }}>{card.title}</h3>
+                      <div style={{ color: "var(--learn-accent)", background: "rgba(var(--learn-accent-rgb),0.1)", padding: 12, borderRadius: 12 }}>{card.icon}</div>
+                      <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "var(--learn-accent)" }}>{card.title}</h3>
                     </div>
                     <p style={{ lineHeight: 1.65, margin: 0, color: "var(--learn-text)" }}>{card.desc}</p>
                   </>
@@ -349,8 +349,8 @@ function CultureMission6() {
                 (card) => (
                   <>
                     <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-                      <div style={{ color: "#15803d", background: "rgba(21,128,61,0.1)", padding: 12, borderRadius: 12 }}>{card.icon}</div>
-                      <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "#15803d" }}>{card.title}</h3>
+                      <div style={{ color: "var(--learn-accent)", background: "rgba(var(--learn-accent-rgb),0.1)", padding: 12, borderRadius: 12 }}>{card.icon}</div>
+                      <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "var(--learn-accent)" }}>{card.title}</h3>
                     </div>
                     <p style={{ lineHeight: 1.65, margin: 0, color: "var(--learn-text)" }}>{card.desc}</p>
                   </>
@@ -370,8 +370,8 @@ function CultureMission6() {
                 (card) => (
                   <>
                     <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-                      <div style={{ color: "#dc2626", background: "rgba(220,38,38,0.1)", padding: 12, borderRadius: 12 }}>{card.icon}</div>
-                      <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "#dc2626" }}>{card.title}</h3>
+                      <div style={{ color: "var(--learn-danger)", background: "rgba(var(--learn-danger-rgb),0.1)", padding: 12, borderRadius: 12 }}>{card.icon}</div>
+                      <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "var(--learn-danger)" }}>{card.title}</h3>
                     </div>
                     <p style={{ lineHeight: 1.65, margin: 0, color: "var(--learn-text)" }}>{card.desc}</p>
                   </>
@@ -391,8 +391,8 @@ function CultureMission6() {
                 (card) => (
                   <>
                     <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-                      <div style={{ color: "#15803d", background: "rgba(21,128,61,0.1)", padding: 12, borderRadius: 12 }}>{card.icon}</div>
-                      <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "#15803d" }}>{card.title}</h3>
+                      <div style={{ color: "var(--learn-accent)", background: "rgba(var(--learn-accent-rgb),0.1)", padding: 12, borderRadius: 12 }}>{card.icon}</div>
+                      <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "var(--learn-accent)" }}>{card.title}</h3>
                     </div>
                     <p style={{ lineHeight: 1.65, margin: 0, color: "var(--learn-text)" }}>{card.desc}</p>
                   </>
@@ -414,8 +414,8 @@ function CultureMission6() {
                 </p>
 
                 <div className="vocab-card culture-card-override" style={{ padding: "32px 24px", maxWidth: 600, margin: "0 auto" }}>
-                  <div style={{ textAlign: "center", marginBottom: 16 }}>
-                    <span style={{ fontSize: "3rem" }}>{current.emoji}</span>
+                  <div className="icon-badge icon-badge-culture icon-badge-lg" style={{ margin: "0 auto 16px" }}>
+                    {current.icon}
                   </div>
                   <div className="quiz-question">{current.q}</div>
                   <div className="quiz-options">

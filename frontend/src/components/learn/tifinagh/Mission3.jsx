@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, ArrowRight, ArrowLeft, CheckCircle, MapPin, Award, Compass } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, CheckCircle, MapPin, Award, Compass, Lock } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import "../darija/mission.css"; // Reuse styling, but with tifinagh-theme class
 
@@ -150,6 +150,15 @@ const quizData = [
 
 const STEPS = ["intro", "signs", "patterns", "situations", "quiz", "completion"];
 
+const STEP_LABELS = {
+  intro: { en: "Introduction", fr: "Introduction", ar: "مقدمة" },
+  signs: { en: "Frequent Words", fr: "Mots Fréquents", ar: "كلمات شائعة" },
+  patterns: { en: "Pattern Recognition", fr: "Reconnaître les Motifs", ar: "التعرف على الأنماط" },
+  situations: { en: "On the Street", fr: "Dans la Rue", ar: "في الشارع" },
+  quiz: { en: "Quick Check", fr: "Vérification Rapide", ar: "تحقق سريع" },
+  completion: { en: "Completion", fr: "Achèvement", ar: "اكتمال" }
+};
+
 function Mission3() {
   const { lang, isRTL } = useLanguage();
   const navigate = useNavigate();
@@ -202,6 +211,11 @@ function Mission3() {
       <div className="mission-header">
         <button className="mission-close" onClick={() => navigate("/languages")}><X size={24} /></button>
         <div className="mission-progress-bar"><div className="mission-progress-fill" style={{ width: `${progressPercent}%` }}></div></div>
+      </div>
+
+      <div className="step-indicator">
+        <span className="step-indicator-number">{lang === "FR" ? "Étape" : lang === "AR" ? "خطوة" : "Step"} {currentStepIndex + 1}/{STEPS.length}</span>
+        <span className="step-indicator-name">{STEP_LABELS[STEPS[currentStepIndex]][lang.toLowerCase()]}</span>
       </div>
 
       <AnimatePresence mode="wait">
@@ -346,32 +360,32 @@ function Mission3() {
                   {lang === "FR" ? "Progression" : lang === "AR" ? "التقدم" : "Progression"}
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 1 : L'Alphabet" : lang === "AR" ? "المهمة 1: الأبجدية" : "Mission 1: The Alphabet"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 1 : L'Alphabet" : lang === "AR" ? "المهمة 1: الأبجدية" : "Mission 1: The Alphabet"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 2 : Premier Mot" : lang === "AR" ? "المهمة 2: الكلمة الأولى" : "Mission 2: First Word"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 2 : Premier Mot" : lang === "AR" ? "المهمة 2: الكلمة الأولى" : "Mission 2: First Word"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 3 : Signes Courants" : lang === "AR" ? "المهمة 3: اللافتات الشائعة" : "Mission 3: Common Signs"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 3 : Signes Courants" : lang === "AR" ? "المهمة 3: اللافتات الشائعة" : "Mission 3: Common Signs"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-text)' }}>
-                    <span style={{ fontSize: '1.2rem', width: 20, textAlign: 'center' }}>🔓</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-text)' }} className="completion-progress-current">
+                    <Lock size={20} />
                     <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Prochaine Mission : Mots du Quotidien" : lang === "AR" ? "المهمة القادمة: كلمات يومية" : "Next Mission: Everyday Words"}</span>
                   </div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '16px', marginTop: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
-                  {lang === "FR" ? "Accueil" : lang === "AR" ? "الرئيسية" : "Hub"}
-                </button>
                 <button className="mission-btn" onClick={() => navigate("/languages/tifinagh/mission-4")}>
-                  {lang === "FR" ? "Commencer la Mission 4" : lang === "AR" ? "ابدأ المهمة 4" : "Start Mission 4"}
-                  <ArrowRight size={20} style={{ marginLeft: 8 }} />
+                  {lang === "FR" ? "Continuer vers la Mission suivante" : lang === "AR" ? "تابع إلى المهمة التالية" : "Continue to Next Mission"}
+                  <ArrowRight size={20} />
+                </button>
+                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
+                  {lang === "FR" ? "Retour au Hub d'Apprentissage" : lang === "AR" ? "العودة إلى لوحة التعلم" : "Return to Learning Hub"}
                 </button>
               </div>
             </div>

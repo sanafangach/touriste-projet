@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, ArrowRight, ArrowLeft, CheckCircle, Award, Compass, Heart, Mountain, Landmark, Globe, Music, Users, Library, Store, Map, Star, Book, Building2, Sparkles } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, CheckCircle, Compass, Heart, Mountain, Landmark, Globe, Music, Users, Library, Store, Map, Star, Book, Building2, Sparkles, Trophy } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import "../darija/mission.css";
 
@@ -291,7 +291,7 @@ function Mission5() {
       </div>
 
       <div className="step-indicator">
-        <span className="step-indicator-number">{lang === "FR" ? `Étape ${currentStepIndex + 1}/${STEPS.length}` : lang === "AR" ? `الخطوة ${currentStepIndex + 1}/${STEPS.length}` : `Step ${currentStepIndex + 1}/${STEPS.length}`}</span>
+        <span className="step-indicator-number">{lang === "FR" ? "Étape" : lang === "AR" ? "خطوة" : "Step"} {currentStepIndex + 1}/{STEPS.length}</span>
         <span className="step-indicator-name">{getStepLabel(step)}</span>
       </div>
 
@@ -552,8 +552,8 @@ function Mission5() {
           {/* STEP 8: FINAL COMPLETION */}
           {step === "completion" && (
             <div className="completion-step">
-              <div className="completion-icon" style={{ background: 'linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #38bdf8 100%)', color: 'white', padding: '24px', borderRadius: '50%', boxShadow: '0 10px 25px rgba(59, 130, 246, 0.4)' }}>
-                <Award size={64} />
+              <div className="completion-icon" style={{ background: 'linear-gradient(135deg, var(--learn-accent) 0%, #0284c7 50%, #38bdf8 100%)', padding: '24px', borderRadius: '50%', boxShadow: '0 10px 25px rgba(59, 130, 246, 0.4)' }}>
+                <Trophy size={64} />
               </div>
               <h1 className="intro-title" style={{ fontSize: '2.5rem', marginTop: '20px' }}>
                 {lang === "FR" ? "Félicitations !" : lang === "AR" ? "مبروك!" : "Congratulations!"}
@@ -580,7 +580,7 @@ function Mission5() {
                     { fr: "Mission 4 : Mots du Quotidien", ar: "المهمة 4: كلمات يومية", en: "Mission 4: Everyday Words" },
                     { fr: "Mission 5 : Culture & Symboles", ar: "المهمة 5: الثقافة والرموز", en: "Mission 5: Culture & Symbols" }
                   ].map((mission, idx) => (
-                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '14px', color: '#10b981', padding: '10px 12px', background: 'rgba(16, 185, 129, 0.06)', borderRadius: '10px', border: '1px solid rgba(16, 185, 129, 0.15)' }}>
+                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '14px', color: 'var(--learn-success)', padding: '10px 12px', background: 'rgba(16, 185, 129, 0.06)', borderRadius: '10px', border: '1px solid rgba(16, 185, 129, 0.15)' }}>
                       <CheckCircle size={22} fill="currentColor" color="white" />
                       <span style={{ fontWeight: 600, fontSize: '1rem' }}>
                         {lang === "FR" ? mission.fr : lang === "AR" ? mission.ar : mission.en}
@@ -589,19 +589,20 @@ function Mission5() {
                   ))}
                 </div>
                 <div style={{ textAlign: 'center', marginTop: '20px', padding: '12px', background: 'rgba(59,130,246,0.06)', borderRadius: '12px', border: '1px dashed var(--learn-primary)' }}>
-                  <span style={{ fontSize: '0.95rem', color: 'var(--learn-primary)', fontWeight: 600 }}>
-                    {lang === "FR" ? "🏆 5 missions complétées — Prêt pour la suite !" : lang === "AR" ? "🏆 5 مهام مكتملة — جاهز للخطوة التالية!" : "🏆 5 missions completed — Ready for what's next!"}
+                  <span style={{ fontSize: '0.95rem', color: 'var(--learn-primary)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <Trophy size={20} />
+                    {lang === "FR" ? "5 missions complétées — Prêt pour la suite !" : lang === "AR" ? "5 مهام مكتملة — جاهز للخطوة التالية!" : "5 missions completed — Ready for what's next!"}
                   </span>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '16px', marginTop: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <button className="mission-btn secondary" onClick={() => navigate("/languages")} style={{ fontSize: '1.1rem', padding: '14px 28px' }}>
-                  {lang === "FR" ? "Tableau de bord" : lang === "AR" ? "لوحة القيادة" : "Dashboard"}
+                <button className="mission-btn" onClick={() => navigate("/languages/darija/mission-1")}>
+                  {lang === "FR" ? "Continuer vers la Mission suivante" : lang === "AR" ? "تابع إلى المهمة التالية" : "Continue to Next Mission"}
+                  <ArrowRight size={20} />
                 </button>
-                <button className="mission-btn" onClick={() => navigate("/languages/darija/mission-1")} style={{ fontSize: '1.1rem', padding: '14px 28px' }}>
-                  {lang === "FR" ? "Commencer la Darija" : lang === "AR" ? "ابدأ الدارجة" : "Start Darija Path"}
-                  <ArrowRight size={22} style={{ marginLeft: 8 }} />
+                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
+                  {lang === "FR" ? "Retour au Hub d'Apprentissage" : lang === "AR" ? "العودة إلى لوحة التعلم" : "Return to Learning Hub"}
                 </button>
               </div>
             </div>

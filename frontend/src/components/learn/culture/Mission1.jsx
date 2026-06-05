@@ -31,6 +31,18 @@ function CultureMission1() {
   const step = STEPS[currentStepIndex];
   const progressPercent = (currentStepIndex / (STEPS.length - 1)) * 100;
 
+  const ui = (fr, en, ar) => (lang === "FR" ? fr : lang === "AR" ? ar : en);
+  const getStepLabel = (key) => STEP_LABELS[key]?.[lang] || STEP_LABELS[key]?.EN || key;
+
+  const STEP_LABELS = {
+    intro: { FR: "Bienvenue", EN: "Welcome", AR: "مرحباً" },
+    tea: { FR: "Rituel du Thé", EN: "Tea Ritual", AR: "طقوس الشاي" },
+    situations: { FR: "Scénarios", EN: "Scenarios", AR: "سيناريوهات" },
+    etiquette: { FR: "Étiquette", EN: "Etiquette", AR: "آداب" },
+    quiz: { FR: "Quiz", EN: "Quiz", AR: "اختبار" },
+    completion: { FR: "Achèvement", EN: "Completion", AR: "اكتمال" }
+  };
+
   const handleNext = () => {
     if (currentStepIndex < STEPS.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
@@ -138,6 +150,11 @@ function CultureMission1() {
         </div>
       </div>
 
+      <div className="step-indicator">
+        <span className="step-indicator-number">{ui("Étape", "Step", "خطوة")} {currentStepIndex + 1}/{STEPS.length}</span>
+        <span className="step-indicator-name">{getStepLabel(step)}</span>
+      </div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
@@ -178,7 +195,7 @@ function CultureMission1() {
                       width: 48, height: 48, borderRadius: "50%",
                       background: "rgba(21,128,61,0.1)", display: "flex",
                       alignItems: "center", justifyContent: "center",
-                      marginBottom: 16, color: "#15803d"
+                      marginBottom: 16, color: "var(--learn-accent)"
                     }}>
                       <Coffee size={24} />
                     </div>
@@ -243,7 +260,7 @@ function CultureMission1() {
                         style={{
                           padding: "16px 20px", borderRadius: 16, marginTop: 16,
                           background: situationFeedback === "correct" ? "rgba(52,199,89,0.1)" : "rgba(255,59,48,0.1)",
-                          color: situationFeedback === "correct" ? "#34c759" : "#ff3b30",
+                          color: situationFeedback === "correct" ? "var(--learn-success)" : "var(--learn-error)",
                           display: "flex", flexDirection: "column", gap: 12
                         }}
                       >
@@ -295,7 +312,7 @@ function CultureMission1() {
                       width: 56, height: 56, borderRadius: 16,
                       background: "rgba(21,128,61,0.1)", display: "flex",
                       alignItems: "center", justifyContent: "center",
-                      marginBottom: 16, color: "#15803d"
+                      marginBottom: 16, color: "var(--learn-accent)"
                     }}>
                       {item.icon}
                     </div>

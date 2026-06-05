@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, ArrowRight, ArrowLeft, MessageCircle, CheckCircle, Car, Award, Navigation } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, MessageCircle, CheckCircle, Car, Award, Navigation, Lock } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css";
 
 const STEPS = ["intro", "vocab", "expressions", "conversation", "situations", "quiz", "recap", "completion"];
+
+const STEP_LABELS = {
+  intro: { FR: "Introduction", EN: "Introduction", AR: "مقدمة" },
+  vocab: { FR: "Vocabulaire", EN: "Vocabulary", AR: "مفردات" },
+  expressions: { FR: "Expressions", EN: "Expressions", AR: "عبارات" },
+  conversation: { FR: "Conversation", EN: "Conversation", AR: "محادثة" },
+  situations: { FR: "Situations", EN: "Situations", AR: "مواقف" },
+  quiz: { FR: "Quiz", EN: "Quiz", AR: "اختبار" },
+  recap: { FR: "Récapitulatif", EN: "Recap", AR: "ملخص" },
+  completion: { FR: "Terminé", EN: "Completed", AR: "اكتملت" },
+};
 
 function Mission2() {
   const { t, lang, isRTL } = useLanguage();
@@ -172,6 +183,12 @@ function Mission2() {
           transition={{ duration: 0.3 }}
           className="mission-content"
         >
+          {/* Step Indicator */}
+          <div className="step-indicator">
+            <span className="step-indicator-number">{lang === "FR" ? "Étape" : lang === "AR" ? "خطوة" : "Step"} {currentStepIndex + 1}/{STEPS.length}</span>
+            <span className="step-indicator-name">{STEP_LABELS[STEPS[currentStepIndex]][lang]}</span>
+          </div>
+
           {/* ══════════════════════════════════════════
               STEP 1 — Intro
               ══════════════════════════════════════════ */}
@@ -321,7 +338,7 @@ function Mission2() {
                         style={{
                           padding: "16px 20px", borderRadius: 16, marginTop: 16,
                           background: situationFeedback === "correct" ? "rgba(52,199,89,0.1)" : "rgba(255,59,48,0.1)",
-                          color: situationFeedback === "correct" ? "#34c759" : "#ff3b30",
+                          color: situationFeedback === "correct" ? "var(--learn-success)" : "var(--learn-error)",
                           display: "flex", flexDirection: "column", gap: 12
                         }}
                       >
@@ -457,28 +474,28 @@ function Mission2() {
                   {lang === "FR" ? "Progression" : lang === "AR" ? "التقدم" : "Progression"}
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 1 : Aéroport" : lang === "AR" ? "المهمة 1: المطار" : "Mission 1: Airport"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 1 : Aéroport" : lang === "AR" ? "المهمة 1: المطار" : "Mission 1: Airport"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#10b981' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-success)' }}>
                     <CheckCircle size={20} />
-                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 2 : Trajet en Taxi" : lang === "AR" ? "المهمة 2: رحلة التاكسي" : "Mission 2: Taxi Journey"} ✅</span>
+                    <span style={{ fontWeight: 500 }}>{lang === "FR" ? "Mission 2 : Trajet en Taxi" : lang === "AR" ? "المهمة 2: رحلة التاكسي" : "Mission 2: Taxi Journey"}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--learn-text)' }}>
-                    <span style={{ fontSize: '1.2rem', width: 20, textAlign: 'center' }}>🔓</span>
+                  <div className="completion-progress-current" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Lock size={20} />
                     <span style={{ fontWeight: 500 }}>{t("darijaM2NextUnlock")}</span>
                   </div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '16px', marginTop: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
-                  {lang === "FR" ? "Accueil" : lang === "AR" ? "الرئيسية" : "Hub"}
-                </button>
                 <button className="mission-btn" onClick={() => navigate("/languages/darija/mission-3")}>
-                  {lang === "FR" ? "Commencer la Mission 3" : lang === "AR" ? "ابدأ المهمة 3" : "Start Mission 3"}
+                  {lang === "FR" ? "Continuer vers la Mission 3" : lang === "AR" ? "متابعة إلى المهمة 3" : "Continue to Mission 3"}
                   <ArrowRight size={20} style={{ marginLeft: 8 }} />
+                </button>
+                <button className="mission-btn secondary" onClick={() => navigate("/languages")}>
+                  {lang === "FR" ? "Retour au parcours d'apprentissage" : lang === "AR" ? "العودة إلى مسار التعلم" : "Return to Learning Hub"}
                 </button>
               </div>
             </div>

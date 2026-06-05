@@ -91,10 +91,11 @@ html.dark {
   color: var(--apprendre-brand);
   border-radius: 9999px;
   font-size: 0.875rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 24px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  border: 1px solid rgba(var(--learn-accent-rgb, 217, 119, 6), 0.2);
 }
 
 .apprendre-title {
@@ -309,7 +310,7 @@ html.dark .card-status.coming-soon {
 .card-eyebrow {
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--apprendre-text-muted);
+  color: var(--apprendre-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-top: 8px;
@@ -337,18 +338,19 @@ html.dark .card-status.coming-soon {
   border-radius: 18px;
   padding: 16px 24px;
   font-size: 1.0625rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  color: var(--apprendre-text-primary);
 }
 
 .apprendre-card.darija-card .card-btn {
   color: var(--apprendre-icon-darija-color);
-  border: 1px solid rgba(217, 119, 6, 0.3);
+  border: 1.5px solid rgba(217, 119, 6, 0.5);
 }
 .apprendre-card.darija-card:hover .card-btn {
   background-color: var(--apprendre-icon-darija-color);
@@ -358,7 +360,7 @@ html.dark .card-status.coming-soon {
 
 .apprendre-card.tifinagh-card .card-btn {
   color: var(--apprendre-icon-tifinagh-color);
-  border: 1px solid rgba(3, 105, 161, 0.3);
+  border: 1.5px solid rgba(3, 105, 161, 0.5);
 }
 .apprendre-card.tifinagh-card:hover .card-btn {
   background-color: var(--apprendre-icon-tifinagh-color);
@@ -368,7 +370,7 @@ html.dark .card-status.coming-soon {
 
 .apprendre-card.culture-card .card-btn {
   color: var(--apprendre-icon-culture-color);
-  border: 1px solid rgba(21, 128, 61, 0.3);
+  border: 1.5px solid rgba(21, 128, 61, 0.5);
 }
 .apprendre-card.culture-card:hover .card-btn {
   background-color: var(--apprendre-icon-culture-color);

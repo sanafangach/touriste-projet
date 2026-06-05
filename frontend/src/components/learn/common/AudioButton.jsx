@@ -3,7 +3,7 @@ import { Volume2, Loader2 } from 'lucide-react';
 import { useAudio } from './useAudio';
 import { useLanguage } from '../../accueil/LanguageContext';
 
-export const AudioButton = ({ text, audioUrl, overrideLang, ttsText, className, style }) => {
+export const AudioButton = ({ text, audioUrl, overrideLang, ttsText, className, style, badge = false }) => {
   const textToPlay = ttsText || text;
   const { isPlaying, play } = useAudio(textToPlay, audioUrl, overrideLang);
   const { lang } = useLanguage();
@@ -17,14 +17,17 @@ export const AudioButton = ({ text, audioUrl, overrideLang, ttsText, className, 
     try {
       play();
     } catch (err) {
-      // Graceful fallback: never crash the UI
       console.warn("AudioButton play failed:", err);
     }
   };
 
+  const btnClass = badge
+    ? `audio-badge ${isPlaying ? 'audio-badge-playing' : ''} ${className || ''}`
+    : `vocab-audio-btn ${className || ''}`;
+
   return (
     <button 
-      className={`vocab-audio-btn ${className || ''}`}
+      className={btnClass}
       style={style}
       onClick={handleClick}
       aria-label={ariaLabel}
@@ -33,9 +36,9 @@ export const AudioButton = ({ text, audioUrl, overrideLang, ttsText, className, 
       type="button"
     >
       {isPlaying ? (
-        <Loader2 size={20} className="audio-spin" />
+        <Loader2 size={badge ? 22 : 20} className="audio-spin" />
       ) : (
-        <Volume2 size={20} />
+        <Volume2 size={badge ? 22 : 20} />
       )}
     </button>
   );
