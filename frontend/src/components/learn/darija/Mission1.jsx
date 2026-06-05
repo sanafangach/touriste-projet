@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, ArrowRight, ArrowLeft, MessageCircle, CheckCircle, Plane, Lock, Award } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, MessageCircle, Plane, Lock, Award } from "lucide-react";
 import { useLanguage } from "../../accueil/LanguageContext";
 import { AudioButton } from "../common/AudioButton";
 import "./mission.css"; // We created this file for Mission specific CSS

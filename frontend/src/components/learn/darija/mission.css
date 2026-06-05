@@ -29,8 +29,9 @@ html.dark {
   min-height: 100vh;
   background-color: var(--learn-bg);
   color: var(--learn-text);
-  padding: 40px 24px;
+  padding: 120px 24px 40px;
   font-family: var(--learn-font);
+  overflow-x: hidden;
 }
 
 /* Header / Progress */
@@ -53,6 +54,11 @@ html.dark {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.mission-close:focus-visible {
+  outline: 2px solid var(--learn-accent);
+  outline-offset: 2px;
 }
 
 .mission-close:hover {
@@ -150,7 +156,7 @@ html.dark {
 .mission-btn {
   background: var(--learn-accent);
   color: white;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 16px;
   padding: 16px 32px;
   font-size: 1.1rem;
@@ -160,6 +166,11 @@ html.dark {
   align-items: center;
   gap: 12px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mission-btn:focus-visible {
+  outline: 2px solid var(--learn-accent);
+  outline-offset: 3px;
 }
 
 .mission-btn:hover {
@@ -177,6 +188,11 @@ html.dark {
 .mission-btn.secondary {
   background: var(--learn-surface);
   color: var(--learn-text);
+  border-color: var(--learn-border);
+}
+
+.mission-btn.secondary:focus-visible {
+  outline-color: var(--learn-text);
 }
 
 .mission-btn.secondary:hover {
@@ -223,6 +239,11 @@ html.dark .mission-btn.secondary:hover {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+}
+
+.vocab-card:focus-visible {
+  outline: 2px solid var(--learn-accent);
+  outline-offset: 2px;
 }
 
 .vocab-card:hover {
@@ -446,6 +467,11 @@ html.dark .vocab-card:hover {
   text-align: left;
 }
 
+.quiz-option:focus-visible {
+  outline: 2px solid var(--learn-accent);
+  outline-offset: 2px;
+}
+
 .quiz-option:hover:not(.selected):not(.correct):not(.wrong) {
   border-color: var(--learn-accent);
   background: var(--learn-surface);
@@ -627,7 +653,7 @@ html.dark .vocab-card:hover {
    ============================== */
 @media (max-width: 768px) {
   .mission-container {
-    padding: 24px 16px;
+    padding: 100px 16px 24px;
   }
 
   .intro-title {
