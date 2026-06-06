@@ -60,6 +60,11 @@ CRITICAL RULES:
 5. Use REAL ratings (approximate Google Maps ratings).
 6. Do NOT invent or fabricate any place names. Every single place must be a real, operating business that can be found on Google Maps.
 7. For itinerary activities, use REAL monuments, souks, museums, beaches, parks, and attractions that exist in ${safeLocation}.
+8. Each itinerary day MUST be unique: do not repeat the same attraction, restaurant, cafe, viewpoint, museum, beach, garden, souk, or route on different days.
+9. Give every day a clear theme and logical route, such as historic medina, gardens and museums, coastal discovery, nature escape, food and artisans, kasbah route, or panoramic viewpoints.
+10. Activity details must be precise and concrete. Explain what to do there, why it belongs in that day, and what makes it different from the other days.
+11. Avoid generic descriptions like "Explore the city" or "Enjoy local food".
+12. Return EXACTLY ${safeDays} itinerary days. If the trip is long, up to 14 days, expand with real nearby day trips, districts, museums, natural sites, viewpoints, markets, and restaurants instead of shortening the itinerary.
 
 Trip Configuration:
 - Destination: ${safeLocation}, Morocco
@@ -121,11 +126,13 @@ Return a JSON object with this EXACT schema:
   "itinerary": [
     {
       "day": "Day label (e.g. Day 1 / Jour 1 / اليوم 1)",
+      "theme": "Short unique theme for this day",
+      "route_summary": "One precise sentence explaining the day's route and why it is different from the other days",
       "plan": [
         {
           "time": "Time of day (Morning/Matin/صباحاً, Lunch/Midi/غداء, Afternoon/Après-midi/بعد الزوال, Evening/Soir/مساءً)",
           "place": "REAL place/monument/restaurant name as on Google Maps",
-          "details": "Engaging description of what to do at this REAL place",
+          "details": "Precise description of what to do at this REAL place, with route context and a unique focus for this day",
           "ticket_pricing": "Real ticket/entry fee in MAD (e.g. Free / 70 MAD)",
           "rating": "Real rating (e.g. 4.6)"
         }
@@ -140,7 +147,10 @@ Provide:
 - At least 3 restaurant options matching the budget
 - At least 2 hostel options
 - At least 1 camping/glamping option (if available near ${safeLocation}, otherwise provide the closest option)
-- ${safeDays} days of itinerary with 4 activities per day (morning, lunch, afternoon, evening)
+- Exactly ${safeDays} days of itinerary with 4 activities per day (morning, lunch, afternoon, evening)
+- Every day must use different places and a different route theme.
+- Do not reuse the same "place" value anywhere in itinerary[*].plan.
+- If ${safeDays} is longer than the obvious main attractions, use real nearby places around ${safeLocation} instead of repeating previous days.
 
 IMPORTANT: Output ONLY raw JSON. No markdown, no code fences, no explanations. Just the JSON object.
   `;
@@ -173,7 +183,7 @@ IMPORTANT: Output ONLY raw JSON. No markdown, no code fences, no explanations. J
             }
           ],
           temperature: 0.4,
-          max_tokens: 8000
+          max_tokens: 14000
         })
       });
 
