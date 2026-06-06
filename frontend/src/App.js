@@ -9,6 +9,7 @@ import {
 
 import { LanguageProvider } from "./components/accueil/LanguageContext"; 
 import { AuthProvider } from "./context/AuthContext";
+import { FavoritesProvider } from "./context/FavoritesContext";
 
 import Menu from "./components/accueil/Menu";
 import Footer from "./components/accueil/Footer";
@@ -25,20 +26,14 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import GoogleCallback from './components/auth/GoogleCallback';
 import ProtectedRoute from "./components/pages/ProtectedRoute";
-import Saved from "./components/pages/saved";
-import AdminDashboard from "./components/pages/adminDashboard";
+import Saved from "./components/pages/favorite";
+import AdminDashboard from "./pageadmin/AdminDashboard";
 import Pack from "./components/pages/pack";
 import Profile from "./components/pages/Profile";
 import Commentaire from "./components/accueil/Commentaire";
+import CityDetail from "./components/pages/destinations/Citydetail";
 
 
-
-import Agadir from "./components/pages/destinations/Agadir";
-import Casablanca from "./components/pages/destinations/Casablanca";
-import Marrakech from "./components/pages/destinations/Marrakech";
-import Fes from "./components/pages/destinations/Fes";
-import Chefchaouen from "./components/pages/destinations/Chefchaouen";
-import Essaouira from "./components/pages/destinations/Essaouira";
 
 function AppContent() {
   const location = useLocation();
@@ -53,6 +48,7 @@ function AppContent() {
 
     const showMenu = !noMenuPages.includes(location.pathname);
     const showChatbot = !noChatbotPages.includes(location.pathname);
+    const showFooter = location.pathname !== '/admin';
 
 
   return (
@@ -65,15 +61,10 @@ function AppContent() {
         <Route path="/destination" element={<Destination />} />
         <Route path="/languages" element={<Languages />} />
 
-        <Route path="/destination/agadir" element={<Agadir />} />
-        <Route path="/destination/casablanca" element={<Casablanca />} />
-        <Route path="/destination/marrakech" element={<Marrakech />} />
-        <Route path="/destination/fes" element={<Fes />} />
-        <Route
-          path="/destination/chefchaouen"
-          element={<Chefchaouen />}
-        />
-        <Route path="/destination/essaouira" element={<Essaouira />} />
+                {/* ✅ DYNAMIC CITY ROUTE */}
+
+              <Route path="/destination/:slug"  element={<CityDetail />}/>
+
 
                 {/* Login page */}
                 <Route path="/login" element={<Login />} />
@@ -112,6 +103,9 @@ function AppContent() {
             </Routes>
                 {showChatbot && <Commentaire /> }
                 {showChatbot && <Footer /> }
+
+            {showChatbot && <Chatbot /> }
+            {showFooter && <Footer />}
         </>
     );
 }
@@ -120,9 +114,11 @@ function App() {
   return (
     <AuthProvider>
       <LanguageProvider>
-        <Router>
-          <AppContent />
-        </Router>
+        <FavoritesProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </FavoritesProvider>
       </LanguageProvider>
     </AuthProvider>
   );
