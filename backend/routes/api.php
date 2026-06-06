@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\CityController;
 
 
 
@@ -34,3 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/stats', [AdminController::class, 'getStats']);
     });
 });
+
+//Laravel api routes
+Route::get('/cities', [CityController::class, 'index']);
+
+Route::get('/cities/{slug}', [CityController::class, 'show']);
