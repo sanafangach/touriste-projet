@@ -32,7 +32,6 @@ import Profile from "./components/pages/Profile";
 import CityDetail from "./components/pages/destinations/Citydetail";
 
 
-
 function AppContent() {
   const location = useLocation();
 
