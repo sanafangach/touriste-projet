@@ -1,33 +1,4 @@
 /* ===============================
-<<<<<<< HEAD
-   ACTIVITIES SECTION - STYLE BOUTON TEXTE "Explorer →"
-================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;800&display=swap');
-
-body {
-  font-family: 'Inter', 'Poppins', sans-serif;
-}
-
-/* DARK MODE */
-.dark .activities-section {
-  background: #0f0f0f;
-}
-.dark .section-title {
-  color: white;
-}
-
-/* SECTION */
-.activities-section {
-  width: 100%;
-  padding: 100px 7%;
-  background: #f7f8fc;
-  transition: background 0.4s ease;
-}
-
-/* HEADER : tout aligné à gauche */
-.activities-header {
-=======
    SECTION ACTIVITÉS - MODERN ABOUT STYLE + HOVER BUTTON
    (Modifié bhal image 2 - gradient orange animation + cards twal)
 ================================= */
@@ -76,7 +47,6 @@ body {
 
 /* ================= HEADER ================= */
 .activite-header {
->>>>>>> origin/main
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -342,18 +312,8 @@ body {
   .activite-title {
     font-size: 26px;
   }
-<<<<<<< HEAD
-  .activity-card {
-    height: 300px;
-  }
-  /* Toujours visible sur mobile */
-  .explore-btn {
-    opacity: 1;
-    transform: translateY(0);
-=======
 
   .activite-card {
     height: 350px; /* Responsive: chwiiya twal men 300px */
->>>>>>> origin/main
   }
 }
