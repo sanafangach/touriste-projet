@@ -16,11 +16,16 @@ import {
   DollarSign
 } from "lucide-react";
 
+<<<<<<< HEAD
+=======
+import { useFavorites } from "../../../context/FavoritesContext";
+>>>>>>> origin/main
 import "../../css/CityDetail.css";
 
 function CityDetail() {
   const navigate = useNavigate();
   const { slug } = useParams();
+<<<<<<< HEAD
 
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState("activities");
@@ -31,6 +36,13 @@ function CityDetail() {
   const [favoritePlaces, setFavoritePlaces] = useState({});
   const [favoriteGems, setFavoriteGems] = useState({});
 
+=======
+  const { isFavorite, toggleFavorite } = useFavorites();
+
+  const [activeTab, setActiveTab] = useState("activities");
+  const [scrolled, setScrolled] = useState(false);
+
+>>>>>>> origin/main
   const [cityData, setCityData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -70,6 +82,7 @@ function CityDetail() {
     fetchCity();
   }, [slug]);
 
+<<<<<<< HEAD
   // FAVORITES
   const toggleFavorite = (e, id, type) => {
     e.preventDefault();
@@ -86,6 +99,13 @@ function CityDetail() {
       ...prev,
       [id]: !prev[id]
     }));
+=======
+  const handleFavoriteClick = (e, item, type) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    toggleFavorite(type, item);
+>>>>>>> origin/main
   };
 
   // STARS
@@ -122,6 +142,11 @@ function CityDetail() {
     );
   }
 
+<<<<<<< HEAD
+=======
+  const citySaved = isFavorite("city", cityData.city.id);
+
+>>>>>>> origin/main
   return (
     <div className="city-detail">
 
@@ -202,6 +227,7 @@ function CityDetail() {
             <div className="hero-actions">
 
               <button
+<<<<<<< HEAD
                 className={`save-btn ${saved ? "saved" : ""}`}
                 onClick={() => setSaved(!saved)}
               >
@@ -211,6 +237,23 @@ function CityDetail() {
                 />
 
                 {saved ? "Saved" : "Save"}
+=======
+                className={`save-btn ${citySaved ? "saved" : ""}`}
+                onClick={(e) =>
+                  handleFavoriteClick(
+                    e,
+                    cityData.city,
+                    "city"
+                  )
+                }
+              >
+                <Heart
+                  size={18}
+                  fill={citySaved ? "white" : "none"}
+                />
+
+                {citySaved ? "Saved" : "Save"}
+>>>>>>> origin/main
               </button>
 
               <button className="share-btn">
@@ -298,14 +341,24 @@ function CityDetail() {
 
                   <button
                     className={`favorite-btn ${
+<<<<<<< HEAD
                       favoriteActivities[activity.id]
+=======
+                      isFavorite("activity", activity.id)
+>>>>>>> origin/main
                         ? "active"
                         : ""
                     }`}
                     onClick={(e) =>
+<<<<<<< HEAD
                       toggleFavorite(
                         e,
                         activity.id,
+=======
+                      handleFavoriteClick(
+                        e,
+                        activity,
+>>>>>>> origin/main
                         "activity"
                       )
                     }
@@ -313,7 +366,11 @@ function CityDetail() {
                     <Heart
                       size={18}
                       fill={
+<<<<<<< HEAD
                         favoriteActivities[activity.id]
+=======
+                        isFavorite("activity", activity.id)
+>>>>>>> origin/main
                           ? "#ff6b35"
                           : "none"
                       }
@@ -379,14 +436,24 @@ function CityDetail() {
 
                   <button
                     className={`favorite-btn ${
+<<<<<<< HEAD
                       favoriteRestaurants[restaurant.id]
+=======
+                      isFavorite("restaurant", restaurant.id)
+>>>>>>> origin/main
                         ? "active"
                         : ""
                     }`}
                     onClick={(e) =>
+<<<<<<< HEAD
                       toggleFavorite(
                         e,
                         restaurant.id,
+=======
+                      handleFavoriteClick(
+                        e,
+                        restaurant,
+>>>>>>> origin/main
                         "restaurant"
                       )
                     }
@@ -394,7 +461,11 @@ function CityDetail() {
                     <Heart
                       size={18}
                       fill={
+<<<<<<< HEAD
                         favoriteRestaurants[restaurant.id]
+=======
+                        isFavorite("restaurant", restaurant.id)
+>>>>>>> origin/main
                           ? "#ff6b35"
                           : "none"
                       }
@@ -455,14 +526,24 @@ function CityDetail() {
 
                   <button
                     className={`favorite-btn ${
+<<<<<<< HEAD
                       favoritePlaces[place.id]
+=======
+                      isFavorite("place", place.id)
+>>>>>>> origin/main
                         ? "active"
                         : ""
                     }`}
                     onClick={(e) =>
+<<<<<<< HEAD
                       toggleFavorite(
                         e,
                         place.id,
+=======
+                      handleFavoriteClick(
+                        e,
+                        place,
+>>>>>>> origin/main
                         "place"
                       )
                     }
@@ -470,7 +551,11 @@ function CityDetail() {
                     <Heart
                       size={18}
                       fill={
+<<<<<<< HEAD
                         favoritePlaces[place.id]
+=======
+                        isFavorite("place", place.id)
+>>>>>>> origin/main
                           ? "#ff6b35"
                           : "none"
                       }
@@ -531,14 +616,24 @@ function CityDetail() {
 
                   <button
                     className={`favorite-btn ${
+<<<<<<< HEAD
                       favoriteGems[gem.id]
+=======
+                      isFavorite("gem", gem.id)
+>>>>>>> origin/main
                         ? "active"
                         : ""
                     }`}
                     onClick={(e) =>
+<<<<<<< HEAD
                       toggleFavorite(
                         e,
                         gem.id,
+=======
+                      handleFavoriteClick(
+                        e,
+                        gem,
+>>>>>>> origin/main
                         "gem"
                       )
                     }
@@ -546,7 +641,11 @@ function CityDetail() {
                     <Heart
                       size={18}
                       fill={
+<<<<<<< HEAD
                         favoriteGems[gem.id]
+=======
+                        isFavorite("gem", gem.id)
+>>>>>>> origin/main
                           ? "#ff6b35"
                           : "none"
                       }
@@ -589,4 +688,8 @@ function CityDetail() {
   );
 }
 
+<<<<<<< HEAD
 export default CityDetail;
+=======
+export default CityDetail;
+>>>>>>> origin/main

@@ -295,10 +295,7 @@ html.dark {
   border-radius: 999px;
 
   color: white;
-  font-size: 0.95rem;
   font-weight: 600;
-
-  background: rgba(0, 0, 0, 0.2);
 
   backdrop-filter: blur(4px);
 
@@ -338,7 +335,11 @@ html.dark {
     var(--orange-primary),
     #ffb36b
   );
+<<<<<<< HEAD
 
+=======
+  background-clip: text;
+>>>>>>> origin/main
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -542,7 +543,10 @@ html.dark .readonly-field {
 /* Toast */
 .save-toast {
   position: fixed;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
   bottom: 2rem;
   left: 50%;
 

@@ -1,146 +1,260 @@
 // src/components/pages/destination.js
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, SlidersHorizontal, Star, MapPin, Activity, Heart, ArrowRight } from "lucide-react";
+import {
+  Search,
+  SlidersHorizontal,
+  Star,
+  MapPin,
+  Activity,
+  Heart,
+  ArrowRight,
+} from "lucide-react";
 import { useLanguage } from "../accueil/LanguageContext";
+import { useFavorites } from "../../context/FavoritesContext";
+import api from "../../services/api";
 import "../css/destination.css";
 
-// Import de TES images depuis assets
-import atlanticImg from "../../assets/atlantic.jpg";
-import atlasImg from "../../assets/atlas.png";
-import casablancaImg from "../../assets/casa.jpg";
-import fezImg from "../../assets/fes.jpg";
-import marrakechImg from "../../assets/Marrakech.jpg";
-import chefchaouenImg from "../../assets/Chefchaouen.jpg";
-import essaouiraImg from "../../assets/essouira.jpg";
-import merzougaImg from "../../assets/Merzouga.jpg";
-import rabatImg from "../../assets/rabat.jpg";
-import tangierImg from "../../assets/taghazot.png";
-import tiznitImg from "../../assets/tiznit.jpg";
-import camelImg from "../../assets/place3.png";
-import backgroundImg from "../../assets/background2.jpg"; // Image par défaut
+import backgroundImg from "../../assets/background2.jpg";
 
-// Map des images par ville
-const cityImages = {
-  "Agadir": camelImg,
-  "Atlantic Coast": atlanticImg,
-  "Atlas Mountains": atlasImg,
-  "Casablanca": casablancaImg,
-  "Fez": fezImg,
-  "Marrakech": marrakechImg,
-  "Chefchaouen": chefchaouenImg,
-  "Essaouira": essaouiraImg,
-  "Merzouga": merzougaImg,
-  "Rabat": rabatImg,
-  "Tangier": tangierImg,
-  "Tiznit": tiznitImg
+const backendUploadsUrl = "http://localhost:8000/uploads/";
+
+const isResolvedImage = (image) =>
+  typeof image === "string" &&
+  (image.startsWith("http") ||
+    image.startsWith("/") ||
+    image.startsWith("data:") ||
+    image.startsWith("blob:"));
+
+const getImageSrc = (image) => {
+  if (!image) return backgroundImg;
+  return isResolvedImage(image) ? image : `${backendUploadsUrl}${image}`;
 };
 
-const destinationsData = [
-  { id: 1, name: "Agadir", slug: "agadir", rating: 4.7, reviews: 312, activities: 12, location: "Souss-Massa", featured: true },
-  { id: 2, name: "Atlas Mountains", slug: "atlas-mountains", rating: 4.8, reviews: 342, activities: 18, location: "High Atlas", featured: true },
-  { id: 3, name: "Casablanca", slug: "casablanca", rating: 4.8, reviews: 528, activities: 15, location: "Casablanca-Settat", featured: true },
-  { id: 4, name: "Fez", slug: "fes", rating: 4.7, reviews: 345, activities: 18, location: "Fès-Meknès", featured: true },
-  { id: 5, name: "Marrakech", slug: "marrakech", rating: 4.9, reviews: 892, activities: 34, location: "Marrakech-Safi", featured: true },
-  { id: 6, name: "Chefchaouen", slug: "chefchaouen", rating: 4.9, reviews: 567, activities: 14, location: "Tangier-Tetouan", featured: false },
-  { id: 7, name: "Essaouira", slug: "essaouira", rating: 4.6, reviews: 298, activities: 11, location: "Marrakech-Safi", featured: false },  
-  { id: 8, name: "Merzouga", slug: "merzouga", rating: 4.8, reviews: 421, activities: 19, location: "Draa-Tafilalet", featured: false },
-  { id: 9, name: "Rabat", slug: "rabat", rating: 4.5, reviews: 234, activities: 10, location: "Rabat-Salé-Kénitra", featured: false },
-  { id: 10, name: "Tangier", slug: "tangier", rating: 4.6, reviews: 378, activities: 13, location: "Tangier-Tetouan", featured: false },
-  { id: 11 , name: "Tiznit", slug: "tiznit", rating: 4.8, reviews: 412, activities: 22, location: "Sous Massa", featured: false }
-]
-.map(city => ({
-  ...city,
-  image: cityImages[city.name] || backgroundImg // fallback si image non trouvée
-}));
+const getCityListFromResponse = (data) => {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.cities)) return data.cities;
+  return [];
+};
+
+const normalizeCity = (city) => {
+  return {
+    id: city.id,
+    name: city.name,
+    slug: city.slug,
+    description: city.description || "",
+    rating: Number(city.rating || 0),
+    reviews: Number(city.reviews || 0),
+    activities: Number(city.activities_count ?? city.activities?.length ?? 0),
+    location: city.location || city.region || "",
+    featured: Boolean(city.featured),
+    image: getImageSrc(city.image),
+  };
+};
 
 function Destinations() {
   const { lang, isRTL } = useLanguage();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [savedItems, setSavedItems] = useState([]);
+  const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const toggleSave = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setSavedItems(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchDestinations = async () => {
+      setLoading(true);
+
+      try {
+        const response = await api.get("/cities");
+        const cities = getCityListFromResponse(response.data)
+          .filter((city) => city?.id && city?.name && city?.slug)
+          .map(normalizeCity);
+
+        if (isMounted) {
+          setDestinations(cities);
+        }
+      } catch (error) {
+        console.error("Unable to fetch destinations:", error);
+        if (isMounted) {
+          setDestinations([]);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchDestinations();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleFavoriteClick = (event, destination) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleFavorite("city", destination);
   };
 
-  const filtered = destinationsData.filter(d =>
-    d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    d.location.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = useMemo(() => {
+    const query = searchTerm.trim().toLowerCase();
 
-  const sorted = [...filtered].sort((a, b) => {
-    if (sortBy === "rating") return b.rating - a.rating;
-    if (sortBy === "reviews") return b.reviews - a.reviews;
-    if (sortBy === "activities") return b.activities - a.activities;
-    if (sortBy === "name") return a.name.localeCompare(b.name);
-    return 0;
-  });
+    if (!query) return destinations;
+
+    return destinations.filter(
+      (destination) =>
+        destination.name.toLowerCase().includes(query) ||
+        destination.description.toLowerCase().includes(query) ||
+        destination.location.toLowerCase().includes(query)
+    );
+  }, [destinations, searchTerm]);
+
+  const sorted = useMemo(
+    () =>
+      [...filtered].sort((a, b) => {
+        if (sortBy === "rating") return b.rating - a.rating;
+        if (sortBy === "reviews") return b.reviews - a.reviews;
+        if (sortBy === "activities") return b.activities - a.activities;
+        if (sortBy === "name") return a.name.localeCompare(b.name);
+        return 0;
+      }),
+    [filtered, sortBy]
+  );
 
   const endCount = Math.min(9, sorted.length);
 
   return (
-    <div className={`destinations-page ${isRTL ? 'rtl' : ''}`}>
+    <div className={`destinations-page ${isRTL ? "rtl" : ""}`}>
       <div className="destinations-hero">
         <div className="hero-overlay"></div>
         <div className="hero-content">
-          <h1>{lang === 'AR' ? 'استكشف الوجهات' : lang === 'FR' ? 'Explorez les Destinations' : 'Explore Destinations'}</h1>
-          <p>{lang === 'AR' ? 'اكتشف أجمل الوجهات في المغرب' : lang === 'FR' ? 'Découvrez les plus belles destinations' : 'Discover the most beautiful destinations in Morocco'}</p>
+          <h1>
+            {lang === "AR"
+              ? "استكشف الوجهات"
+              : lang === "FR"
+              ? "Explorez les destinations"
+              : "Explore Destinations"}
+          </h1>
+          <p>
+            {lang === "AR"
+              ? "اكتشف اجمل الوجهات في المغرب"
+              : lang === "FR"
+              ? "Decouvrez les plus belles destinations"
+              : "Discover the most beautiful destinations in Morocco"}
+          </p>
         </div>
       </div>
 
       <div className="search-filter-container">
         <div className="search-bar">
           <Search size={20} className="search-icon" />
-          <input type="text" placeholder={lang === 'AR' ? 'ابحث...' : lang === 'FR' ? 'Rechercher...' : 'Search...'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" />
+          <input
+            type="text"
+            placeholder={lang === "AR" ? "ابحث..." : lang === "FR" ? "Rechercher..." : "Search..."}
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            className="search-input"
+          />
         </div>
+
         <div className="sort-container">
-          <button className="sort-btn" onClick={() => setShowSortMenu(!showSortMenu)}>
+          <button
+            type="button"
+            className="sort-btn"
+            onClick={() => setShowSortMenu((current) => !current)}
+          >
             <SlidersHorizontal size={18} />
-            <span>{lang === 'AR' ? 'ترتيب' : lang === 'FR' ? 'Trier' : 'Sort'}</span>
+            <span>{lang === "AR" ? "ترتيب" : lang === "FR" ? "Trier" : "Sort"}</span>
           </button>
+
           {showSortMenu && (
             <div className="sort-menu">
-              <button onClick={() => { setSortBy("default"); setShowSortMenu(false); }}>Default</button>
-              <button onClick={() => { setSortBy("name"); setShowSortMenu(false); }}>Name</button>
-              <button onClick={() => { setSortBy("rating"); setShowSortMenu(false); }}>Rating</button>
-              <button onClick={() => { setSortBy("reviews"); setShowSortMenu(false); }}>Reviews</button>
-              <button onClick={() => { setSortBy("activities"); setShowSortMenu(false); }}>Activities</button>
+              <button type="button" onClick={() => { setSortBy("default"); setShowSortMenu(false); }}>Default</button>
+              <button type="button" onClick={() => { setSortBy("name"); setShowSortMenu(false); }}>Name</button>
+              <button type="button" onClick={() => { setSortBy("rating"); setShowSortMenu(false); }}>Rating</button>
+              <button type="button" onClick={() => { setSortBy("activities"); setShowSortMenu(false); }}>Activities</button>
             </div>
           )}
         </div>
       </div>
 
       <div className="results-info">
-        <span>Showing 1-{endCount} of {sorted.length} destinations</span>
+        <span>
+          {loading
+            ? "Loading destinations..."
+            : `Showing ${sorted.length ? `1-${endCount}` : "0"} of ${sorted.length} destinations`}
+        </span>
       </div>
 
-      <div className="destinations-grid">
-        {sorted.slice(0, 9).map((dest) => (
-          <Link to={`/destination/${dest.slug}`} key={dest.id} className="destination-card">
-            <div className="card-image">
-              <img src={dest.image} alt={dest.name} />
-              <button className={`save-heart ${savedItems.includes(dest.id) ? 'saved' : ''}`} onClick={(e) => toggleSave(e, dest.id)}>
-                <Heart size={18} fill={savedItems.includes(dest.id) ? "currentColor" : "none"} />
-              </button>
-              {dest.featured && <div className="featured-badge">⭐ Featured</div>}
-            </div>
-            <div className="card-content">
-              <h3>{dest.name}</h3>
-              <div className="rating"><Star size={14} fill="currentColor" /> {dest.rating}</div>
-              <div className="location"><MapPin size={14} /> {dest.location}</div>
-              <div className="activities"><Activity size={14} /> {dest.activities} activities</div>
-              <div className="reviews">({dest.reviews} reviews)</div>
-              <div className="explore-link">Explore <ArrowRight size={14} /></div>
-            </div>
-          </Link>
-        ))}
-      </div>
+      {!loading && sorted.length > 0 && (
+        <div className="destinations-grid">
+          {sorted.slice(0, 9).map((destination) => {
+            const saved = isFavorite("city", destination.id);
 
-      {sorted.length === 0 && (
+            return (
+              <Link
+                to={`/destination/${destination.slug}`}
+                key={destination.id}
+                className="destination-card"
+              >
+                <div className="card-image">
+                  <img src={destination.image} alt={destination.name} />
+                  <button
+                    type="button"
+                    className={`save-heart ${saved ? "saved" : ""}`}
+                    onClick={(event) => handleFavoriteClick(event, destination)}
+                    aria-label={saved ? "Remove from favorites" : "Add to favorites"}
+                    title={saved ? "Remove from favorites" : "Add to favorites"}
+                  >
+                    <Heart size={18} fill={saved ? "currentColor" : "none"} />
+                  </button>
+                  {destination.featured && <div className="featured-badge">Featured</div>}
+                </div>
+
+                <div className="card-content">
+                  <div className="card-header">
+                    <h3>{destination.name}</h3>
+                    <div className="rating">
+                      <Star size={14} fill="currentColor" />
+                      {destination.rating}
+                    </div>
+                  </div>
+
+                  <div className="card-stats">
+                    {destination.location && (
+                      <span className="stat-item">
+                        <MapPin size={14} />
+                        {destination.location}
+                      </span>
+                    )}
+                    <span className="stat-item">
+                      <Activity size={14} />
+                      {destination.activities} activities
+                    </span>
+                  </div>
+
+                  <div className="card-footer">
+                    <span className="reviews-count">
+                      {destination.reviews > 0 ? `(${destination.reviews} reviews)` : ""}
+                    </span>
+                    <div className="explore-link">
+                      Explore
+                      <ArrowRight size={14} />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
+      {!loading && sorted.length === 0 && (
         <div className="no-results">
           <p>No destinations found</p>
         </div>

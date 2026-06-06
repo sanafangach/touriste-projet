@@ -6,6 +6,9 @@ import {
   Check, 
   ExternalLink,
   TrendingUp,
+  Coins,
+  BarChart3,
+  Crown,
   Smile,
   Compass,
   Star,
@@ -16,7 +19,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Tent,
-  Home
+  Home,
+  ChevronDown
 } from "lucide-react";
 import { useLanguage } from "../accueil/LanguageContext";
 import { generateTripData } from "../../services/aiService";
@@ -292,15 +296,32 @@ function Pack() {
 
   // Helper to open Google Maps search in new tab
   const openGoogleMaps = (query) => {
-    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    const url = String(query).startsWith("http")
+      ? query
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
   // Budget Styles config
   const budgetOptions = [
-    { value: "Cheap", label: t("cheapBudget"), desc: t("cheapDesc"), icon: "🪙" },
-    { value: "Moderate", label: t("moderateBudget"), desc: t("moderateDesc"), icon: "💵" },
-    { value: "Luxury", label: t("luxuryBudget"), desc: t("luxuryDesc"), icon: "💎" }
+    {
+      value: "Cheap",
+      label: t("cheapBudget"),
+      summary: lang === "AR" ? "أقل تكلفة" : lang === "FR" ? "Prix malin" : "Smart price",
+      icon: Coins
+    },
+    {
+      value: "Moderate",
+      label: t("moderateBudget"),
+      summary: lang === "AR" ? "راحة متوازنة" : lang === "FR" ? "Bon équilibre" : "Best balance",
+      icon: BarChart3
+    },
+    {
+      value: "Luxury",
+      label: t("luxuryBudget"),
+      summary: lang === "AR" ? "تجربة راقية" : lang === "FR" ? "Expérience premium" : "Premium stay",
+      icon: Crown
+    }
   ];
 
   // Traveler Options config
@@ -349,7 +370,7 @@ function Pack() {
         <p className="h-scroll-desc">{item.description}</p>
         <button
           className="maps-redirect-btn mini"
-          onClick={() => openGoogleMaps(item.maps_query || `${item.name}, ${formData.location}, Morocco`)}
+          onClick={() => openGoogleMaps(item.maps_url || item.maps_query || `${item.name}, ${formData.location}, Morocco`)}
         >
           <ExternalLink size={12} />
           <span>{mapsLabel}</span>
@@ -522,20 +543,28 @@ function Pack() {
                     <span>{t("budgetLabel")}</span>
                   </label>
                   <div className="budget-segmented-control">
-                    {budgetOptions.map((opt) => (
+                    {budgetOptions.map((opt) => {
+                      const BudgetIcon = opt.icon;
+                      return (
                       <button
                         type="button"
                         key={opt.value}
                         className={`budget-pill ${formData.budget === opt.value ? "active" : ""}`}
                         onClick={() => handleInputChange("budget", opt.value)}
                       >
-                        <span className="selector-emoji">{opt.icon}</span>
+                        <span className="budget-icon-wrap">
+                          <BudgetIcon size={20} strokeWidth={2.3} />
+                        </span>
                         <span className="budget-pill-text">
                           <h3>{opt.label}</h3>
-                          <small>{opt.desc}</small>
+                          <small>{opt.summary}</small>
+                        </span>
+                        <span className="budget-check-dot">
+                          <Check size={11} strokeWidth={3} />
                         </span>
                       </button>
-                    ))}
+                    );
+                    })}
                   </div>
                 </div>
 
@@ -743,18 +772,28 @@ function Pack() {
                       const expanded = isDayExpanded(dayIndex);
                       return (
                         <div key={dayIndex} className={`timeline-day-block ${expanded ? "expanded" : "collapsed"}`}>
-                          <div 
+                          <button 
                             className="timeline-day-header"
                             onClick={() => toggleDayExpansion(dayIndex)}
+                            type="button"
+                            aria-expanded={expanded}
                           >
                             <div className="timeline-circle">
                               {expanded ? <Check size={14} className="timeline-check-icon" /> : <span>{dayIndex + 1}</span>}
                             </div>
-                            <h3>{dayPlan.day}</h3>
-                            <span className={`day-collapse-indicator ${expanded ? "open" : ""}`}>
-                              ▼
+                            <div className="timeline-day-title">
+                              <span>{lang === "AR" ? "برنامج اليوم" : lang === "FR" ? "Programme du jour" : "Daily plan"}</span>
+                              <h3>{dayPlan.day}</h3>
+                              {(dayPlan.theme || dayPlan.route_summary) && (
+                                <p className="timeline-day-subtitle">
+                                  {[dayPlan.theme, dayPlan.route_summary].filter(Boolean).join(" - ")}
+                                </p>
+                              )}
+                            </div>
+                            <span className={`day-collapse-indicator ${expanded ? "open" : ""}`} aria-hidden="true">
+                              <ChevronDown size={18} />
                             </span>
-                          </div>
+                          </button>
                           
                           {expanded && (
                             <div className="timeline-activities-list animate-slide-down">
@@ -771,7 +810,7 @@ function Pack() {
                                       <span>{act.time}</span>
                                     </span>
                                   </div>
-                                  <div className="activity-details">
+                                   <div className="activity-details">
                                     <div className="activity-title-row">
                                       <h4>{act.place}</h4>
                                       <div className="activity-rating">
@@ -781,7 +820,15 @@ function Pack() {
                                     </div>
                                     <p className="activity-desc">{act.details}</p>
                                     <div className="activity-footer">
-                                      <span className="activity-price">{t("ticketPrice")} {act.ticket_pricing}</span>
+                                      <span className="entry-price-chip">
+                                        <span className="entry-price-icon" aria-hidden="true">
+                                          <Coins size={15} strokeWidth={2.4} />
+                                        </span>
+                                        <span className="entry-price-copy">
+                                          <span className="entry-price-label">{t("ticketPrice").replace(/\s*[:：]\s*$/, "")}</span>
+                                          <strong className="entry-price-value">{act.ticket_pricing}</strong>
+                                        </span>
+                                      </span>
                                       <button 
                                         className="maps-redirect-btn mini"
                                         onClick={() => openGoogleMaps(`${act.place}, ${formData.location}, Morocco`)}
