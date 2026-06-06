@@ -1,8 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import Languages from "./components/pages/languages";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test("renders the learning hub entry points", async () => {
+  window.localStorage.clear();
+
+  render(<Languages />);
+
+  expect(await screen.findByText(/Immersion Darija/i)).toBeInTheDocument();
+  expect(await screen.findByText(/Tifinagh/i)).toBeInTheDocument();
 });

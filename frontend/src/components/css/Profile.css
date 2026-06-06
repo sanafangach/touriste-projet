@@ -285,7 +285,6 @@ html.dark {
 
 .profile-photo-edit:hover {
   transform: scale(1.1);
-
   background: var(--orange-primary);
   color: white;
 }
@@ -296,10 +295,7 @@ html.dark {
   border-radius: 999px;
 
   color: white;
-  font-size: 0.95rem;
   font-weight: 600;
-
-  background: rgba(0, 0, 0, 0.2);
 
   backdrop-filter: blur(4px);
 
@@ -339,7 +335,7 @@ html.dark {
     var(--orange-primary),
     #ffb36b
   );
-
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -418,7 +414,6 @@ html.dark {
 
 .input-icon-wrapper:focus-within {
   border-color: var(--orange-primary);
-
   box-shadow: 0 0 0 4px var(--orange-glow);
 }
 
@@ -514,7 +509,6 @@ html.dark .readonly-field {
 
 .save-button:hover {
   transform: translateY(-3px);
-
   filter: brightness(1.05);
 }
 
@@ -545,7 +539,6 @@ html.dark .readonly-field {
 /* Toast */
 .save-toast {
   position: fixed;
-
   bottom: 2rem;
   left: 50%;
 
@@ -586,12 +579,10 @@ html.dark .readonly-field {
   .profile-card-inner {
     flex-direction: column;
   }
-
   .profile-left,
   .profile-right {
     width: 100%;
   }
-
   .profile-photo-wrapper {
     width: 150px;
     height: 150px;

@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 function ProtectedRoute({ children, requireAdmin = false }) {
-    const { user, isAuthenticated, isAdmin } = useAuth();
+    const { isAuthenticated, isAdmin } = useAuth();
 
     // Ila ma connectéch → redirect l login
     if (!isAuthenticated) {

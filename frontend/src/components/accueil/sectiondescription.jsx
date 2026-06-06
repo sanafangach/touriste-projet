@@ -3,7 +3,7 @@ import { useLanguage } from "./LanguageContext"; // 🔥 Import
 import "../css/sectiondescription.css";
 
 function AboutSite() {
-  const { t, lang } = useLanguage(); // 🔥 Utilisation du contexte
+  const { lang } = useLanguage(); // 🔥 Utilisation du contexte
 
   const content = {
     FR: {

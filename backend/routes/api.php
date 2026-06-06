@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\CommentaireController; 
 
 
 
@@ -64,6 +65,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::match(['put', 'post'], '/admin/hidden-gems/{id}', [AdminController::class, 'updateHiddenGem']);
         Route::delete('/admin/hidden-gems/{id}', [AdminController::class, 'deleteHiddenGem']);
     });
+    Route::post('/commentaires', [CommentaireController::class, 'store']);
+    Route::delete('/commentaires/{id}', [CommentaireController::class, 'destroy']);
 });
 
 //Laravel api routes
@@ -78,3 +81,7 @@ Route::post('/favorites/toggle', [FavoriteController::class, 'toggle']);
 Route::delete('/favorites/by-item', [FavoriteController::class, 'destroyByItem']);
 
 Route::delete('/favorites/{id}', [FavoriteController::class, 'destroy']);
+
+// ⬇ PUBLIC - Ga3 nas y9dro ychofou commentaires
+Route::get('/commentaires', [CommentaireController::class, 'index']);
+

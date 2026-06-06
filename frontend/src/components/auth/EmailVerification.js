@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, ArrowRight, AlertCircle, Loader } from 'lucide-react';
+import { Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import { useLanguage } from '../accueil/LanguageContext';
 import api from '../../services/api';
 import '../css/Login.css';
@@ -50,7 +50,7 @@ function EmailVerification() {
         setError('');
 
         try {
-            const response = await api.post('/send-verification-code', { email });
+            await api.post('/send-verification-code', { email });
             
             // Redirect l page dial verification code
             navigate('/verify-code', { state: { email } });
