@@ -157,7 +157,7 @@ const Footer = () => {
               "Guides Touristiques",
             ].map((s) => (
               <li key={s}>
-                <a href="#">{s}</a>
+                <Link to="/">{s}</Link>
               </li>
             ))}
           </ul>

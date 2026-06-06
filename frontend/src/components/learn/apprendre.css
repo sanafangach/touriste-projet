@@ -1,0 +1,434 @@
+/* Apprendre Foundation CSS */
+:root {
+  /* Core Colors - Light Mode (Apple/Airbnb aesthetic) */
+  --apprendre-bg: #f4f5f7; /* slightly darker background for stronger card separation */
+  --apprendre-surface: #ffffff;
+  --apprendre-text-primary: #111827;
+  --apprendre-text-secondary: #4b5563;
+  --apprendre-text-muted: #9ca3af;
+  
+  --apprendre-border: #e2e8f0;
+  --apprendre-shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+  --apprendre-shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.06), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
+  --apprendre-shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.08);
+  --apprendre-shadow-hover: 0 20px 40px -8px rgba(0, 0, 0, 0.12);
+  
+  /* Brand Colors (Subtle & Premium) */
+  --apprendre-brand: #d97706; /* Refined Orange */
+  --apprendre-brand-hover: #b45309;
+  --apprendre-brand-light: #fef3c7;
+  
+  /* Thematic Icons Colors */
+  --apprendre-icon-darija-bg: rgba(217, 119, 6, 0.1);
+  --apprendre-icon-darija-color: #d97706; /* Orange */
+  
+  --apprendre-icon-tifinagh-bg: rgba(3, 105, 161, 0.1);
+  --apprendre-icon-tifinagh-color: #0369a1; /* Blue */
+  
+  --apprendre-icon-culture-bg: rgba(21, 128, 61, 0.1);
+  --apprendre-icon-culture-color: #15803d; /* Green */
+}
+
+html.dark {
+  /* Core Colors - Dark Mode */
+  --apprendre-bg: #0f172a;
+  --apprendre-surface: #111827;
+  --apprendre-text-primary: #E5E7EB;
+  --apprendre-text-secondary: #cbd5e1;
+  --apprendre-text-muted: #94a3b8;
+  
+  --apprendre-border: #1e293b;
+  --apprendre-shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+  --apprendre-shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  --apprendre-shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+  --apprendre-shadow-hover: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  
+  /* Brand Colors adjust slightly for dark mode contrast */
+  --apprendre-brand-light: rgba(217, 119, 6, 0.1);
+  
+  /* Thematic Icons Colors */
+  --apprendre-icon-darija-bg: rgba(245, 158, 11, 0.15);
+  --apprendre-icon-darija-color: #f59e0b; /* Bright Orange for Dark Mode */
+  
+  --apprendre-icon-tifinagh-bg: rgba(14, 165, 233, 0.15);
+  --apprendre-icon-tifinagh-color: #0ea5e9; /* Sky Blue for Dark Mode */
+  
+  --apprendre-icon-culture-bg: rgba(34, 197, 94, 0.15);
+  --apprendre-icon-culture-color: #22c55e; /* Green for Dark Mode */
+}
+
+/* Container */
+.apprendre-foundation {
+  min-height: 100vh;
+  background-color: var(--apprendre-bg);
+  color: var(--apprendre-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: 140px 24px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.apprendre-foundation.rtl {
+  direction: rtl;
+}
+
+/* Hero Section */
+.apprendre-hero {
+  text-align: center;
+  max-width: 800px;
+  margin-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.apprendre-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background-color: var(--apprendre-brand-light);
+  color: var(--apprendre-brand);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(var(--learn-accent-rgb, 217, 119, 6), 0.2);
+}
+
+.apprendre-title {
+  font-size: 3.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  color: var(--apprendre-text-primary);
+  line-height: 1.1;
+}
+
+.apprendre-subtitle {
+  font-size: 1.25rem;
+  color: var(--apprendre-text-secondary);
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Cards Grid */
+.apprendre-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Individual Card */
+.apprendre-card {
+  background-color: var(--apprendre-surface);
+  border: 1px solid var(--apprendre-border);
+  border-radius: 28px;
+  padding: 40px;
+  text-align: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+  box-shadow: var(--apprendre-shadow-md);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.apprendre-foundation.rtl .apprendre-card {
+  text-align: right;
+}
+
+.apprendre-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--apprendre-shadow-hover);
+}
+
+.apprendre-card.darija-card {
+  border: 1px solid rgba(217, 119, 6, 0.4);
+}
+.apprendre-card.darija-card:hover {
+  border-color: var(--apprendre-icon-darija-color);
+  box-shadow: 0 20px 40px -8px rgba(217, 119, 6, 0.15), 0 10px 15px -3px rgba(217, 119, 6, 0.08);
+}
+html.dark .apprendre-card.darija-card {
+  border-color: rgba(217, 119, 6, 0.15);
+  box-shadow: 0 8px 30px -5px rgba(217, 119, 6, 0.05);
+}
+html.dark .apprendre-card.darija-card:hover {
+  border-color: rgba(217, 119, 6, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(217, 119, 6, 0.15), 0 0 25px 0 rgba(217, 119, 6, 0.1);
+}
+
+.apprendre-card.tifinagh-card {
+  border: 1px solid rgba(3, 105, 161, 0.4);
+}
+.apprendre-card.tifinagh-card:hover {
+  border-color: var(--apprendre-icon-tifinagh-color);
+  box-shadow: 0 20px 40px -8px rgba(3, 105, 161, 0.15), 0 10px 15px -3px rgba(3, 105, 161, 0.08);
+}
+html.dark .apprendre-card.tifinagh-card {
+  border-color: rgba(3, 105, 161, 0.15);
+  box-shadow: 0 8px 30px -5px rgba(3, 105, 161, 0.05);
+}
+html.dark .apprendre-card.tifinagh-card:hover {
+  border-color: rgba(3, 105, 161, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(3, 105, 161, 0.15), 0 0 25px 0 rgba(3, 105, 161, 0.1);
+}
+
+.apprendre-card.culture-card {
+  border: 1px solid rgba(21, 128, 61, 0.4);
+}
+.apprendre-card.culture-card:hover {
+  border-color: var(--apprendre-icon-culture-color);
+  box-shadow: 0 20px 40px -8px rgba(21, 128, 61, 0.15), 0 10px 15px -3px rgba(21, 128, 61, 0.08);
+}
+html.dark .apprendre-card.culture-card {
+  border-color: rgba(21, 128, 61, 0.15);
+  box-shadow: 0 8px 30px -5px rgba(21, 128, 61, 0.05);
+}
+html.dark .apprendre-card.culture-card:hover {
+  border-color: rgba(21, 128, 61, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(21, 128, 61, 0.15), 0 0 25px 0 rgba(21, 128, 61, 0.1);
+}
+
+.card-decoration {
+  position: absolute;
+  bottom: -10%;
+  right: -5%;
+  width: 200px;
+  height: 200px;
+  opacity: 0.06;
+  z-index: -1;
+  pointer-events: none;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.apprendre-card.darija-card .card-decoration {
+  color: var(--apprendre-icon-darija-color);
+}
+.apprendre-card.tifinagh-card .card-decoration {
+  color: var(--apprendre-icon-tifinagh-color);
+}
+.apprendre-card.culture-card .card-decoration {
+  color: var(--apprendre-icon-culture-color);
+}
+html.dark .card-decoration {
+  opacity: 0.08;
+}
+.apprendre-card:hover .card-decoration {
+  transform: scale(1.05) translate(-5%, -5%);
+  opacity: 0.1;
+}
+html.dark .apprendre-card:hover .card-decoration {
+  opacity: 0.15;
+}
+
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.card-header-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.apprendre-foundation.rtl .card-header-meta {
+  align-items: flex-start;
+}
+
+.card-status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.card-status.available {
+  background-color: rgba(21, 128, 61, 0.1);
+  color: #15803d;
+}
+html.dark .card-status.available {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+
+.card-status.coming-soon {
+  background-color: rgba(100, 116, 139, 0.15);
+  color: #475569;
+}
+html.dark .card-status.coming-soon {
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+}
+
+.card-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0;
+  transition: transform 0.3s ease;
+}
+
+.apprendre-card:hover .card-icon-wrapper {
+  transform: scale(1.05);
+}
+
+.darija-icon {
+  background-color: var(--apprendre-icon-darija-bg);
+  color: var(--apprendre-icon-darija-color);
+}
+
+.tifinagh-icon {
+  background-color: var(--apprendre-icon-tifinagh-bg);
+  color: var(--apprendre-icon-tifinagh-color);
+}
+
+.culture-icon {
+  background-color: var(--apprendre-icon-culture-bg);
+  color: var(--apprendre-icon-culture-color);
+}
+
+.card-eyebrow {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--apprendre-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+}
+
+.card-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--apprendre-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.card-desc {
+  font-size: 1.0625rem;
+  color: var(--apprendre-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 40px;
+  flex-grow: 1;
+}
+
+/* Call to Action Button inside Card */
+.card-btn {
+  background-color: transparent;
+  border-radius: 18px;
+  padding: 16px 24px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: var(--apprendre-text-primary);
+}
+
+.apprendre-card.darija-card .card-btn {
+  color: var(--apprendre-icon-darija-color);
+  border: 1.5px solid rgba(217, 119, 6, 0.5);
+}
+.apprendre-card.darija-card:hover .card-btn {
+  background-color: var(--apprendre-icon-darija-color);
+  color: #ffffff;
+  border-color: var(--apprendre-icon-darija-color);
+}
+
+.apprendre-card.tifinagh-card .card-btn {
+  color: var(--apprendre-icon-tifinagh-color);
+  border: 1.5px solid rgba(3, 105, 161, 0.5);
+}
+.apprendre-card.tifinagh-card:hover .card-btn {
+  background-color: var(--apprendre-icon-tifinagh-color);
+  color: #ffffff;
+  border-color: var(--apprendre-icon-tifinagh-color);
+}
+
+.apprendre-card.culture-card .card-btn {
+  color: var(--apprendre-icon-culture-color);
+  border: 1.5px solid rgba(21, 128, 61, 0.5);
+}
+.apprendre-card.culture-card:hover .card-btn {
+  background-color: var(--apprendre-icon-culture-color);
+  color: #ffffff;
+  border-color: var(--apprendre-icon-culture-color);
+}
+
+/* Animation utilities for the button icon */
+.group:hover .group-hover\:translate-x-1 {
+  transform: translateX(6px);
+}
+
+.group:hover .group-hover\:-translate-x-1 {
+  transform: translateX(-6px);
+}
+
+.transition-transform {
+  transition-property: transform;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .apprendre-foundation {
+    padding: 100px 20px 60px;
+  }
+
+  .apprendre-title {
+    font-size: 2.5rem;
+  }
+  
+  .apprendre-subtitle {
+    font-size: 1.125rem;
+  }
+  
+  .apprendre-cards-container {
+    gap: 24px;
+  }
+  
+  .apprendre-card {
+    padding: 32px 24px;
+    border-radius: 24px;
+  }
+  
+  .card-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+  }
+}

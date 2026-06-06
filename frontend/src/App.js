@@ -75,8 +75,10 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/card" element={<Card />} />
         <Route path="/destination" element={<Destination />} />
+        
+        <Route path="/languages/*" element={<Languages />} />
         <Route path="/destination/:slug" element={<CityDetail />} />
-        <Route path="/languages" element={<Languages />} />
+        
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Login />} />

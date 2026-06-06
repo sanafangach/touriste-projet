@@ -96,7 +96,7 @@ Nss = Forget`,
           <p className="example" style={{ whiteSpace: 'pre-line' }}>
             {c.darijaExamples}
           </p>
-          <Link to="/learn-darija" className="btn">
+          <Link to="/languages" className="btn">
             {c.btnDarija}
           </Link>
         </div>
