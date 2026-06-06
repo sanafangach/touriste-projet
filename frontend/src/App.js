@@ -12,12 +12,13 @@ import { AuthProvider } from "./context/AuthContext";
 import { FavoritesProvider } from "./context/FavoritesContext";
 
 import Menu from "./components/accueil/Menu";
+import Footer from "./components/accueil/Footer";
+
 import Home from "./components/accueil/home";
 import Card from "./components/pages/card";
 import Destination from "./components/pages/destination";
 import Languages from "./components/pages/languages";
 import Login from "./components/pages/login";
-import Footer from "./components/accueil/Footer"
 import Chatbot from "./components/Chatbot/Chatbot";
 import EmailVerification from './components/auth/EmailVerification';
 import VerifyCode from './components/auth/VerifyCode';
@@ -29,6 +30,7 @@ import Saved from "./components/pages/favorite";
 import AdminDashboard from "./pageadmin/AdminDashboard";
 import Pack from "./components/pages/pack";
 import Profile from "./components/pages/Profile";
+import Commentaire from "./components/accueil/Commentaire";
 import CityDetail from "./components/pages/destinations/Citydetail";
 
 
@@ -99,6 +101,8 @@ function AppContent() {
                 {/* Fallback */}
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
+                {showChatbot && <Commentaire /> }
+                {showChatbot && <Footer /> }
 
             {showChatbot && <Chatbot /> }
             {showFooter && <Footer />}

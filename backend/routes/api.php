@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentaireController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -65,16 +66,3 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/admin/hidden-gems/{id}', [AdminController::class, 'deleteHiddenGem']);
     });
 });
-
-//Laravel api routes
-Route::get('/cities', [CityController::class, 'index']);
-
-Route::get('/cities/{slug}', [CityController::class, 'show']);
-
-Route::get('/favorites', [FavoriteController::class, 'index']);
-
-Route::post('/favorites/toggle', [FavoriteController::class, 'toggle']);
-
-Route::delete('/favorites/by-item', [FavoriteController::class, 'destroyByItem']);
-
-Route::delete('/favorites/{id}', [FavoriteController::class, 'destroy']);
