@@ -1,4 +1,4 @@
-/* ===== COMMENTAIRE - INPUT WA7DA + UPLOAD + STARS ===== */
+/* ===== COMMENTAIRE SIMPLIFIÉ ===== */
 
 .commentaire-section {
   padding: 80px 0;
@@ -34,6 +34,22 @@
   line-height: 1.2;
 }
 
+/* Alert */
+.alert-message {
+  padding: 14px 20px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  animation: slideDown 0.3s ease;
+}
+
+.alert-success {
+  background: #dcfce7;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
 /* Carousel */
 .carousel-area {
   display: flex;
@@ -58,9 +74,60 @@
   display: none;
 }
 
+/* Loading & Empty */
+.loading-state,
+.empty-state {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #888;
+  text-align: center;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #666;
+  margin: 0 0 4px 0;
+}
+
+.empty-state span {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f0f0f0;
+  border-top-color: #FF6B35;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+.spinner-small {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Cards */
 .comment-card {
-  flex: 0 0 300px;
+  flex: 0 0 320px;
   scroll-snap-align: start;
   background: #fff;
   border-radius: 20px;
@@ -72,80 +139,31 @@
 }
 
 .comment-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.1);
 }
 
-.card-image {
-  position: relative;
-  height: 180px;
-  overflow: hidden;
-}
-
-.card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-
-.comment-card:hover .card-image img {
-  transform: scale(1.08);
-}
-
-.image-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 40%, transparent 70%);
-  display: flex;
-  align-items: flex-end;
-  padding: 20px;
-}
-
-.location-name {
-  color: #fff;
-  font-size: 1.5rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  position: relative;
-  padding-bottom: 6px;
-}
-
-.location-name::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background: linear-gradient(90deg, #FF6B35, #FFE66D);
-  border-radius: 2px;
-}
-
-/* Card Body */
 .card-body {
-  padding: 20px;
+  padding: 24px;
 }
 
 .card-top {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .user-avatar {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   flex-shrink: 0;
 }
 
@@ -166,7 +184,7 @@
   color: #aaa;
 }
 
-/* Stars Display */
+/* Stars */
 .stars {
   display: flex;
   gap: 2px;
@@ -197,22 +215,19 @@
 }
 
 .comment-text {
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.7;
   color: #555;
-  margin: 0 0 16px 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  margin: 0 0 20px 0;
+  min-height: 50px;
 }
 
-/* Card Footer */
+/* Card Footer - غير Like */
 .card-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  padding-top: 14px;
+  padding-top: 16px;
   border-top: 1px solid #f0f0f0;
 }
 
@@ -226,8 +241,8 @@
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 8px;
+  padding: 6px 10px;
+  border-radius: 10px;
   transition: all 0.3s ease;
 }
 
@@ -246,20 +261,6 @@
 
 .like-btn:hover svg {
   transform: scale(1.2);
-}
-
-.reply-btn {
-  background: none;
-  border: none;
-  color: #888;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.reply-btn:hover {
-  color: #FF6B35;
 }
 
 /* Arrows */
@@ -286,9 +287,7 @@
   box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
 }
 
-/* ============================================
-   ADD COMMENT - INPUT WA7DA + UPLOAD + STARS
-   ============================================ */
+/* Formulaire */
 .add-comment-section {
   background: #fff;
   border-radius: 20px;
@@ -303,52 +302,6 @@
   box-shadow: 0 4px 25px rgba(255, 107, 53, 0.1);
 }
 
-/* Image Preview */
-.upload-preview {
-  position: relative;
-  height: 200px;
-  overflow: hidden;
-}
-
-.upload-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.upload-preview::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
-}
-
-.remove-image {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.9);
-  border: none;
-  color: #333;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  z-index: 2;
-}
-
-.remove-image:hover {
-  background: #ff4444;
-  color: #fff;
-  transform: scale(1.1);
-}
-
-/* Form */
 .add-comment-form {
   padding: 24px;
 }
@@ -402,6 +355,11 @@
   color: #aaa;
 }
 
+.comment-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Actions Bar */
 .comment-actions-bar {
   display: flex;
@@ -418,7 +376,7 @@
 
 .comment-actions-bar.visible {
   opacity: 1;
-  max-height: 60px;
+  max-height: 80px;
 }
 
 .actions-left {
@@ -427,37 +385,6 @@
   gap: 24px;
 }
 
-/* Upload Button */
-.upload-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: 2px dashed #ddd;
-  color: #888;
-  padding: 8px 16px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.upload-btn:hover {
-  border-color: #FF6B35;
-  color: #FF6B35;
-  background: rgba(255, 107, 53, 0.05);
-}
-
-.upload-btn svg {
-  transition: transform 0.3s ease;
-}
-
-.upload-btn:hover svg {
-  transform: scale(1.1);
-}
-
-/* Rating Area */
 .rating-area {
   display: flex;
   align-items: center;
@@ -472,6 +399,9 @@
 
 /* Publish Button */
 .publish-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 12px 32px;
   border-radius: 12px;
   border: none;
@@ -481,6 +411,7 @@
   font-size: 0.95rem;
   cursor: not-allowed;
   transition: all 0.3s ease;
+  min-width: 120px;
 }
 
 .publish-btn.active {
@@ -495,6 +426,130 @@
   box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
 }
 
+.publish-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.publish-btn:disabled.active {
+  background: #e8e8e8;
+  color: #aaa;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Modal Login */
+.login-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.login-modal {
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f0;
+  color: #666;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.modal-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 107, 53, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.login-modal h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 12px 0;
+}
+
+.login-modal p {
+  font-size: 0.95rem;
+  color: #888;
+  margin: 0 0 28px 0;
+  line-height: 1.6;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-btn {
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.modal-btn-primary {
+  background: linear-gradient(135deg, #FF6B35, #FF8C42);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.modal-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.modal-btn-secondary {
+  background: transparent;
+  color: #888;
+  border: 2px solid #e8e8e8;
+}
+
+.modal-btn-secondary:hover {
+  border-color: #ccc;
+  color: #666;
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
@@ -504,6 +559,33 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -531,12 +613,30 @@
     align-items: stretch;
   }
 
+  .comment-actions-bar.visible {
+    max-height: 150px;
+  }
+
   .actions-left {
     justify-content: center;
   }
 
   .publish-btn {
     width: 100%;
+  }
+
+  .login-modal {
+    padding: 32px 24px;
+    margin: 16px;
+  }
+  
+  .modal-icon {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .login-modal h3 {
+    font-size: 1.2rem;
   }
 }
 
@@ -571,11 +671,6 @@
 
 .dark .comment-input:focus {
   background: rgba(255,255,255,0.08);
-}
-
-.dark .upload-btn {
-  border-color: rgba(255,255,255,0.2);
-  color: #aaa;
 }
 
 .dark .carousel-arrow {

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Profil;
+use App\Models\Commentaire;
 
 class User extends Authenticatable
 {
@@ -19,13 +21,10 @@ class User extends Authenticatable
         'ville',
         'email',
         'password',
-<<<<<<< HEAD
-=======
         'role',
         'email_verified_at',
         'provider',        
         'provider_id', 
->>>>>>> 27cef02d8a3c291f193d74224d98c69aa22d46a8
     ];
 
     protected $hidden = [
@@ -34,8 +33,6 @@ class User extends Authenticatable
     ];
 
     protected function casts(): array
-<<<<<<< HEAD
-=======
     {
         return [
             'email_verified_at' => 'datetime',
@@ -44,12 +41,8 @@ class User extends Authenticatable
     }
 
     public function isAdmin()
->>>>>>> 27cef02d8a3c291f193d74224d98c69aa22d46a8
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->role === 'admin';
     }
 
     // Relation m3a profil
@@ -57,10 +50,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profil::class);
     }
+    // relation m3a commentaire
 
-    // Relation m3a profil
-    public function profil()
+    public function commentaires()
     {
-        return $this->hasOne(Profil::class);
+        return $this->hasMany(Commentaire::class);
     }
+
+
 }

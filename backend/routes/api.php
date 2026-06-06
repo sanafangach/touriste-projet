@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentaireController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -34,3 +35,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/stats', [AdminController::class, 'getStats']);
     });
 });
+// ⬇ PUBLIC - Ga3 nas y9dro ychofou commentaires
+Route::get('/commentaires', [CommentaireController::class, 'index']);
+
+// ⬇ PROTECTED - Ghir authentifiés
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/commentaires', [CommentaireController::class, 'store']);
+    Route::delete('/commentaires/{id}', [CommentaireController::class, 'destroy']);
+});
+
+// Route::post('/commentaires', [CommentaireController::class, 'store']);
+// Route::delete('/commentaires/{id}', [CommentaireController::class, 'destroy']);

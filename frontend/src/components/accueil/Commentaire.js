@@ -1,89 +1,60 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import "../css/Commentaire.css";
 
-import agaImg from "../../assets/aga.jfif";
-import chefImg from "../../assets/chef.jfif";
-import essaouiraImg from "../../assets/essaouira.jfif";
-import merzougaImg from "../../assets/merzouga.jfif";
-import marrakechImg from "../../assets/marrakech.jfif";
+import { getCommentaires, createCommentaire } from '../../services/commentaireService';
+import { useAuth } from '../../hooks/useAuth';
 
 const Commentaire = () => {
+  const { user, isAuthenticated } = useAuth();
+  
   const [newComment, setNewComment] = useState('');
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  
   const scrollRef = useRef(null);
-  const fileInputRef = useRef(null);
 
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      name: "Youssef El Amrani",
-      avatar: "YE",
-      location: "Agadir",
-      date: "Il y a 2h",
-      text: "Taghazout c'est magique ! Le surf, les couchers de soleil... une expérience inoubliable avec Amudux.",
-      likes: 24,
-      liked: false,
-      image: agaImg,
-      rating: 5
-    },
-    {
-      id: 2,
-      name: "Sarah Benkirane",
-      avatar: "SB",
-      location: "Chefchaouen",
-      date: "Il y a 5h",
-      text: "Chefchaouen m'a complètement séduite. Les ruelles bleues, l'artisanat, l'ambiance... tout était parfait !",
-      likes: 18,
-      liked: true,
-      image: chefImg,
-      rating: 5
-    },
-    {
-      id: 3,
-      name: "Ahmed Benali",
-      avatar: "AB",
-      location: "Merzouga",
-      date: "Il y a 1j",
-      text: "Le Sahara de nuit c'est indescriptible. Les étoiles, le silence, le bivouac... merci pour cette organisation.",
-      likes: 45,
-      liked: false,
-      image: merzougaImg,
-      rating: 5
-    },
-    {
-      id: 4,
-      name: "Marie Dubois",
-      avatar: "MD",
-      location: "Marrakech",
-      date: "Il y a 2j",
-      text: "Jamaa El Fna le soir, c'est une autre dimension. Les spectacles, la nourriture, l'énergie... j'adore !",
-      likes: 32,
-      liked: false,
-      image: marrakechImg,
-      rating: 4
-    },
-    {
-      id: 5,
-      name: "Khalid Idrissi",
-      avatar: "KI",
-      location: "Essaouira",
-      date: "Il y a 3j",
-      text: "Essaouira, la perle de l'Atlantique. Balade à cheval au coucher du soleil, moment magique.",
-      likes: 28,
-      liked: true,
-      image: essaouiraImg,
-      rating: 5
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCommentaires();
+  }, []);
+
+  const fetchCommentaires = async () => {
+    try {
+      setLoading(true);
+      const data = await getCommentaires();
+      
+      const formattedComments = data.map((item) => ({
+        id: item.id,
+        name: item.user.name,
+        avatar: item.user.avatar,
+        date: item.date,
+        text: item.contenu,
+        likes: 0,
+        liked: false,
+        rating: item.note,
+        userId: item.user.id,
+      }));
+      
+      setComments(formattedComments);
+    } catch (err) {
+      console.error('Erreur chargement:', err);
+      setComments([]);
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const scrollAmount = 340;
       scrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        left: direction === 'left' ? -340 : 340,
         behavior: 'smooth'
       });
     }
@@ -102,39 +73,58 @@ const Commentaire = () => {
     }));
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+      return;
+    }
+
     if (!newComment.trim()) return;
+    if (rating === 0) {
+      setError('Veuillez attribuer une note');
+      return;
+    }
 
-    const newCommentObj = {
-      id: Date.now(),
-      name: "Vous", // Num rah mn login
-      avatar: "VO",
-      location: "Votre Destination",
-      date: "À l'instant",
-      text: newComment,
-      likes: 0,
-      liked: false,
-      image: selectedImage || marrakechImg,
-      rating: rating || 5
-    };
+    setIsSubmitting(true);
 
-    setComments([newCommentObj, ...comments]);
-    setNewComment('');
-    setRating(0);
-    setSelectedImage(null);
-    setIsFocused(false);
+    try {
+      const formData = new FormData();
+      formData.append('contenu', newComment);
+      formData.append('note', rating);
+
+      const response = await createCommentaire(formData);
+
+      if (response.success) {
+        const newCommentObj = {
+          id: response.commentaire.id,
+          name: response.commentaire.user.name,
+          avatar: response.commentaire.user.avatar,
+          date: "À l'instant",
+          text: response.commentaire.contenu,
+          likes: 0,
+          liked: false,
+          rating: response.commentaire.note,
+          userId: response.commentaire.user.id,
+        };
+
+        setComments(prev => [newCommentObj, ...prev]);
+        
+        setNewComment('');
+        setRating(0);
+        setHoverRating(0);
+        setIsFocused(false);
+        setSuccess('Commentaire publié avec succès !');
+        setTimeout(() => setSuccess(''), 3000);
+      }
+    } catch (err) {
+      setError(err.message || 'Erreur lors de la publication');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderStars = (rating, interactive = false, onRate = null, onHover = null, hoverValue = 0) => {
@@ -149,6 +139,7 @@ const Commentaire = () => {
             onClick={() => interactive && onRate && onRate(star)}
             onMouseEnter={() => interactive && onHover && onHover(star)}
             onMouseLeave={() => interactive && onHover && onHover(0)}
+            disabled={!interactive && isSubmitting}
           >
             ★
           </button>
@@ -157,14 +148,29 @@ const Commentaire = () => {
     );
   };
 
+  const getAvatarColor = (id) => `hsl(${(id * 137) % 360}, 70%, 55%)`;
+  
+  const getUserInitials = () => {
+    if (!user || !user.name) return 'VO';
+    return user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  };
+
   return (
     <section className="commentaire-section">
       <div className="commentaire-container">
+        
         {/* Header */}
         <div className="commentaire-header">
           <span className="section-tag">AVIS VOYAGEURS</span>
           <h2 className="section-title">Ils Ont Voyagé Avec Nous</h2>
         </div>
+
+        {/* Message succès */}
+        {success && (
+          <div className="alert-message alert-success">
+            <span>{success}</span>
+          </div>
+        )}
 
         {/* Carousel */}
         <div className="carousel-area">
@@ -175,53 +181,51 @@ const Commentaire = () => {
           </button>
 
           <div className="comments-scroll" ref={scrollRef}>
-            {comments.map((comment, idx) => (
-              <div 
-                key={comment.id} 
-                className="comment-card"
-                style={{ animationDelay: `${idx * 0.1}s` }}
-              >
-                <div className="card-image">
-                  <img src={comment.image} alt={comment.location} />
-                  <div className="image-overlay">
-                    <span className="location-name">{comment.location}</span>
-                  </div>
-                </div>
-
-                <div className="card-body">
-                  <div className="card-top">
-                    <div className="user-avatar" style={{ 
-                      background: `hsl(${(comment.id * 60) + 20}, 70%, 55%)` 
-                    }}>
-                      {comment.avatar}
-                    </div>
-                    <div className="user-info">
-                      <h4>{comment.name}</h4>
-                      <span>{comment.date}</span>
-                    </div>
-                    {renderStars(comment.rating)}
-                  </div>
-
-                  <p className="comment-text">"{comment.text}"</p>
-
-                  <div className="card-footer">
-                    <button 
-                      className={`like-btn ${comment.liked ? 'liked' : ''}`}
-                      onClick={() => handleLike(comment.id)}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" 
-                        fill={comment.liked ? "currentColor" : "none"} 
-                        stroke="currentColor" strokeWidth="2"
-                      >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                      </svg>
-                      <span>{comment.likes}</span>
-                    </button>
-                    <button className="reply-btn">Répondre</button>
-                  </div>
-                </div>
+            {loading ? (
+              <div className="loading-state">
+                <div className="spinner"></div>
+                <p>Chargement des avis...</p>
               </div>
-            ))}
+            ) : comments.length === 0 ? (
+              <div className="empty-state">
+                <p>Aucun avis pour le moment</p>
+                <span>Soyez le premier !</span>
+              </div>
+            ) : (
+              comments.map((comment, idx) => (
+                <div key={comment.id} className="comment-card" style={{ animationDelay: `${idx * 0.1}s` }}>
+                  <div className="card-body">
+                    <div className="card-top">
+                      <div className="user-avatar" style={{ background: getAvatarColor(comment.id) }}>
+                        {comment.avatar}
+                      </div>
+                      <div className="user-info">
+                        <h4>{comment.name}</h4>
+                        <span>{comment.date}</span>
+                      </div>
+                      {renderStars(comment.rating)}
+                    </div>
+
+                    <p className="comment-text">"{comment.text}"</p>
+
+                    <div className="card-footer">
+                      <button 
+                        className={`like-btn ${comment.liked ? 'liked' : ''}`} 
+                        onClick={() => handleLike(comment.id)}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" 
+                          fill={comment.liked ? "currentColor" : "none"} 
+                          stroke="currentColor" strokeWidth="2"
+                        >
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        <span>{comment.likes}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
 
           <button className="carousel-arrow arrow-right" onClick={() => scroll('right')}>
@@ -231,25 +235,13 @@ const Commentaire = () => {
           </button>
         </div>
 
-        {/* ADD COMMENT - INPUT WA7DA + UPLOAD + STARS */}
+        {/* Formulaire */}
         <div className={`add-comment-section ${isFocused ? 'focused' : ''}`}>
-          {/* Image Preview */}
-          {selectedImage && (
-            <div className="upload-preview">
-              <img src={selectedImage} alt="Preview" />
-              <button 
-                type="button" 
-                className="remove-image"
-                onClick={() => setSelectedImage(null)}
-              >
-                ✕
-              </button>
-            </div>
-          )}
-
           <form className="add-comment-form" onSubmit={handleSubmit}>
             <div className="add-comment-top">
-              <div className="add-comment-avatar">VO</div>
+              <div className="add-comment-avatar" style={!isAuthenticated ? { background: '#ccc' } : {}}>
+                {isAuthenticated ? getUserInitials() : '👤'}
+              </div>
               
               <div className="input-area">
                 <textarea
@@ -257,39 +249,19 @@ const Commentaire = () => {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   onFocus={() => setIsFocused(true)}
-                  placeholder="Partagez votre expérience de voyage..."
+                  placeholder={isAuthenticated 
+                    ? `Bonjour ${user?.name?.split(' ')[0] || ''}, partagez votre expérience...`
+                    : "Connectez-vous pour partager votre expérience de voyage..."
+                  }
                   rows={3}
                   required
+                  disabled={isSubmitting}
                 />
               </div>
             </div>
 
-            {/* Actions Bar */}
             <div className={`comment-actions-bar ${isFocused || newComment ? 'visible' : ''}`}>
               <div className="actions-left">
-                {/* Upload Image */}
-                <button 
-                  type="button" 
-                  className="upload-btn"
-                  onClick={() => fileInputRef.current?.click()}
-                  title="Ajouter une photo"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                  </svg>
-                  <span>Photo</span>
-                </button>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleImageUpload}
-                  accept="image/*"
-                  hidden
-                />
-
-                {/* Rating Stars */}
                 <div className="rating-area">
                   <span>Votre note:</span>
                   {renderStars(rating, true, setRating, setHoverRating, hoverRating)}
@@ -298,14 +270,50 @@ const Commentaire = () => {
 
               <button 
                 type="submit" 
-                className={`publish-btn ${newComment.trim() ? 'active' : ''}`}
+                className={`publish-btn ${newComment.trim() && rating > 0 && !isSubmitting ? 'active' : ''}`}
+                disabled={!newComment.trim() || rating === 0 || isSubmitting}
               >
-                Publier
+                {isSubmitting ? (
+                  <>
+                    <span className="spinner-small"></span>
+                    Publication...
+                  </>
+                ) : (
+                  'Publier'
+                )}
               </button>
             </div>
           </form>
         </div>
       </div>
+
+      {/* Modal Login */}
+      {showLoginModal && (
+        <div className="login-modal-overlay" onClick={() => setShowLoginModal(false)}>
+          <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowLoginModal(false)}>✕</button>
+            
+            <div className="modal-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            
+            <h3>Connexion requise</h3>
+            <p>Veuillez vous connecter pour publier votre commentaire.</p>
+            
+            <div className="modal-actions">
+              <button className="modal-btn modal-btn-primary" onClick={() => window.location.href = '/login'}>
+                Se connecter
+              </button>
+              <button className="modal-btn modal-btn-secondary" onClick={() => setShowLoginModal(false)}>
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
