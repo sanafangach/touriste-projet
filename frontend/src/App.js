@@ -16,9 +16,6 @@ import Card from "./components/pages/card";
 import Destination from "./components/pages/destination";
 import Languages from "./components/pages/languages";
 import Login from "./components/pages/login";
-<<<<<<< HEAD
-import Saved from "./components/pages/saved";
-=======
 import Footer from "./components/accueil/Footer"
 import Chatbot from "./components/Chatbot/Chatbot";
 import EmailVerification from './components/auth/EmailVerification';
@@ -29,7 +26,6 @@ import GoogleCallback from './components/auth/GoogleCallback';
 import ProtectedRoute from "./components/pages/ProtectedRoute";
 import Saved from "./components/pages/saved";
 import AdminDashboard from "./components/pages/adminDashboard";
->>>>>>> main
 import Pack from "./components/pages/pack";
 import Profile from "./components/pages/Profile";
 import CityDetail from "./components/pages/destinations/Citydetail";
