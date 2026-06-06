@@ -404,12 +404,12 @@
 }
 
 .save-heart.saved {
-  background: linear-gradient(135deg, #ff7a00, #ff4d00);
+  background: #ef4444;
   color: white;
 }
 
 .save-heart.saved:hover {
-  background: linear-gradient(135deg, #ff6b00, #ff3d00);
+  background: #dc2626;
 }
 
 /* Featured Badge */

@@ -181,7 +181,6 @@ function Profile() {
                   <User size={64} />
                 </div>
               )}
-
               <button
                 className="profile-photo-edit"
                 onClick={() => fileInputRef.current.click()}
@@ -189,7 +188,6 @@ function Profile() {
               >
                 <Camera size={20} />
               </button>
-
               <input
                 type="file"
                 ref={fileInputRef}

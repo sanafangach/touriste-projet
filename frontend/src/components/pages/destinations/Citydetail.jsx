@@ -16,20 +16,16 @@ import {
   DollarSign
 } from "lucide-react";
 
+import { useFavorites } from "../../../context/FavoritesContext";
 import "../../css/CityDetail.css";
 
 function CityDetail() {
   const navigate = useNavigate();
   const { slug } = useParams();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
-  const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState("activities");
   const [scrolled, setScrolled] = useState(false);
-
-  const [favoriteActivities, setFavoriteActivities] = useState({});
-  const [favoriteRestaurants, setFavoriteRestaurants] = useState({});
-  const [favoritePlaces, setFavoritePlaces] = useState({});
-  const [favoriteGems, setFavoriteGems] = useState({});
 
   const [cityData, setCityData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -70,22 +66,11 @@ function CityDetail() {
     fetchCity();
   }, [slug]);
 
-  // FAVORITES
-  const toggleFavorite = (e, id, type) => {
+  const handleFavoriteClick = (e, item, type) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const setters = {
-      activity: setFavoriteActivities,
-      restaurant: setFavoriteRestaurants,
-      place: setFavoritePlaces,
-      gem: setFavoriteGems
-    };
-
-    setters[type]((prev) => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
+    toggleFavorite(type, item);
   };
 
   // STARS
@@ -121,6 +106,8 @@ function CityDetail() {
       </div>
     );
   }
+
+  const citySaved = isFavorite("city", cityData.city.id);
 
   return (
     <div className="city-detail">
@@ -202,15 +189,21 @@ function CityDetail() {
             <div className="hero-actions">
 
               <button
-                className={`save-btn ${saved ? "saved" : ""}`}
-                onClick={() => setSaved(!saved)}
+                className={`save-btn ${citySaved ? "saved" : ""}`}
+                onClick={(e) =>
+                  handleFavoriteClick(
+                    e,
+                    cityData.city,
+                    "city"
+                  )
+                }
               >
                 <Heart
                   size={18}
-                  fill={saved ? "white" : "none"}
+                  fill={citySaved ? "white" : "none"}
                 />
 
-                {saved ? "Saved" : "Save"}
+                {citySaved ? "Saved" : "Save"}
               </button>
 
               <button className="share-btn">
@@ -298,14 +291,14 @@ function CityDetail() {
 
                   <button
                     className={`favorite-btn ${
-                      favoriteActivities[activity.id]
+                      isFavorite("activity", activity.id)
                         ? "active"
                         : ""
                     }`}
                     onClick={(e) =>
-                      toggleFavorite(
+                      handleFavoriteClick(
                         e,
-                        activity.id,
+                        activity,
                         "activity"
                       )
                     }
@@ -313,7 +306,7 @@ function CityDetail() {
                     <Heart
                       size={18}
                       fill={
-                        favoriteActivities[activity.id]
+                        isFavorite("activity", activity.id)
                           ? "#ff6b35"
                           : "none"
                       }
@@ -379,14 +372,14 @@ function CityDetail() {
 
                   <button
                     className={`favorite-btn ${
-                      favoriteRestaurants[restaurant.id]
+                      isFavorite("restaurant", restaurant.id)
                         ? "active"
                         : ""
                     }`}
                     onClick={(e) =>
-                      toggleFavorite(
+                      handleFavoriteClick(
                         e,
-                        restaurant.id,
+                        restaurant,
                         "restaurant"
                       )
                     }
@@ -394,7 +387,7 @@ function CityDetail() {
                     <Heart
                       size={18}
                       fill={
-                        favoriteRestaurants[restaurant.id]
+                        isFavorite("restaurant", restaurant.id)
                           ? "#ff6b35"
                           : "none"
                       }
@@ -455,14 +448,14 @@ function CityDetail() {
 
                   <button
                     className={`favorite-btn ${
-                      favoritePlaces[place.id]
+                      isFavorite("place", place.id)
                         ? "active"
                         : ""
                     }`}
                     onClick={(e) =>
-                      toggleFavorite(
+                      handleFavoriteClick(
                         e,
-                        place.id,
+                        place,
                         "place"
                       )
                     }
@@ -470,7 +463,7 @@ function CityDetail() {
                     <Heart
                       size={18}
                       fill={
-                        favoritePlaces[place.id]
+                        isFavorite("place", place.id)
                           ? "#ff6b35"
                           : "none"
                       }
@@ -531,14 +524,14 @@ function CityDetail() {
 
                   <button
                     className={`favorite-btn ${
-                      favoriteGems[gem.id]
+                      isFavorite("gem", gem.id)
                         ? "active"
                         : ""
                     }`}
                     onClick={(e) =>
-                      toggleFavorite(
+                      handleFavoriteClick(
                         e,
-                        gem.id,
+                        gem,
                         "gem"
                       )
                     }
@@ -546,7 +539,7 @@ function CityDetail() {
                     <Heart
                       size={18}
                       fill={
-                        favoriteGems[gem.id]
+                        isFavorite("gem", gem.id)
                           ? "#ff6b35"
                           : "none"
                       }

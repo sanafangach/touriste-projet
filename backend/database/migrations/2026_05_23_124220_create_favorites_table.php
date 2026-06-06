@@ -18,7 +18,13 @@ return new class extends Migration
           ->constrained()
           ->onDelete('cascade');
 
-    $table->enum('item_type', ['activity', 'restaurant', 'place']);
+    $table->enum('item_type', [
+    'city',
+    'activity',
+    'restaurant',
+    'place',
+    'gem'
+]);
 
     $table->unsignedBigInteger('item_id');
 

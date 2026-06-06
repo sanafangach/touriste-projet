@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
+import { Mail, ArrowRight, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react';
 import { useLanguage } from '../accueil/LanguageContext';
 import api from '../../services/api';
 import '../css/Login.css';
@@ -8,11 +8,13 @@ import '../css/Login.css';
 function ForgotPassword() {
     const { lang, isRTL } = useLanguage();
     const navigate = useNavigate();
-    
+
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [resendSeconds, setResendSeconds] = useState(0);
+    const [lastSentEmail, setLastSentEmail] = useState('');
 
     const lt = {
         FR: {
@@ -45,6 +47,35 @@ function ForgotPassword() {
     };
 
     const t = lt[lang];
+    const normalizedEmail = email.trim().toLowerCase();
+
+    useEffect(() => {
+        if (success) {
+            const timer = setTimeout(() => {
+                setSuccess('');
+            }, 60000);
+            return () => clearTimeout(timer);
+        }
+    }, [success]);
+
+    useEffect(() => {
+        if (resendSeconds <= 0) {
+            return undefined;
+        }
+
+        const timer = setInterval(() => {
+            setResendSeconds((seconds) => Math.max(0, seconds - 1));
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [resendSeconds]);
+
+    const formatTimer = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+
+        return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,14 +84,25 @@ function ForgotPassword() {
             return;
         }
 
+        if (resendSeconds > 0) {
+            return;
+        }
+
         setLoading(true);
         setError('');
         setSuccess('');
 
         try {
-            await api.post('/forgot-password', { email });
+            const response = await api.post('/forgot-password', { email });
+            setLastSentEmail(normalizedEmail);
+            setResendSeconds(response.data?.wait_seconds || 120);
             setSuccess(t.success);
         } catch (err) {
+            const waitSeconds = err.response?.data?.wait_seconds;
+            if (waitSeconds) {
+                setLastSentEmail(normalizedEmail);
+                setResendSeconds(waitSeconds);
+            }
             setError(err.response?.data?.message || t.error);
         } finally {
             setLoading(false);
@@ -70,14 +112,28 @@ function ForgotPassword() {
     return (
         <div className={`login-page ${isRTL ? 'rtl' : ''}`}>
             <div className="login-container">
-                <div className="login-left">
+                <div className="login-left" style={{ position: 'relative' }}>
+                    <button
+                        onClick={() => navigate(-1)}
+                        style={{
+                            position: 'absolute', top: '20px', left: isRTL ? 'auto' : '20px', right: isRTL ? '20px' : 'auto',
+                            background: 'rgba(255, 255, 255, 0.2)', border: 'none', borderRadius: '50%',
+                            width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: 'pointer', color: 'white', zIndex: 10, backdropFilter: 'blur(4px)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+                        title={lang === 'FR' ? 'Retour' : lang === 'AR' ? 'رجوع' : 'Back'}
+                    >
+                        {isRTL ? <ArrowRight size={24} /> : <ArrowLeft size={24} />}
+                    </button>
                     <div className="login-left-overlay"></div>
                     <div className="login-branding">
                         <div className="login-logo">AMUDUX</div>
                         <h1 className="login-tagline">
-                            {lang === 'AR' ? 'استعادة كلمة المرور' : 
-                             lang === 'FR' ? 'Réinitialisation' : 
-                             'Password Reset'}
+                            {lang === 'AR' ? 'استعادة كلمة المرور' :
+                                lang === 'FR' ? 'Réinitialisation' :
+                                    'Password Reset'}
                         </h1>
                     </div>
                     <div className="login-decorative-circle circle-1"></div>
@@ -89,18 +145,18 @@ function ForgotPassword() {
                         <div className="login-form-header">
                             <h2>{t.title}</h2>
                             <p className="login-subtitle">{t.subtitle}</p>
-                        </div>
 
-                        {error && (
-                            <div className="login-error" style={{display:'flex',alignItems:'center',gap:'8px',justifyContent:'center'}}>
-                                <AlertCircle size={16} /> {error}
-                            </div>
-                        )}
-                        {success && (
-                            <div className="login-success" style={{display:'flex',alignItems:'center',gap:'8px',justifyContent:'center'}}>
-                                <CheckCircle size={16} /> {success}
-                            </div>
-                        )}
+                            {error && (
+                                <div className="login-error" style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' ,marginTop:'12px' }}>
+                                    <AlertCircle size={16} /> {error}
+                                </div>
+                            )}
+                            {success && (
+                                <div className="login-success" style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' ,marginTop:'12px'}}>
+                                    <CheckCircle size={16} /> {success}
+                                </div>
+                            )}
+                        </div>
 
                         <form onSubmit={handleSubmit} className="login-form">
                             <div className="form-group">
@@ -114,8 +170,17 @@ function ForgotPassword() {
                                 />
                             </div>
 
-                            <button type="submit" className="login-submit" disabled={loading}>
-                                {loading ? <span className="spinner"></span> : (
+                            <button type="submit" className="login-submit" disabled={loading || resendSeconds > 0}>
+                                {loading ? <span className="spinner"></span> : resendSeconds > 0 ? (
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                                        <span style={{ fontSize: '14px' }}>
+                                            {lang === 'FR' ? 'Veuillez patienter' :
+                                                lang === 'AR' ? 'يرجى الانتظار' :
+                                                    'Please wait'}
+                                        </span>:
+                                        <span>{formatTimer(resendSeconds)}</span>
+                                    </div>
+                                ) : (
                                     <>{t.send} <ArrowRight size={18} /></>
                                 )}
                             </button>
@@ -134,4 +199,4 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword;
-                            
+
