@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Profil;
+use App\Models\Commentaire;
 
 class User extends Authenticatable
 {
@@ -48,4 +50,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profil::class);
     }
+    // relation m3a commentaire
+
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class);
+    }
+
+
 }
