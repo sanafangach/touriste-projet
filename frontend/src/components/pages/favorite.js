@@ -4,6 +4,7 @@ import { Heart, Star, ArrowRight } from "lucide-react";
 
 import { useLanguage } from "../accueil/LanguageContext";
 import { useFavorites } from "../../context/FavoritesContext";
+import { getUploadUrl } from "../../services/config";
 import "../css/saved.css";
 
 const relationByType = {
@@ -14,18 +15,9 @@ const relationByType = {
   gem: "gem",
 };
 
-const backendUploadsUrl = "http://localhost:8000/uploads/";
-
-const isResolvedImage = (image) =>
-  typeof image === "string" &&
-  (image.startsWith("http") ||
-    image.startsWith("/") ||
-    image.startsWith("data:") ||
-    image.startsWith("blob:"));
-
 const getImageSrc = (image) => {
   if (!image) return "";
-  return isResolvedImage(image) ? image : `${backendUploadsUrl}${image}`;
+  return getUploadUrl(image);
 };
 
 const getFavoriteData = (favorite) => {

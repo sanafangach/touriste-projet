@@ -8,7 +8,9 @@ import {
   Utensils,
 } from "lucide-react";
 
-export const uploadsBaseUrl = "http://localhost:8000/uploads/";
+import { UPLOADS_BASE_URL } from "../../../services/config";
+
+export const uploadsBaseUrl = UPLOADS_BASE_URL;
 
 export const adminEndpoints = {
   users: "/admin/users",

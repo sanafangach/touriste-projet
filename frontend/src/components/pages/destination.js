@@ -13,22 +13,14 @@ import {
 import { useLanguage } from "../accueil/LanguageContext";
 import { useFavorites } from "../../context/FavoritesContext";
 import api from "../../services/api";
+import { getUploadUrl } from "../../services/config";
 import "../css/destination.css";
 
 import backgroundImg from "../../assets/background2.jpg";
 
-const backendUploadsUrl = "http://localhost:8000/uploads/";
-
-const isResolvedImage = (image) =>
-  typeof image === "string" &&
-  (image.startsWith("http") ||
-    image.startsWith("/") ||
-    image.startsWith("data:") ||
-    image.startsWith("blob:"));
-
 const getImageSrc = (image) => {
   if (!image) return backgroundImg;
-  return isResolvedImage(image) ? image : `${backendUploadsUrl}${image}`;
+  return getUploadUrl(image);
 };
 
 const getCityListFromResponse = (data) => {
