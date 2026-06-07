@@ -48,7 +48,6 @@ function Login() {
         setError('');
         setSuccess('');
     };
-
     const validateForm = () => {
         if (!formData.email || !formData.password) {
             setError(lt[lang].allFieldsRequired);
@@ -60,6 +59,18 @@ function Login() {
                 setError(lt[lang].allFieldsRequired);
                 return false;
             }
+            
+            // Validation password requirements
+            const password = formData.password;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<<>\/?]/.test(password);
+            
+            if (!hasUpperCase || !hasNumber || !hasSpecialChar) {
+                setError(lt[lang].passwordRequirements);
+                return false;
+            }
+            
             if (formData.password !== formData.password_confirmation) {
                 setError(lt[lang].passwordsDontMatch);
                 return false;
@@ -190,7 +201,8 @@ function Login() {
             subtitleRegister: 'Rejoignez l\'aventure marocaine',
             discoverMorocco: 'Découvrez le Maroc',
             bestHotels: 'Meilleurs hôtels',
-            excitingActivities: 'Activités passionnantes'
+            excitingActivities: 'Activités passionnantes',
+            passwordRequirements: 'Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial',
         },
         EN: {
             welcomeBack: 'Welcome Back!',
@@ -220,7 +232,8 @@ function Login() {
             subtitleRegister: 'Join the Moroccan adventure',
             discoverMorocco: 'Discover Morocco',
             bestHotels: 'Best hotels',
-            excitingActivities: 'Exciting activities'
+            excitingActivities: 'Exciting activities',
+            passwordRequirements: 'Password must contain at least one uppercase letter, one number, and one special character'
         },
         AR: {
             welcomeBack: 'مرحباً بعودتك!',
@@ -250,7 +263,8 @@ function Login() {
             subtitleRegister: 'انضم إلى مغامرة مغربية',
             discoverMorocco: 'اكتشف المغرب',
             bestHotels: 'أفضل الفنادق',
-            excitingActivities: 'أنشطة مثيرة'
+            excitingActivities: 'أنشطة مثيرة',
+            passwordRequirements: 'يجب أن تحتوي كلمة المرور على حرف كبير ورقم ورمز خاص واحد على الأقل'
         }
     };
 
