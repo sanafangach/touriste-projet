@@ -49,48 +49,22 @@ body {
 }
 
 .menu.scrolled .menu-links li a {
-  color: #000;
+  color: #333;
   text-shadow: none;
 }
 
 .menu.scrolled .mobile-icon {
-  color: #000;
+  color: #333;
 }
 
 .menu.scrolled .settings-btn {
-  color: #000;
-  border-color: rgba(0, 0, 0, 0.15);
-  background: rgba(0, 0, 0, 0.04);
+  color: #333;
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .menu.scrolled .settings-btn:hover,
 .menu.scrolled .settings-btn.active {
   color: white;
-  background: linear-gradient(135deg, #ff7a00, #ff4d00);
-  border-color: transparent;
-}
-
-.menu.scrolled .user-greeting {
-  color: #000;
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-.menu.scrolled .user-greeting:hover {
-  color: #000;
-  background: rgba(0, 0, 0, 0.08);
-}
-
-.menu.scrolled .user-greeting svg {
-  color: #000;
-}
-
-.menu.scrolled .link-icon {
-  color: #000;
-}
-
-.menu.scrolled .link-text {
-  color: #000;
 }
 
 /* DARK MODE MENU */
@@ -110,70 +84,8 @@ body {
 
 .dark .menu.scrolled .menu-links li a,
 .dark .menu.scrolled .mobile-icon,
-.dark .menu.scrolled .settings-btn,
-.dark .menu.scrolled .user-greeting,
-.dark .menu.scrolled .user-greeting svg,
-.dark .menu.scrolled .link-icon,
-.dark .menu.scrolled .link-text {
-  color: white;
-}
-
 .dark .menu.scrolled .settings-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.dark .menu.scrolled .settings-btn:hover,
-.dark .menu.scrolled .settings-btn.active {
-  background: linear-gradient(135deg, #ff7a00, #ff4d00);
-  border-color: transparent;
-}
-
-.dark .menu.scrolled .user-greeting {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
   color: white;
-}
-
-.dark .menu.scrolled .user-greeting:hover {
-  color: white;
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* ================= LIGHT MODE: non-scrolled ================= */
-html:not(.dark) .menu {
-  background: rgba(255, 255, 255, 0.75);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-html:not(.dark) .menu-links li a {
-  color: #000;
-  text-shadow: none;
-}
-
-html:not(.dark) .mobile-icon {
-  color: #000;
-}
-
-html:not(.dark) .settings-btn {
-  color: #000;
-  border-color: rgba(0, 0, 0, 0.12);
-  background: rgba(0, 0, 0, 0.03);
-}
-
-html:not(.dark) .user-greeting {
-  color: #000;
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-
-html:not(.dark) .user-greeting svg {
-  color: #000;
-}
-
-html:not(.dark) .user-greeting:hover {
-  color: #000;
-  background: rgba(0, 0, 0, 0.08);
 }
 
 /* LOGO */
