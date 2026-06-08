@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { getUserScope } from "./userScope";
+import api from "../services/api";
 
 const PATHS = {
   darija: { total: 7 },
@@ -9,13 +11,110 @@ const PATHS = {
 const STORAGE_PREFIX = "apprendre_";
 
 function storageKey(track, missionNum) {
-  return `${STORAGE_PREFIX}${track}_${missionNum}_completed`;
+  return `${STORAGE_PREFIX}${getUserScope()}_${track}_${missionNum}_completed`;
 }
 
-export function completeMission(track, missionNum) {
+// ── Mission id resolution (database-driven) ───────────
+// The mapping track + mission_number → mission_id is owned by the database, not the
+// client. We fetch the missions list once and cache it. No hardcoded ids.
+
+let missionMapCache = null;     // { [track]: { [missionNum]: id } }
+let missionMapPromise = null;   // in-flight fetch, so concurrent callers share one request
+
+function buildMissionMap(missions) {
+  const map = {};
+  for (const m of missions) {
+    if (!map[m.track]) map[m.track] = {};
+    map[m.track][m.mission_number] = m.id;
+  }
+  return map;
+}
+
+// Ensure the mission map is loaded. Safe to call repeatedly; resolves to the cached map.
+export async function loadMissionMap() {
+  if (missionMapCache) return missionMapCache;
+  if (missionMapPromise) return missionMapPromise;
+
+  missionMapPromise = api.get("/apprendre/missions")
+    .then(res => {
+      missionMapCache = buildMissionMap(res.data);
+      return missionMapCache;
+    })
+    .catch(err => {
+      console.error("[apprendre] failed to load mission map:", err?.message || err);
+      missionMapPromise = null; // allow a later retry
+      return null;
+    });
+
+  return missionMapPromise;
+}
+
+// Synchronous lookup from the cache. Returns null if the map hasn't loaded yet.
+export function getMissionId(track, missionNum) {
+  return missionMapCache?.[track]?.[missionNum] ?? null;
+}
+
+// Resolve a mission id, loading the map first if necessary.
+export async function resolveMissionId(track, missionNum) {
+  if (!missionMapCache) await loadMissionMap();
+  return getMissionId(track, missionNum);
+}
+
+// ── DB sync ──────────────────────────────────────────
+// Load progress from DB into localStorage (called on hub mount when authenticated).
+// Authoritative: localStorage is reset to exactly match the database, so progress
+// removed server-side no longer lingers on the client.
+
+export async function syncProgressFromDb() {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+  try {
+    const res = await api.get("/apprendre/progress");
+    const progressList = res.data;
+
+    // Clear all existing completion keys for this user scope, then re-apply from DB.
+    const scope = getUserScope();
+    const prefix = `${STORAGE_PREFIX}${scope}_`;
+    const stale = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(prefix) && key.endsWith("_completed")) {
+        stale.push(key);
+      }
+    }
+    stale.forEach(key => localStorage.removeItem(key));
+
+    for (const p of progressList) {
+      const key = storageKey(p.track, p.mission_number);
+      localStorage.setItem(key, "true");
+    }
+  } catch (e) {
+    console.error("[apprendre] syncProgressFromDb failed:", e?.message || e);
+    // localStorage is left as-is; the existing cache remains the fallback.
+  }
+}
+
+// ── Core progress functions ──────────────────────────
+
+export async function completeMission(track, missionNum) {
   try {
     localStorage.setItem(storageKey(track, missionNum), "true");
   } catch (e) {}
+
+  // Persist in DB. Awaited so failures are observable and consistency can be kept.
+  if (localStorage.getItem("token")) {
+    try {
+      const missionId = await resolveMissionId(track, missionNum);
+      if (!missionId) {
+        console.error(`[apprendre] completeMission: no mission id for ${track}/${missionNum}`);
+        return;
+      }
+      await api.post("/apprendre/progress", { mission_id: missionId });
+    } catch (e) {
+      console.error(`[apprendre] completeMission failed for ${track}/${missionNum}:`, e?.message || e);
+      // Keep the optimistic local value; the next authoritative sync reconciles it.
+    }
+  }
 }
 
 export function isMissionCompleted(track, missionNum) {
@@ -72,10 +171,8 @@ export function getPathTotalMissions(track) {
   return PATHS[track]?.total || 0;
 }
 
-export const ADMIN_EMAILS = ["yassinoubrik2021@gmail.com"];
-
 export function isAdminUser(user) {
-  return user?.email && ADMIN_EMAILS.includes(user.email);
+  return user?.role === "admin";
 }
 
 export function canAccessMission(track, missionNum, user) {

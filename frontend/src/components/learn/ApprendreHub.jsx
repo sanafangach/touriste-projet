@@ -6,10 +6,11 @@ import { useLanguage } from "../accueil/LanguageContext";
 import {
   getCompletedMissions, getPathTotalMissions, getPathProgress, getOverallProgress,
   getTotalCompleted, getTotalMissions, getFirstUnlockedMission, isAdminUser,
-  getMissionTitle, getMissionStatus, getContinueLearningInfo, isMissionCompleted, isMissionUnlocked
+  getMissionTitle, getMissionStatus, getContinueLearningInfo, isMissionCompleted,
+  isMissionUnlocked, syncProgressFromDb, loadMissionMap
 } from "../../utils/progress";
 import { useAuth } from "../../context/AuthContext";
-import { getSavedVocabCount, getFavoriteMissionsCount } from "../../utils/storage";
+import { getSavedVocabCount, getFavoriteMissionsCount, syncFavoritesFromDb, syncSavedFromDb } from "../../utils/storage";
 import MyVocabulary from "./common/MyVocabulary";
 import FavoriteMissions from "./common/FavoriteMissions";
 import RevisionMode from "./common/RevisionMode";
@@ -217,6 +218,20 @@ const ApprendreHub = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Sync from database on mount when authenticated
+  useEffect(() => {
+    if (user) {
+      // Load the mission map first so any subsequent writes can resolve mission ids.
+      loadMissionMap().then(() =>
+        Promise.all([
+          syncProgressFromDb(),
+          syncFavoritesFromDb(),
+          syncSavedFromDb(),
+        ])
+      ).then(() => setRefreshKey(k => k + 1));
+    }
+  }, [user]);
 
   useEffect(() => {
     const handle = () => setRefreshKey(k => k + 1);

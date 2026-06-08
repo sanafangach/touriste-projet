@@ -15,8 +15,12 @@ function MyVocabulary({ lang, isRTL, onClose }) {
   const navigate = useNavigate();
   const items = getSavedVocabulary();
 
-  const handleRemove = (id) => {
-    removeVocabularyItem(id);
+  const handleRemove = async (item) => {
+    try {
+      await removeVocabularyItem(item);
+    } catch {
+      // cache already reverted inside removeVocabularyItem; refresh shows true state
+    }
     onClose("refresh");
   };
 
@@ -143,7 +147,7 @@ function MyVocabulary({ lang, isRTL, onClose }) {
                           </div>
                         </div>
                         <button
-                          onClick={(e) => { e.stopPropagation(); handleRemove(item.id); }}
+                          onClick={(e) => { e.stopPropagation(); handleRemove(item); }}
                           style={{
                             background: "none", border: "none", cursor: "pointer",
                             padding: "6px", color: "var(--learn-text-secondary, #9ca3af)",

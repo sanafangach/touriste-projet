@@ -6,17 +6,26 @@ function SaveVocabButton({ id, word, translation, track, missionNum, type = "voc
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    setSaved(isVocabularySaved(id));
-  }, [id]);
+    setSaved(isVocabularySaved(track, missionNum, word));
+  }, [track, missionNum, word]);
 
-  const toggle = (e) => {
+  const toggle = async (e) => {
     e.stopPropagation();
+    const item = { id, word, translation, track, missionNum, type };
     if (saved) {
-      removeVocabularyItem(id);
-      setSaved(false);
+      setSaved(false); // optimistic
+      try {
+        await removeVocabularyItem(item);
+      } catch {
+        setSaved(true); // revert UI to match cache on failure
+      }
     } else {
-      saveVocabularyItem({ id, word, translation, track, missionNum, type });
-      setSaved(true);
+      setSaved(true); // optimistic
+      try {
+        await saveVocabularyItem(item);
+      } catch {
+        setSaved(false); // revert UI to match cache on failure
+      }
     }
   };
 

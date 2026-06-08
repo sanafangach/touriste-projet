@@ -9,14 +9,22 @@ function FavoriteButton({ track, missionNum }) {
     setFavorited(isMissionFavorited(track, missionNum));
   }, [track, missionNum]);
 
-  const toggle = (e) => {
+  const toggle = async (e) => {
     e.stopPropagation();
     if (favorited) {
-      unfavoriteMission(track, missionNum);
-      setFavorited(false);
+      setFavorited(false); // optimistic
+      try {
+        await unfavoriteMission(track, missionNum);
+      } catch {
+        setFavorited(true); // revert UI to match cache on failure
+      }
     } else {
-      favoriteMission(track, missionNum);
-      setFavorited(true);
+      setFavorited(true); // optimistic
+      try {
+        await favoriteMission(track, missionNum);
+      } catch {
+        setFavorited(false); // revert UI to match cache on failure
+      }
     }
   };
 

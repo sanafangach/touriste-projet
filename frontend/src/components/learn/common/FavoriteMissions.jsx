@@ -9,8 +9,12 @@ function FavoriteMissions({ lang, isRTL, onClose }) {
   const navigate = useNavigate();
   const items = getFavoriteMissions();
 
-  const handleRemove = (track, num) => {
-    unfavoriteMission(track, num);
+  const handleRemove = async (track, num) => {
+    try {
+      await unfavoriteMission(track, num);
+    } catch {
+      // cache already reverted inside unfavoriteMission; refresh shows true state
+    }
     onClose("refresh");
   };
 
