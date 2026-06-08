@@ -10,7 +10,10 @@ import {
   MapPin,
   Edit3,
   Award,
+  CheckCircle,
+  AlertCircle,
 } from "lucide-react";
+import { getUploadUrl } from "../../services/config";
 
 import "../css/Profile.css";
 
@@ -19,175 +22,124 @@ function Profile() {
   const { lang } = useLanguage();
   const fileInputRef = useRef(null);
 
-  // États des champs
-  const [name, setName] = useState(user?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [location, setLocation] = useState(user?.location || "");
-  const [bio, setBio] = useState(user?.bio || "");
-  const [photo, setPhoto] = useState(user?.photo || null);
+  const [name, setName]         = useState("");
+  const [email, setEmail]       = useState("");
+  const [location, setLocation] = useState("");
+  const [bio, setBio]           = useState("");
+  const [photo, setPhoto]       = useState(null);
+  const [photoFile, setPhotoFile] = useState(null); // the actual File or base64
 
-  const [loading, setLoading] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [loading, setLoading]     = useState(false);
+  const [saved, setSaved]         = useState(false);
+  const [error, setError]         = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
-  // Synchronisation avec les données utilisateur
+  // Sync whenever user object changes (initial load + after save)
   useEffect(() => {
     if (user) {
-      setName(user.name || "");
+      setName(user.name  || "");
       setEmail(user.email || "");
-      setLocation(user.location || "");
-      setBio(user.bio || "");
-      setPhoto(user.photo || null);
+      setLocation(user.ville || user.location || "");
+      setBio(user.bio  || "");
+      // image may be a full URL (from backend) or a base64 preview
+      setPhoto(user.image ? getUploadUrl(user.image) : null);
+      setPhotoFile(null);
     }
   }, [user]);
 
-  // Gestion de la photo
+  // When user picks a file: show preview + keep base64 for upload
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setPhoto(reader.result);
-      };
-
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPhoto(reader.result);   // preview
+      setPhotoFile(reader.result); // base64 data URL to send
+    };
+    reader.readAsDataURL(file);
   };
 
-  // Sauvegarde
   const handleSave = async () => {
     setLoading(true);
-
+    setError("");
     try {
       await updateUser({
         name,
-        location,
+        ville: location,
         bio,
-        photo,
+        ...(photoFile ? { photo: photoFile } : {}),
       });
-
       setSaved(true);
       setIsEditing(false);
-
-      setTimeout(() => {
-        setSaved(false);
-      }, 3000);
-    } catch (error) {
-      console.error("Erreur mise à jour profil", error);
+      setPhotoFile(null);
+      setTimeout(() => setSaved(false), 3000);
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+        err?.message ||
+        "Erreur lors de la mise à jour"
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Traductions
+  // ── Translations ──────────────────────────────────────
   const t = {
     title:
-      lang === "AR"
-        ? "الملف الشخصي"
-        : lang === "FR"
-        ? "Mon profil"
-        : "My profile",
-
+      lang === "AR" ? "الملف الشخصي" : lang === "FR" ? "Mon profil" : "My profile",
     nameLabel:
-      lang === "AR"
-        ? "الاسم الكامل"
-        : lang === "FR"
-        ? "Nom complet"
-        : "Full name",
-
+      lang === "AR" ? "الاسم الكامل" : lang === "FR" ? "Nom complet" : "Full name",
     emailLabel: "Email",
-
     locationLabel:
-      lang === "AR"
-        ? "المدينة / الدولة"
-        : lang === "FR"
-        ? "Ville / Pays"
-        : "City / Country",
-
+      lang === "AR" ? "المدينة / الدولة" : lang === "FR" ? "Ville / Pays" : "City / Country",
     bioLabel:
-      lang === "AR"
-        ? "نبذة عني"
-        : lang === "FR"
-        ? "Bio"
-        : "Bio",
-
+      lang === "AR" ? "نبذة عني" : lang === "FR" ? "Bio" : "Bio",
     save:
-      lang === "AR"
-        ? "حفظ التغييرات"
-        : lang === "FR"
-        ? "Enregistrer"
-        : "Save changes",
-
+      lang === "AR" ? "حفظ التغييرات" : lang === "FR" ? "Enregistrer" : "Save changes",
     edit:
-      lang === "AR"
-        ? "تعديل"
-        : lang === "FR"
-        ? "Modifier"
-        : "Edit",
-
+      lang === "AR" ? "تعديل" : lang === "FR" ? "Modifier" : "Edit",
+    cancel:
+      lang === "AR" ? "إلغاء" : lang === "FR" ? "Annuler" : "Cancel",
     quote:
-      lang === "AR"
-        ? "✧ أضف صورتك الشخصية ✧"
-        : lang === "FR"
-        ? " Ajoutez votre photo "
-        : " Add your profile picture ",
-
+      lang === "AR" ? "✧ أضف صورتك الشخصية ✧" : lang === "FR" ? "Ajoutez votre photo" : "Add your profile picture",
     subtitle:
-      lang === "AR"
-        ? "حافظ على معلوماتك محدثة"
-        : lang === "FR"
-        ? "Gardez vos infos à jour"
-        : "Keep your info up to date",
-
+      lang === "AR" ? "حافظ على معلوماتك محدثة" : lang === "FR" ? "Gardez vos infos à jour" : "Keep your info up to date",
     savedMsg:
-      lang === "AR"
-        ? "تم حفظ التغييرات"
-        : lang === "FR"
-        ? "Modifications enregistrées"
-        : "Changes saved",
-
+      lang === "AR" ? "تم حفظ التغييرات" : lang === "FR" ? "Modifications enregistrées" : "Changes saved",
     emailReadOnlyMsg:
-      lang === "AR"
-        ? "البريد الإلكتروني غير قابل للتغيير"
-        : lang === "FR"
-        ? "Email non modifiable"
-        : "Email cannot be changed",
+      lang === "AR" ? "البريد الإلكتروني غير قابل للتغيير" : lang === "FR" ? "Email non modifiable" : "Email cannot be changed",
   };
 
   return (
     <div className="profile-container">
-      {/* Formes décoratives */}
-      <div className="bg-shape-1"></div>
-      <div className="bg-shape-2"></div>
-      <div className="bg-shape-3"></div>
+      <div className="bg-shape-1" />
+      <div className="bg-shape-2" />
+      <div className="bg-shape-3" />
 
       <div className="profile-card">
         <div className="profile-card-inner">
-          {/* Partie gauche */}
+
+          {/* Left — avatar */}
           <div className="profile-left">
             <div className="profile-photo-wrapper">
-              <div className="profile-photo-ring"></div>
-
+              <div className="profile-photo-ring" />
               {photo ? (
-                <img
-                  src={photo}
-                  alt="Avatar"
-                  className="profile-photo-img"
-                />
+                <img src={photo} alt="Avatar" className="profile-photo-img" />
               ) : (
                 <div className="profile-photo-placeholder">
                   <User size={64} />
                 </div>
               )}
-              <button
-                className="profile-photo-edit"
-                onClick={() => fileInputRef.current.click()}
-                aria-label="Changer la photo"
-              >
-                <Camera size={20} />
-              </button>
+              {isEditing && (
+                <button
+                  className="profile-photo-edit"
+                  onClick={() => fileInputRef.current.click()}
+                  aria-label="Changer la photo"
+                >
+                  <Camera size={20} />
+                </button>
+              )}
               <input
                 type="file"
                 ref={fileInputRef}
@@ -196,35 +148,47 @@ function Profile() {
                 onChange={handlePhotoChange}
               />
             </div>
-
             <div className="profile-quote">{t.quote}</div>
           </div>
 
-          {/* Partie droite */}
+          {/* Right — form */}
           <div className="profile-right">
             <div className="profile-header">
               <h1 className="profile-title">{t.title}</h1>
-
-              {!isEditing && (
-                <button
-                  className="edit-mode-btn"
-                  onClick={() => setIsEditing(true)}
-                >
+              {!isEditing ? (
+                <button className="edit-mode-btn" onClick={() => setIsEditing(true)}>
                   <Edit3 size={18} /> {t.edit}
+                </button>
+              ) : (
+                <button
+                  className="edit-mode-btn secondary"
+                  onClick={() => { setIsEditing(false); setError(""); }}
+                >
+                  {t.cancel}
                 </button>
               )}
             </div>
 
             <div className="profile-sub">{t.subtitle}</div>
 
+            {/* Success / Error banners */}
+            {saved && (
+              <div className="profile-alert success">
+                <CheckCircle size={16} /> {t.savedMsg}
+              </div>
+            )}
+            {error && (
+              <div className="profile-alert danger">
+                <AlertCircle size={16} /> {error}
+              </div>
+            )}
+
             <div className="profile-form">
-              {/* Nom */}
+              {/* Name */}
               <div className="form-group">
                 <label>{t.nameLabel}</label>
-
                 <div className="input-icon-wrapper">
                   <User size={18} className="input-icon" />
-
                   <input
                     type="text"
                     value={name}
@@ -236,33 +200,21 @@ function Profile() {
                 </div>
               </div>
 
-              {/* Email */}
+              {/* Email (always read-only) */}
               <div className="form-group">
                 <label>{t.emailLabel}</label>
-
                 <div className="input-icon-wrapper readonly">
                   <Mail size={18} className="input-icon" />
-
-                  <input
-                    type="email"
-                    value={email}
-                    readOnly
-                    placeholder="exemple@domaine.com"
-                  />
+                  <input type="email" value={email} readOnly placeholder="email@domain.com" />
                 </div>
-
-                <small className="email-hint">
-                  {t.emailReadOnlyMsg}
-                </small>
+                <small className="email-hint">{t.emailReadOnlyMsg}</small>
               </div>
 
-              {/* Localisation */}
+              {/* Location / Ville */}
               <div className="form-group">
                 <label>{t.locationLabel}</label>
-
                 <div className="input-icon-wrapper">
                   <MapPin size={18} className="input-icon" />
-
                   <input
                     type="text"
                     value={location}
@@ -277,10 +229,8 @@ function Profile() {
               {/* Bio */}
               <div className="form-group">
                 <label>{t.bioLabel}</label>
-
                 <div className="input-icon-wrapper">
                   <Award size={18} className="input-icon" />
-
                   <textarea
                     rows="3"
                     value={bio}
@@ -292,19 +242,10 @@ function Profile() {
                 </div>
               </div>
 
-              {/* Bouton save */}
+              {/* Save button */}
               {isEditing && (
-                <button
-                  className="save-button"
-                  onClick={handleSave}
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <Loader2 size={20} className="spinner" />
-                  ) : (
-                    <Save size={18} />
-                  )}
-
+                <button className="save-button" onClick={handleSave} disabled={loading}>
+                  {loading ? <Loader2 size={20} className="spinner" /> : <Save size={18} />}
                   <span>{t.save}</span>
                 </button>
               )}
@@ -312,8 +253,6 @@ function Profile() {
           </div>
         </div>
       </div>
-
-      {saved && <div className="save-toast">{t.savedMsg}</div>}
     </div>
   );
 }

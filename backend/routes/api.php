@@ -6,7 +6,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\CommentaireController; 
+use App\Http\Controllers\CommentaireController;
+use App\Http\Controllers\ProfilController;
 
 
 
@@ -29,7 +30,12 @@ Route::post('/auth/google/callback', [SocialAuthController::class, 'handleGoogle
 // PROTECTED
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    
+
+    // Profile routes
+    Route::get('/profile', [ProfilController::class, 'show']);
+    Route::post('/profile', [ProfilController::class, 'update']);
+    Route::delete('/profile/image', [ProfilController::class, 'deleteImage']);
+
     Route::middleware('admin')->group(function () {
         Route::get('/admin/stats', [AdminController::class, 'getStats']);
         Route::get('/admin/favorites', [AdminController::class, 'getFavorites']);
@@ -64,6 +70,17 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/admin/hidden-gems', [AdminController::class, 'createHiddenGem']);
         Route::match(['put', 'post'], '/admin/hidden-gems/{id}', [AdminController::class, 'updateHiddenGem']);
         Route::delete('/admin/hidden-gems/{id}', [AdminController::class, 'deleteHiddenGem']);
+
+        // Comments Moderation Endpoints
+        Route::get('/admin/comments', [CommentaireController::class, 'adminIndex']);
+        Route::put('/admin/comments/{id}/approve', [CommentaireController::class, 'approve']);
+        Route::delete('/admin/comments/{id}', [CommentaireController::class, 'destroy']);
+
+        // Hotels CRUD
+        Route::get('/admin/hotels', [AdminController::class, 'getHotels']);
+        Route::post('/admin/hotels', [AdminController::class, 'createHotel']);
+        Route::match(['put', 'post'], '/admin/hotels/{id}', [AdminController::class, 'updateHotel']);
+        Route::delete('/admin/hotels/{id}', [AdminController::class, 'deleteHotel']);
     });
     Route::post('/commentaires', [CommentaireController::class, 'store']);
     Route::delete('/commentaires/{id}', [CommentaireController::class, 'destroy']);
@@ -84,4 +101,7 @@ Route::delete('/favorites/{id}', [FavoriteController::class, 'destroy']);
 
 // ⬇ PUBLIC - Ga3 nas y9dro ychofou commentaires
 Route::get('/commentaires', [CommentaireController::class, 'index']);
+
+// Public hotels endpoint (filter by city name)
+Route::get('/hotels', [AdminController::class, 'getHotelsByCity']);
 

@@ -8,7 +8,8 @@ export const generateTripData = async ({
   noOfDays,
   traveler,
   budget,
-  lang = "FR"
+  lang = "FR",
+  dbItems = null
 }) => {
   const safeLocation = (location || "Marrakech").trim();
   const safeDays = Number(noOfDays) > 0 ? String(Number(noOfDays)) : "3";
@@ -31,6 +32,33 @@ export const generateTripData = async ({
     return buildMockTripData(safeLocation, safeDays, safeTraveler, safeBudget, lang);
   }
 
+  // Parse dbItems to give to the AI model
+  let dbInstruction = "";
+  if (dbItems) {
+    const { activities, restaurants, places, hidden_gems } = dbItems;
+    const itemsList = [];
+    if (activities?.length) {
+      activities.forEach(a => itemsList.push(`Activity/Attraction: "${a.name}" (Description: ${a.description || ''}, Price: ${a.price || 0} MAD, Duration: ${a.duration || ''})`));
+    }
+    if (restaurants?.length) {
+      restaurants.forEach(r => itemsList.push(`Restaurant: "${r.name}" (Description: ${r.description || ''}, Cuisine: ${r.cuisine || ''}, Price range: ${r.price_range || ''})`));
+    }
+    if (places?.length) {
+      places.forEach(p => itemsList.push(`Place/Hotel: "${p.name}" (Description: ${p.description || ''}, Category: ${p.category || ''}, Entry price: ${p.entry_price || 0} MAD)`));
+    }
+    if (hidden_gems?.length) {
+      hidden_gems.forEach(g => itemsList.push(`Hidden Gem: "${g.name}" (Description: ${g.description || ''}, Location: ${g.location || ''}, Best time: ${g.best_time || ''})`));
+    }
+
+    if (itemsList.length > 0) {
+      dbInstruction = `
+ADDITIONAL PLACES/ACTIVITIES CONTEXT:
+The admin has registered these custom local items for ${safeLocation}. You should prioritize and integrate these specific items where appropriate in the itinerary day-by-day plans, hotels list, or restaurants recommendations:
+${itemsList.map(item => `- ${item}`).join('\n')}
+`;
+    }
+  }
+
   // Language instructions for localized output
   const languageInstructions = {
     FR: "Toutes les descriptions, noms de lieux, détails d'activités et titres doivent être rédigés en Français.",
@@ -51,6 +79,7 @@ export const generateTripData = async ({
 
   const PROMPT = `
 You are a Morocco travel expert. Generate a REAL travel plan for ${safeLocation}, Morocco.
+${dbInstruction}
 
 CRITICAL RULES:
 1. ALL hotels, riads, restaurants, hostels, and camping sites MUST be REAL places that actually exist in ${safeLocation}, Morocco.

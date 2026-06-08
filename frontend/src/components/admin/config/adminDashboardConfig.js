@@ -3,9 +3,11 @@ import {
   Building2,
   Gem,
   Heart,
+  Hotel,
   MapPin,
   Users,
   Utensils,
+  MessageSquare,
 } from "lucide-react";
 
 import { UPLOADS_BASE_URL } from "../../../services/config";
@@ -19,7 +21,9 @@ export const adminEndpoints = {
   restaurants: "/admin/restaurants",
   places: "/admin/places",
   hiddenGems: "/admin/hidden-gems",
+  hotels: "/admin/hotels",
   favorites: "/admin/favorites",
+  comments: "/admin/comments",
 };
 
 export const adminSections = [
@@ -29,7 +33,9 @@ export const adminSections = [
   { key: "restaurants", label: "Restaurants", singular: "Restaurant", icon: Utensils },
   { key: "places", label: "Places", singular: "Place", icon: Building2 },
   { key: "hiddenGems", label: "Hidden Gems", singular: "Hidden Gem", icon: Gem },
+  { key: "hotels", label: "Hotels", singular: "Hotel", icon: Hotel },
   { key: "favorites", label: "Favorites", singular: "Favorite", icon: Heart, readOnly: true },
+  { key: "comments", label: "Comments", singular: "Comment", icon: MessageSquare, readOnly: true },
 ];
 
 export const adminStatCards = [
@@ -39,6 +45,7 @@ export const adminStatCards = [
   { key: "total_restaurants", label: "Restaurants", icon: Utensils, tone: "rose", collection: "restaurants" },
   { key: "total_places", label: "Places", icon: Building2, tone: "violet", collection: "places" },
   { key: "total_hidden_gems", label: "Hidden Gems", icon: Gem, tone: "cyan", collection: "hiddenGems" },
+  { key: "total_hotels", label: "Hotels", icon: Hotel, tone: "orange", collection: "hotels" },
   { key: "total_favorites", label: "Favorites", icon: Heart, tone: "teal", collection: "favorites" },
 ];
 
@@ -65,5 +72,7 @@ export const createEmptyCollections = () => ({
   restaurants: [],
   places: [],
   hiddenGems: [],
+  hotels: [],
   favorites: [],
+  comments: [],
 });

@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\City;
 use App\Models\Favorite;
 use App\Models\HiddenGem;
+use App\Models\Hotel;
 use App\Models\Place;
 use App\Models\Restaurant;
 use App\Models\User;
@@ -164,6 +165,7 @@ class AdminController extends Controller
             'total_restaurants' => Restaurant::count(),
             'total_places' => Place::count(),
             'total_hidden_gems' => HiddenGem::count(),
+            'total_hotels' => Hotel::count(),
             'total_favorites' => Favorite::count(),
         ]);
     }
@@ -642,6 +644,126 @@ class AdminController extends Controller
         Favorite::where('item_type', $type)
             ->whereIn('item_id', $ids)
             ->delete();
+    }
+
+    /* ─────────────────── HOTELS ─────────────────── */
+
+    public function getHotels()
+    {
+        return response()->json(
+            Hotel::with('city')
+                ->latest()
+                ->get()
+                ->map(fn ($h) => $this->formatHotel($h))
+        );
+    }
+
+    public function createHotel(Request $request)
+    {
+        $data = $request->validate([
+            'city_id'      => ['required', 'exists:cities,id'],
+            'name'         => ['required', 'string', 'max:255'],
+            'price'        => ['nullable', 'string', 'max:100'],
+            'rating'       => ['nullable', 'numeric', 'min:0', 'max:5'],
+            'reviews'      => ['nullable', 'string', 'max:100'],
+            'budget_level' => ['nullable', 'in:cheap,moderate,luxury'],
+            'description'  => ['nullable', 'string'],
+            'source'       => ['nullable', 'string', 'max:100'],
+            'maps_query'   => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $data = $this->attachUploadedImage($request, $data, 'hotels');
+
+        $hotel = Hotel::create($data);
+
+        return response()->json([
+            'message' => 'Hotel created successfully',
+            'hotel'   => $this->formatHotel($hotel->load('city')),
+        ], 201);
+    }
+
+    public function updateHotel(Request $request, $id)
+    {
+        $hotel = Hotel::findOrFail($id);
+
+        $data = $request->validate([
+            'city_id'      => ['sometimes', 'exists:cities,id'],
+            'name'         => ['sometimes', 'string', 'max:255'],
+            'price'        => ['nullable', 'string', 'max:100'],
+            'rating'       => ['nullable', 'numeric', 'min:0', 'max:5'],
+            'reviews'      => ['nullable', 'string', 'max:100'],
+            'budget_level' => ['nullable', 'in:cheap,moderate,luxury'],
+            'description'  => ['nullable', 'string'],
+            'source'       => ['nullable', 'string', 'max:100'],
+            'maps_query'   => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $data = $this->attachUploadedImage($request, $data, 'hotels');
+        $hotel->update($data);
+
+        return response()->json([
+            'message' => 'Hotel updated successfully',
+            'hotel'   => $this->formatHotel($hotel->fresh()->load('city')),
+        ]);
+    }
+
+    public function deleteHotel($id)
+    {
+        $hotel = Hotel::findOrFail($id);
+
+        if ($hotel->image && !str_starts_with($hotel->image, 'http')) {
+            $path = public_path('uploads/' . $hotel->image);
+            if (file_exists($path)) {
+                @unlink($path);
+            }
+        }
+
+        $hotel->delete();
+
+        return response()->json(['message' => 'Hotel deleted successfully']);
+    }
+
+    /**
+     * Public endpoint — GET /hotels?city=Marrakech
+     */
+    public function getHotelsByCity(Request $request)
+    {
+        $cityName = $request->query('city');
+
+        $query = Hotel::with('city');
+
+        if ($cityName) {
+            $query->whereHas('city', fn ($q) => $q->where('name', 'LIKE', "%{$cityName}%"));
+        }
+
+        return response()->json(
+            $query->latest()->get()->map(fn ($h) => $this->formatHotel($h))
+        );
+    }
+
+    private function formatHotel(Hotel $hotel): array
+    {
+        $image = $hotel->image;
+        if ($image && !str_starts_with($image, 'http') && !str_starts_with($image, '/')) {
+            $image = url('uploads/' . $image);
+        }
+
+        return [
+            'id'           => $hotel->id,
+            'city_id'      => $hotel->city_id,
+            'city'         => $hotel->city ? ['id' => $hotel->city->id, 'name' => $hotel->city->name] : null,
+            'name'         => $hotel->name,
+            'image'        => $image,
+            'price'        => $hotel->price,
+            'rating'       => $hotel->rating,
+            'reviews'      => $hotel->reviews,
+            'budget_level' => $hotel->budget_level,
+            'description'  => $hotel->description,
+            'source'       => $hotel->source,
+            'maps_query'   => $hotel->maps_query ?? ($hotel->name . ', ' . ($hotel->city->name ?? '') . ', Morocco'),
+            'created_at'   => $hotel->created_at?->toIso8601String(),
+            'updated_at'   => $hotel->updated_at?->toIso8601String(),
+        ];
     }
 
     private function numberOrDefault(mixed $value, float $default = 0): float

@@ -5,9 +5,11 @@ import AdminTableEmpty from "./AdminTableEmpty";
 import CitiesTable from "./CitiesTable";
 import FavoritesTable from "./FavoritesTable";
 import HiddenGemsTable from "./HiddenGemsTable";
+import HotelsTable from "./HotelsTable";
 import PlacesTable from "./PlacesTable";
 import RestaurantsTable from "./RestaurantsTable";
 import UsersTable from "./UsersTable";
+import CommentsTable from "./CommentsTable";
 
 const tableBySection = {
   users: UsersTable,
@@ -16,10 +18,12 @@ const tableBySection = {
   restaurants: RestaurantsTable,
   places: PlacesTable,
   hiddenGems: HiddenGemsTable,
+  hotels: HotelsTable,
   favorites: FavoritesTable,
+  comments: CommentsTable,
 };
 
-function AdminDataTable({ activeSection, activeMeta, rows, currentUser, onEdit, onDelete }) {
+function AdminDataTable({ activeSection, activeMeta, rows, currentUser, onEdit, onDelete, onApprove }) {
   const safeRows = rows || [];
 
   if (safeRows.length === 0) {
@@ -34,6 +38,7 @@ function AdminDataTable({ activeSection, activeMeta, rows, currentUser, onEdit, 
       currentUser={currentUser}
       onEdit={onEdit}
       onDelete={onDelete}
+      onApprove={onApprove}
     />
   );
 }

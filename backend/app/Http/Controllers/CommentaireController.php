@@ -14,6 +14,7 @@ class CommentaireController extends Controller
     public function index()
     {
         $commentaires = Commentaire::with('user')
+            ->where('approved', true)
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($commentaire) {
@@ -54,11 +55,12 @@ class CommentaireController extends Controller
             'user_id' => auth()->id(),
             'contenu' => $request->contenu,
             'note' => $request->note,
+            'approved' => false,
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Commentaire ajouté avec succès',
+            'message' => 'Commentaire ajouté avec succès et en attente d\'approbation',
             'commentaire' => [
                 'id' => $commentaire->id,
                 'contenu' => $commentaire->contenu,
@@ -80,7 +82,7 @@ class CommentaireController extends Controller
     {
         $commentaire = Commentaire::findOrFail($id);
 
-        if ($commentaire->user_id !== auth()->id()) {
+        if (!auth()->user()->isAdmin() && $commentaire->user_id !== auth()->id()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Non autorisé'
@@ -92,6 +94,48 @@ class CommentaireController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Commentaire supprimé'
+        ]);
+    }
+
+    /**
+     * GET /api/admin/comments
+     */
+    public function adminIndex()
+    {
+        $commentaires = Commentaire::with('user')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($commentaire) {
+                return [
+                    'id' => $commentaire->id,
+                    'contenu' => $commentaire->contenu,
+                    'note' => $commentaire->note,
+                    'approved' => (bool)$commentaire->approved,
+                    'created_at' => $commentaire->created_at ? $commentaire->created_at->toIso8601String() : null,
+                    'user' => [
+                        'id' => $commentaire->user->id,
+                        'name' => $commentaire->user->name,
+                        'email' => $commentaire->user->email,
+                    ]
+                ];
+            });
+
+        return response()->json($commentaires);
+    }
+
+    /**
+     * PUT /api/admin/comments/{id}/approve
+     */
+    public function approve($id)
+    {
+        $commentaire = Commentaire::findOrFail($id);
+        $commentaire->approved = true;
+        $commentaire->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Commentaire approuvé avec succès',
+            'commentaire' => $commentaire
         ]);
     }
 

@@ -78,6 +78,24 @@ export const getFieldConfig = (section, mode, cities = [], isSelf = false) => {
       { name: "best_time", label: "Best time", type: "text" },
       ...sharedContentFields.slice(3),
     ],
+    hotels: [
+      ...sharedContentFields.slice(0, 3),
+      { name: "price", label: "Price (e.g. 1200 MAD)", type: "text" },
+      { name: "reviews", label: "Reviews (e.g. 3,2 k)", type: "text" },
+      {
+        name: "budget_level",
+        label: "Budget level",
+        type: "select",
+        options: [
+          { value: "cheap", label: "Cheap" },
+          { value: "moderate", label: "Moderate" },
+          { value: "luxury", label: "Luxury" },
+        ],
+      },
+      { name: "source", label: "Source", type: "text" },
+      { name: "maps_query", label: "Maps query", type: "text" },
+      ...sharedContentFields.slice(3),
+    ],
   };
 
   return configs[section] || [];

@@ -119,6 +119,19 @@ export const getEmptyForm = (section, cities = []) => {
       best_time: "",
       description: "",
     },
+    hotels: {
+      city_id: firstCityId,
+      name: "",
+      image: "",
+      image_file: null,
+      price: "",
+      rating: "0",
+      reviews: "",
+      budget_level: "moderate",
+      description: "",
+      source: "",
+      maps_query: "",
+    },
   };
 
   return { ...(forms[section] || {}) };
@@ -143,10 +156,17 @@ export const getFormFromItem = (section, item, cities = []) => {
 
   next.city_id = toFormValue(item.city_id, base.city_id);
   next.rating = toFormValue(item.rating, "0");
-  next.price = toFormValue(item.price, "0");
+  next.price = toFormValue(item.price, section === "hotels" ? "" : "0");
   next.entry_price = toFormValue(item.entry_price, "0");
   next.image = toFormValue(item.image);
   next.image_file = null;
+
+  if (section === "hotels") {
+    next.reviews = toFormValue(item.reviews);
+    next.budget_level = item.budget_level || "moderate";
+    next.source = toFormValue(item.source);
+    next.maps_query = toFormValue(item.maps_query);
+  }
 
   return next;
 };

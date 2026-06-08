@@ -11,27 +11,31 @@ return new class extends Migration
      */
    public function up()
 {
-    DB::statement("
-        ALTER TABLE favorites
-        MODIFY item_type ENUM(
-            'city',
-            'activity',
-            'restaurant',
-            'place',
-            'gem'
-        )
-    ");
+    if (\Illuminate\Support\Facades\DB::getDriverName() !== 'sqlite') {
+        DB::statement("
+            ALTER TABLE favorites
+            MODIFY item_type ENUM(
+                'city',
+                'activity',
+                'restaurant',
+                'place',
+                'gem'
+            )
+        ");
+    }
 }
 
 public function down()
 {
-    DB::statement("
-        ALTER TABLE favorites
-        MODIFY item_type ENUM(
-            'activity',
-            'restaurant',
-            'place'
-        )
-    ");
+    if (\Illuminate\Support\Facades\DB::getDriverName() !== 'sqlite') {
+        DB::statement("
+            ALTER TABLE favorites
+            MODIFY item_type ENUM(
+                'activity',
+                'restaurant',
+                'place'
+            )
+        ");
+    }
 }
 };

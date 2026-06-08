@@ -99,26 +99,15 @@ const Commentaire = () => {
       const response = await createCommentaire(formData);
 
       if (response.success) {
-        const newCommentObj = {
-          id: response.commentaire.id,
-          name: response.commentaire.user.name,
-          avatar: response.commentaire.user.avatar,
-          date: "À l'instant",
-          text: response.commentaire.contenu,
-          likes: 0,
-          liked: false,
-          rating: response.commentaire.note,
-          userId: response.commentaire.user.id,
-        };
-
-        setComments(prev => [newCommentObj, ...prev]);
-        
+        // Comment is pending approval — do NOT add it to the public list
         setNewComment('');
         setRating(0);
         setHoverRating(0);
         setIsFocused(false);
-        setSuccess('Commentaire publié avec succès !');
-        setTimeout(() => setSuccess(''), 3000);
+        setSuccess(
+          '✅ Votre avis a été soumis et est en attente de validation par un administrateur.'
+        );
+        setTimeout(() => setSuccess(''), 6000);
       }
     } catch (err) {
       setError(err.message || 'Erreur lors de la publication');

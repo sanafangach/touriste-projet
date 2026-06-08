@@ -13,6 +13,7 @@ class Commentaire extends Model
         'user_id',
         'contenu',
         'note',
+        'approved',
     ];
 
     // Relation: Commentaire appartient à UN User
