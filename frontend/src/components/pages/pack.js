@@ -18,9 +18,14 @@ import {
   Camera,
   ChevronLeft,
   ChevronRight,
-  Tent,
-  Home,
-  ChevronDown
+  ChevronDown,
+  User,
+  Heart,
+  Users,
+  Sun,
+  Waves,
+  Mountain,
+  Landmark
 } from "lucide-react";
 import { useLanguage } from "../accueil/LanguageContext";
 import { generateTripData } from "../../services/aiService";
@@ -74,8 +79,6 @@ function Pack() {
   // Horizontal Scroll Refs
   const hotelsScrollRef = useRef(null);
   const restaurantsScrollRef = useRef(null);
-  const hostelsScrollRef = useRef(null);
-  const campingScrollRef = useRef(null);
 
   // Saved Trips State
   const [savedTrips, setSavedTrips] = useState(() => {
@@ -185,10 +188,10 @@ function Pack() {
   // Emoji Categories mapping helper
   const getCityCategoryIcon = (cityName) => {
     const cat = getCityCategory(cityName);
-    if (cat === "desert") return "🐪";
-    if (cat === "beach") return "🌊";
-    if (cat === "nature") return "🏔️";
-    return "🏛️";
+    if (cat === "desert") return <Sun size={20} className="city-category-icon" />;
+    if (cat === "beach") return <Waves size={20} className="city-category-icon" />;
+    if (cat === "nature") return <Mountain size={20} className="city-category-icon" />;
+    return <Landmark size={20} className="city-category-icon" />;
   };
 
   // Timeline Time of Day Pill Styling Helpers
@@ -416,24 +419,20 @@ function Pack() {
 
   // Traveler Options config
   const travelerOptions = [
-    { value: "Solo", label: t("soloTravel"), desc: t("soloDesc"), icon: "👤" },
-    { value: "Couple", label: t("coupleTravel"), desc: t("coupleDesc"), icon: "💖" },
-    { value: "Family", label: t("familyTravel"), desc: t("familyDesc"), icon: "👨‍👩‍👧‍👦" },
-    { value: "Friends", label: t("friendsTravel"), desc: t("friendsDesc"), icon: "👥" }
+    { value: "Solo", label: t("soloTravel"), desc: t("soloDesc"), icon: User },
+    { value: "Couple", label: t("coupleTravel"), desc: t("coupleDesc"), icon: Heart },
+    { value: "Family", label: t("familyTravel"), desc: t("familyDesc"), icon: Users },
+    { value: "Friends", label: t("friendsTravel"), desc: t("friendsDesc"), icon: Users }
   ];
 
   // Section headings for accommodation types
   const sectionLabels = {
     hotels: lang === "AR" ? "فنادق حقيقية على Google Maps" : lang === "FR" ? "Hôtels réels sur Google Maps" : "Real hotels on Google Maps",
-    restaurants: lang === "AR" ? "مطاعم حقيقية" : lang === "FR" ? "Restaurants réels" : "Real restaurants",
-    hostels: lang === "AR" ? "نزل حقيقية" : lang === "FR" ? "Auberges réelles" : "Real hostels",
-    camping: lang === "AR" ? "Camping réel" : lang === "FR" ? "Camping réel" : "Real camping"
+    restaurants: lang === "AR" ? "مطاعم حقيقية" : lang === "FR" ? "Restaurants réels" : "Real restaurants"
   };
 
   const googleHotelOptions = getGoogleMapsHotelOptions(formData.location, lang, formData.budget);
   const realRestaurantOptions = getRealGoogleMapsOptions(formData.location, lang, formData.budget, "restaurants");
-  const realHostelOptions = getRealGoogleMapsOptions(formData.location, lang, formData.budget, "hostels");
-  const realCampingOptions = getRealGoogleMapsOptions(formData.location, lang, formData.budget, "camping");
   const mapsLabel = "Google Maps";
 
   const renderRealPlaceCard = (item, index, fallbackContext = "hotel") => (
@@ -665,19 +664,24 @@ function Pack() {
                     <span>{t("groupLabel")}</span>
                   </label>
                   <div className="card-selector-grid">
-                    {travelerOptions.map((opt) => (
-                      <div 
-                        key={opt.value}
-                        className={`selector-card ${formData.traveler === opt.value ? "active" : ""}`}
-                        onClick={() => handleInputChange("traveler", opt.value)}
-                      >
-                        <div className="selector-header">
-                          <span className="selector-emoji">{opt.icon}</span>
-                          <h3>{opt.label}</h3>
+                    {travelerOptions.map((opt) => {
+                      const TravelerIcon = opt.icon;
+                      return (
+                        <div 
+                          key={opt.value}
+                          className={`selector-card ${formData.traveler === opt.value ? "active" : ""}`}
+                          onClick={() => handleInputChange("traveler", opt.value)}
+                        >
+                          <div className="selector-header">
+                            <span className="selector-emoji">
+                              <TravelerIcon size={20} className="traveler-icon" />
+                            </span>
+                            <h3>{opt.label}</h3>
+                          </div>
+                          <p>{opt.desc}</p>
                         </div>
-                        <p>{opt.desc}</p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -836,23 +840,7 @@ function Pack() {
                   (restaurant, index) => renderRealPlaceCard(restaurant, index, "restaurant")
                 )}
 
-                {/* ============ HOSTELS — HORIZONTAL SCROLL ============ */}
-                {renderHorizontalSection(
-                  sectionLabels.hostels,
-                  <Home size={20} className="section-icon" />,
-                  realHostelOptions,
-                  hostelsScrollRef,
-                  (hostel, index) => renderRealPlaceCard(hostel, index, "hostel")
-                )}
 
-                {/* ============ CAMPING — HORIZONTAL SCROLL ============ */}
-                {renderHorizontalSection(
-                  sectionLabels.camping,
-                  <Tent size={20} className="section-icon" />,
-                  realCampingOptions,
-                  campingScrollRef,
-                  (camp, index) => renderRealPlaceCard(camp, index, "camping hiking")
-                )}
 
                 {/* Day by Day Plan Timeline */}
                 <div className="itinerary-timeline-section">

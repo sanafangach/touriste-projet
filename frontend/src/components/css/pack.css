@@ -189,47 +189,50 @@
 }
 
 .pack-form-scroll-wrapper {
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   flex-grow: 1;
-  padding-right: 6px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-
-  /* Custom scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(var(--primary-rgb), 0.25) transparent;
-}
-
-.pack-form-scroll-wrapper::-webkit-scrollbar {
-  width: 5px;
-}
-
-.pack-form-scroll-wrapper::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 100px;
-}
-
-.pack-form-scroll-wrapper::-webkit-scrollbar-thumb {
-  background: rgba(var(--primary-rgb), 0.2);
-  border-radius: 100px;
-  transition: background 0.3s ease;
-}
-
-.pack-form-scroll-wrapper::-webkit-scrollbar-thumb:hover {
-  background: rgba(var(--primary-rgb), 0.45);
-}
-
-.pack-page.rtl .pack-form-scroll-wrapper {
-  padding-right: 0;
-  padding-left: 6px;
+  height: 100%;
 }
 
 .form-card {
   display: flex;
   flex-direction: column;
   gap: 28px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1 1 auto;
+  padding: 32px 20px 32px 32px;
+  box-sizing: border-box;
+
+  /* Custom scrollbar inside the card */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--primary-rgb), 0.25) transparent;
+}
+
+.form-card::-webkit-scrollbar {
+  width: 5px;
+}
+
+.form-card::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 100px;
+}
+
+.form-card::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary-rgb), 0.2);
+  border-radius: 100px;
+  transition: background 0.3s ease;
+}
+
+.form-card::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--primary-rgb), 0.45);
+}
+
+.pack-page.rtl .form-card {
+  padding: 32px 32px 32px 20px;
 }
 
 .form-group {
@@ -277,7 +280,10 @@
 }
 
 .trigger-emoji {
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
   margin-right: 14px;
 }
 
@@ -379,7 +385,10 @@
 }
 
 .option-icon {
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
   margin-right: 12px;
 }
 
@@ -799,7 +808,10 @@
 }
 
 .selector-emoji {
-  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
