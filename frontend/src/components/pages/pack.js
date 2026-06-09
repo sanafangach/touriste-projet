@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { 
   Sparkles, 
   MapPin, 
@@ -51,12 +52,13 @@ const getInclusiveDays = (startDate, endDate) => {
 
 function Pack() {
   const { t, lang, isRTL } = useLanguage();
+  const locationState = useLocation();
   const today = formatDateInput(new Date());
   const defaultEndDate = formatDateInput(addDays(new Date(), 2));
   
   // Form State
   const [formData, setFormData] = useState({
-    location: "Marrakech",
+    location: locationState.state?.city || "Marrakech",
     noOfDays: "3",
     startDate: today,
     endDate: defaultEndDate,

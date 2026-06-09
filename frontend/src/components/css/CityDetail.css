@@ -190,14 +190,68 @@
   border: none;
 }
 
-.share-btn {
-  background: white;
-  color: #1a1a2e;
-}
-
-.save-btn:hover, .share-btn:hover {
+.save-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* ============================================
+   GENERATE TRIP BUTTON — PREMIUM HERO ACTION
+   ============================================ */
+
+.generate-trip-btn {
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ff7a00, #ff5100);
+  color: #ffffff;
+  box-shadow: 0 8px 28px rgba(255, 122, 0, 0.45);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.generate-trip-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -70%;
+  width: 60%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+
+.generate-trip-btn:hover::before {
+  left: 130%;
+}
+
+.generate-trip-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 35px rgba(255, 122, 0, 0.6);
+}
+
+.generate-trip-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(255, 122, 0, 0.4);
+}
+
+.generate-sparkle-icon {
+  animation: sparkle-rotate 3s linear infinite;
+}
+
+@keyframes sparkle-rotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(1); }
 }
 
 /* ============================================

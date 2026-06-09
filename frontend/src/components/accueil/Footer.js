@@ -13,11 +13,10 @@ import {
 import { RiInstagramFill } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
+import { useLanguage } from "./LanguageContext";
 
 const Footer = () => {
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { lang } = useLanguage();
 
   const [isDarkMode, setIsDarkMode] = useState(
     document.documentElement.classList.contains("dark")
@@ -64,25 +63,75 @@ const Footer = () => {
     }
   };
 
-  const handleSubscribe = async () => {
-    if (!email.trim()) return;
-
-    setLoading(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 800));
-
-    setSent(true);
-    setLoading(false);
-    setEmail("");
-
-    setTimeout(() => setSent(false), 3000);
-  };
-
   const socialLinks = [
     { icon: <FaTwitter />, label: "Twitter", url: "https://twitter.com" },
     { icon: <FaLinkedin />, label: "LinkedIn", url: "https://linkedin.com" },
     { icon: <FaYoutube />, label: "YouTube", url: "https://youtube.com" },
     { icon: <RiInstagramFill />, label: "Instagram", url: "https://instagram.com" },
+  ];
+
+  const tFooter = {
+    FR: {
+      desc: "Votre guide ultime pour explorer le Maroc authentique.",
+      destinations: "Destinations",
+      services: "Services",
+      aboutTitle: "À propos d'amudux",
+      aboutDesc: "amudux est votre compagnon de voyage ultime au Maroc. Nous vous aidons à découvrir des destinations magnifiques, à planifier vos itinéraires avec l'IA et à explorer le pays de façon immersive.",
+      copy: "Tous droits réservés.",
+      tag1: "Voyage",
+      tag2: "Maroc",
+      tag3: "Aventure",
+      learn: "Apprendre",
+      planner: "Planificateur",
+      maps: "Carte Interactive",
+      contact: "Contactez-nous"
+    },
+    EN: {
+      desc: "Your ultimate guide to exploring authentic Morocco.",
+      destinations: "Destinations",
+      services: "Services",
+      aboutTitle: "About amudux",
+      aboutDesc: "amudux is your ultimate travel companion in Morocco. We help you discover beautiful destinations, plan your trips using our AI, and explore the country in an immersive way.",
+      copy: "All rights reserved.",
+      tag1: "Travel",
+      tag2: "Morocco",
+      tag3: "Adventure",
+      learn: "Learn",
+      planner: "Travel Planner",
+      maps: "Interactive Map",
+      contact: "Contact Us"
+    },
+    AR: {
+      desc: "دليلك الأمثل لاستكشاف المغرب الأصيل.",
+      destinations: "الوجهات",
+      services: "الخدمات",
+      aboutTitle: "حول amudux",
+      aboutDesc: "amudux هو رفيقك الأمثل للسفر في المغرب. نحن نساعدك على اكتشاف الوجهات الرائعة، وتخطيط مسارات رحلاتك بالذكاء الاصطناعي، واستكشاف البلاد بطريقة غامرة.",
+      copy: "جميع الحقوق محفوظة.",
+      tag1: "سفر",
+      tag2: "المغرب",
+      tag3: "مغامرة",
+      learn: "تعلم",
+      planner: "مخطط الرحلات",
+      maps: "الخريطة التفاعلية",
+      contact: "اتصل بنا"
+    }
+  };
+
+  const currentT = tFooter[lang] || tFooter.FR;
+
+  const dests = [
+    { name: lang === "AR" ? "مراكش" : "Marrakech", slug: "marrakech" },
+    { name: lang === "AR" ? "أكادير" : "Agadir", slug: "agadir" },
+    { name: lang === "AR" ? "شفشاون" : "Chefchaouen", slug: "chefchaouen" },
+    { name: lang === "AR" ? "فاس" : "Fès", slug: "fes" },
+  ];
+
+  const services = [
+    { label: currentT.learn, path: "/languages" },
+    { label: currentT.planner, path: "/pack" },
+    { label: currentT.maps, path: "/card" },
+    { label: currentT.contact, path: "/contact" },
   ];
 
   return (
@@ -116,7 +165,7 @@ const Footer = () => {
           </div>
 
           <p className="footer-brand-desc">
-            Votre guide ultime pour explorer le Maroc authentique.
+            {currentT.desc}
           </p>
 
           <div className="footer-socials">
@@ -136,11 +185,11 @@ const Footer = () => {
 
         {/* DESTINATIONS */}
         <div className="footer-col reveal" ref={addRef}>
-          <h4>Destinations</h4>
+          <h4>{currentT.destinations}</h4>
           <ul>
-            {["Marrakech", "Agadir", "Chefchaouen", "Fès"].map((d) => (
-              <li key={d}>
-                <Link to="/destinations">{d}</Link>
+            {dests.map((d) => (
+              <li key={d.slug}>
+                <Link to={`/destination/${d.slug}`}>{d.name}</Link>
               </li>
             ))}
           </ul>
@@ -148,44 +197,20 @@ const Footer = () => {
 
         {/* SERVICES */}
         <div className="footer-col reveal" ref={addRef}>
-          <h4>Services</h4>
+          <h4>{currentT.services}</h4>
           <ul>
-            {[
-              "Hôtels",
-              "Activités",
-              "Transport",
-              "Guides Touristiques",
-            ].map((s) => (
-              <li key={s}>
-                <Link to="/">{s}</Link>
+            {services.map((s) => (
+              <li key={s.path}>
+                <Link to={s.path}>{s.label}</Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* NEWSLETTER */}
-        <div className="footer-col footer-newsletter reveal" ref={addRef}>
-          <h4>Newsletter</h4>
-
-          <p>Recevez nos meilleures offres directement par email.</p>
-
-          <div className="newsletter-form">
-            <input
-              className="newsletter-input"
-              type="email"
-              placeholder="votre@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <button
-              className="newsletter-submit"
-              onClick={handleSubscribe}
-              disabled={loading}
-            >
-              {loading ? "..." : sent ? "✓ Inscrit !" : "S'abonner"}
-            </button>
-          </div>
+        {/* ABOUT */}
+        <div className="footer-col footer-about reveal" ref={addRef}>
+          <h4>{currentT.aboutTitle}</h4>
+          <p>{currentT.aboutDesc}</p>
         </div>
 
       </div>
@@ -195,13 +220,13 @@ const Footer = () => {
       <div className="footer-bottom">
 
         <p className="footer-copy">
-          © {new Date().getFullYear()} <span>Votre Marque</span>
+          © {new Date().getFullYear()} <span>amudux</span>. {currentT.copy}
         </p>
 
         <div className="footer-tags">
-          <Link to="/destinations" className="footer-tag">Voyage</Link>
-          <Link to="/destinations" className="footer-tag">Maroc</Link>
-          <Link to="/destinations" className="footer-tag">Aventure</Link>
+          <Link to="/destination" className="footer-tag">{currentT.tag1}</Link>
+          <Link to="/destination" className="footer-tag">{currentT.tag2}</Link>
+          <Link to="/destination" className="footer-tag">{currentT.tag3}</Link>
         </div>
 
       </div>

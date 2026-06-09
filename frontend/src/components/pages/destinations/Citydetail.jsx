@@ -3,9 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   Star,
   Heart,
-  Share2,
+  Sparkles,
   ArrowLeft,
-  ChevronRight,
   Utensils,
   Building2,
   Mountain,
@@ -17,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { useFavorites } from "../../../context/FavoritesContext";
+import { useLanguage } from "../../accueil/LanguageContext";
 import { API_BASE_URL, getUploadUrl } from "../../../services/config";
 import "../../css/CityDetail.css";
 
@@ -24,6 +24,7 @@ function CityDetail() {
   const navigate = useNavigate();
   const { slug } = useParams();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { lang } = useLanguage();
 
   const [activeTab, setActiveTab] = useState("activities");
   const [scrolled, setScrolled] = useState(false);
@@ -205,9 +206,12 @@ function CityDetail() {
                 {citySaved ? "Saved" : "Save"}
               </button>
 
-              <button className="share-btn">
-                <Share2 size={18} />
-                Share
+              <button
+                className="generate-trip-btn"
+                onClick={() => navigate("/pack", { state: { city: cityData.city.name } })}
+              >
+                <Sparkles size={18} className="generate-sparkle-icon" />
+                {lang === "AR" ? "توليد رحلتي" : lang === "FR" ? "Générer mon voyage" : "Plan my trip"}
               </button>
 
             </div>
@@ -335,11 +339,6 @@ function CityDetail() {
                     </span>
 
                   </div>
-
-                  <button className="book-btn">
-                    Book Now
-                    <ChevronRight size={16} />
-                  </button>
 
                 </div>
 

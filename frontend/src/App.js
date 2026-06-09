@@ -34,7 +34,9 @@ import Pack from "./components/pages/pack";
 import Profile from "./components/pages/Profile";
 
 import Commentaire from "./components/accueil/Commentaire";
+import WhyChooseUs from "./components/accueil/WhyChooseUs";
 import CityDetail from "./components/pages/destinations/Citydetail";
+import ContactUs from "./components/pages/ContactUs";
 
 function AppContent() {
   const location = useLocation();
@@ -84,6 +86,7 @@ function AppContent() {
         <Route path="/register" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/pack" element={<Pack />} />
+        <Route path="/contact" element={<ContactUs />} />
 
         <Route
           path="/saved"
@@ -119,6 +122,9 @@ function AppContent() {
 
       {/* COMMENTAIRE → ONLY HOME */}
       {isHome && <Commentaire />}
+
+      {/* WHY CHOOSE US → ONLY HOME */}
+      {isHome && <WhyChooseUs />}
 
       {/* CHATBOT */}
       {showChatbot && <Chatbot />}

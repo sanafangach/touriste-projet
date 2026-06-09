@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "./LanguageContext"; // 🔥 Import
 import "../css/sectiondescription.css";
 
@@ -57,7 +58,9 @@ function AboutSite() {
           <h2>{c.title}</h2>
           <p className="about-text">{c.text1}</p>
           <p className="about-text">{c.text2}</p>
-          <button className="about-btn">{c.btn}</button>
+          <Link to="/contact">
+            <button className="about-btn">{c.btn}</button>
+          </Link>
         </div>
 
         <div className="about-right">

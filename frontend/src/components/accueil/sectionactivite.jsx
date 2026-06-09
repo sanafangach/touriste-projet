@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useLanguage } from "./LanguageContext";
 import "../css/sectionactivite.css";
 
@@ -12,7 +13,6 @@ const content = {
   FR: {
     mini: "Top Activités",
     title: "Activités Populaires",
-    voirTout: "Voir tout",
     explorer: "Explorer",
     activites: [
       {
@@ -21,6 +21,7 @@ const content = {
         lieu: "Agadir",
         badge: "Sport",
         image: surfImg,
+        slug: "agadir",
       },
       {
         id: 2,
@@ -28,6 +29,7 @@ const content = {
         lieu: "Marrakech",
         badge: "Aventure",
         image: paraImg,
+        slug: "marrakech",
       },
       {
         id: 3,
@@ -35,6 +37,7 @@ const content = {
         lieu: "Essaouira",
         badge: "Culture",
         image: horseImg,
+        slug: "essaouira",
       },
       {
         id: 4,
@@ -42,6 +45,7 @@ const content = {
         lieu: "Merzouga",
         badge: "Aventure",
         image: saharaImg,
+        slug: "merzouga",
       },
     ],
   },
@@ -49,7 +53,6 @@ const content = {
   EN: {
     mini: "Top Activities",
     title: "Popular Activities",
-    voirTout: "See all",
     explorer: "Explore",
     activites: [
       {
@@ -58,6 +61,7 @@ const content = {
         lieu: "Agadir",
         badge: "Sport",
         image: surfImg,
+        slug: "agadir",
       },
       {
         id: 2,
@@ -65,6 +69,7 @@ const content = {
         lieu: "Marrakech",
         badge: "Adventure",
         image: paraImg,
+        slug: "marrakech",
       },
       {
         id: 3,
@@ -72,6 +77,7 @@ const content = {
         lieu: "Essaouira",
         badge: "Culture",
         image: horseImg,
+        slug: "essaouira",
       },
       {
         id: 4,
@@ -79,6 +85,7 @@ const content = {
         lieu: "Merzouga",
         badge: "Adventure",
         image: saharaImg,
+        slug: "merzouga",
       },
     ],
   },
@@ -86,7 +93,6 @@ const content = {
   AR: {
     mini: "أبرز الأنشطة",
     title: "الأنشطة الشعبية",
-    voirTout: "عرض الكل",
     explorer: "استكشف",
     activites: [
       {
@@ -95,6 +101,7 @@ const content = {
         lieu: "أكادير",
         badge: "رياضة",
         image: surfImg,
+        slug: "agadir",
       },
       {
         id: 2,
@@ -102,6 +109,7 @@ const content = {
         lieu: "مراكش",
         badge: "مغامرة",
         image: paraImg,
+        slug: "marrakech",
       },
       {
         id: 3,
@@ -109,6 +117,7 @@ const content = {
         lieu: "الصويرة",
         badge: "ثقافة",
         image: horseImg,
+        slug: "essaouira",
       },
       {
         id: 4,
@@ -116,13 +125,15 @@ const content = {
         lieu: "مرزوكة",
         badge: "مغامرة",
         image: saharaImg,
+        slug: "merzouga",
       },
     ],
   },
 };
+
 function ActiviteCard({ activite, explorerLabel, onExplore }) {
   return (
-    <div className="activite-card" onClick={() => onExplore && onExplore(activite)}>
+    <div className="activite-card" onClick={() => onExplore && onExplore(activite.slug)}>
       <img
         className="activite-card__img"
         src={activite.image}
@@ -140,7 +151,7 @@ function ActiviteCard({ activite, explorerLabel, onExplore }) {
           className="activite-card__btn"
           onClick={(e) => {
             e.stopPropagation();
-            onExplore && onExplore(activite);
+            onExplore && onExplore(activite.slug);
           }}
         >
           {explorerLabel} →
@@ -150,9 +161,14 @@ function ActiviteCard({ activite, explorerLabel, onExplore }) {
   );
 }
 
-function SectionActivite({ onVoirTout, onExplore }) {
+function SectionActivite() {
   const { lang } = useLanguage();
+  const navigate = useNavigate();
   const c = content[lang] || content["FR"];
+
+  const handleExplore = (slug) => {
+    navigate(`/destination/${slug}`);
+  };
 
   return (
     <section className="section-activite">
@@ -161,12 +177,6 @@ function SectionActivite({ onVoirTout, onExplore }) {
           <p className="activite-mini">{c.mini}</p>
           <h2 className="activite-title">{c.title}</h2>
         </div>
-        <button
-          className="activite-voir-tout"
-          onClick={() => onVoirTout && onVoirTout()}
-        >
-          {c.voirTout} →
-        </button>
       </div>
 
       <div className="activite-grid">
@@ -175,7 +185,7 @@ function SectionActivite({ onVoirTout, onExplore }) {
             key={activite.id}
             activite={activite}
             explorerLabel={c.explorer}
-            onExplore={onExplore}
+            onExplore={handleExplore}
           />
         ))}
       </div>
