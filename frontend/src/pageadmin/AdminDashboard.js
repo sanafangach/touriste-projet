@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import AdminHeader from "../components/admin/AdminHeader";
-import AdminLoading from "../components/admin/AdminLoading";
 import AdminNotice from "../components/admin/AdminNotice";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminWorkspace from "../components/admin/AdminWorkspace";

@@ -15,6 +15,7 @@ import {
     Bookmark,
     Menu as MenuIcon,
     X,
+    LayoutDashboard,
 } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 import { useAuth } from "../../context/AuthContext"
@@ -37,7 +38,7 @@ function Menu() {
     const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
     const { lang, setLang, t, isRTL } = useLanguage();
-    const { user, isAuthenticated, logout } = useAuth();
+    const { user, isAuthenticated, logout, isAdmin } = useAuth();
 
     // Dark mode initialization
     useEffect(() => {
@@ -97,6 +98,12 @@ function Menu() {
         navigate("/");
     };
 
+    const getDashboardLabel = () => {
+        if (lang === "AR") return "لوحة التحكم";
+        if (lang === "FR") return "Dashboard";
+        return "Dashboard";
+    };
+
     const getNavLinks = () => {
         const links = [
             { to: "/", icon: <Home size={18} />, label: t("home") },
@@ -105,6 +112,15 @@ function Menu() {
             { to: "/languages", icon: <Globe size={18} />, label: t("languages") },
             { to: "/pack", icon: <Box size={18} />, label: t("pack") },
         ];
+
+        if (isAdmin()) {
+            links.push({
+                to: "/admin",
+                icon: <LayoutDashboard size={18} />,
+                label: getDashboardLabel(),
+            });
+        }
+
         return isRTL ? links.reverse() : links;
     };
 
