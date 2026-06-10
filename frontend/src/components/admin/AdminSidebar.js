@@ -6,6 +6,7 @@ function AdminSidebar({
   sections,
   activeSection,
   collections,
+  badgeCounts,
   onSectionChange,
   onLogout,
 }) {
@@ -24,6 +25,7 @@ function AdminSidebar({
       <nav className="admin-nav" aria-label="Admin navigation">
         {sections.map((section) => {
           const Icon = section.icon;
+          const count = badgeCounts?.[section.key] ?? collections[section.key]?.length ?? 0;
 
           return (
             <button
@@ -34,7 +36,7 @@ function AdminSidebar({
             >
               <Icon size={18} />
               <span>{section.label}</span>
-              <b>{collections[section.key]?.length || 0}</b>
+              <b>{count}</b>
             </button>
           );
         })}

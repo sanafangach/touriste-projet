@@ -2,6 +2,7 @@ import {
   Activity,
   Building2,
   Gem,
+  GraduationCap,
   Heart,
   Hotel,
   MapPin,
@@ -26,6 +27,13 @@ export const adminEndpoints = {
   comments: "/admin/comments",
 };
 
+// Apprendre drill-down list endpoints (server-paginated, searchable, sortable).
+export const apprendreEndpoints = {
+  progress: "/admin/apprendre/completions",
+  favorites: "/admin/apprendre/favorites",
+  saved: "/admin/apprendre/saved",
+};
+
 export const adminSections = [
   { key: "users", label: "Users", singular: "User", icon: Users },
   { key: "cities", label: "Cities", singular: "City", icon: MapPin },
@@ -36,6 +44,7 @@ export const adminSections = [
   { key: "hotels", label: "Hotels", singular: "Hotel", icon: Hotel },
   { key: "favorites", label: "Favorites", singular: "Favorite", icon: Heart, readOnly: true },
   { key: "comments", label: "Comments", singular: "Comment", icon: MessageSquare, readOnly: true },
+  { key: "apprendre", label: "Apprendre", singular: "Apprendre", icon: GraduationCap, readOnly: true, custom: true },
 ];
 
 export const adminStatCards = [

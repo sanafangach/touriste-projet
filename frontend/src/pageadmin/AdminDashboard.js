@@ -7,7 +7,7 @@ import AdminNotice from "../components/admin/AdminNotice";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminWorkspace from "../components/admin/AdminWorkspace";
 import StatsCards from "../components/admin/StatsCards";
-import ApprendreAnalytics from "../components/admin/ApprendreAnalytics";
+import ApprendreManagement from "../components/admin/ApprendreManagement";
 import {
   adminEndpoints,
   adminSections,
@@ -38,6 +38,7 @@ function AdminDashboard() {
   const [activeSection, setActiveSection] = useState("users");
   const [collections, setCollections] = useState(() => createEmptyCollections());
   const [stats, setStats] = useState({});
+  const [apprendreCount, setApprendreCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -72,6 +73,7 @@ function AdminDashboard() {
         hotelsRes,
         favoritesRes,
         commentsRes,
+        apprendreStatsRes,
       ] = await Promise.all([
         api.get(adminEndpoints.users),
         api.get("/admin/stats"),
@@ -83,6 +85,7 @@ function AdminDashboard() {
         api.get(adminEndpoints.hotels),
         api.get(adminEndpoints.favorites),
         api.get(adminEndpoints.comments),
+        api.get("/admin/apprendre-stats"),
       ]);
 
       setCollections({
@@ -97,6 +100,14 @@ function AdminDashboard() {
         comments: normalizeList(commentsRes.data, "comments"),
       });
       setStats(statsRes.data || {});
+
+      // Sidebar badge: total Apprendre records = completions + favorites + saved.
+      const apprendreTotals = apprendreStatsRes.data?.totals || {};
+      setApprendreCount(
+        (apprendreTotals.completions || 0) +
+          (apprendreTotals.favorites || 0) +
+          (apprendreTotals.saved_content || 0)
+      );
     } catch (error) {
       setNotice({ type: "error", message: getErrorMessage(error) });
     } finally {
@@ -281,6 +292,7 @@ function AdminDashboard() {
         sections={adminSections}
         activeSection={activeSection}
         collections={collections}
+        badgeCounts={{ apprendre: apprendreCount }}
         onSectionChange={handleSectionChange}
         onLogout={() => setLogoutConfirmOpen(true)}
       />
@@ -292,26 +304,28 @@ function AdminDashboard() {
 
         <StatsCards stats={stats} collections={collections} />
 
-        <ApprendreAnalytics />
-
-        <AdminWorkspace
-          activeMeta={activeMeta}
-          activeSection={activeSection}
-          rowCount={currentRows.length}
-          query={query}
-          onQueryChange={setQuery}
-          onAdd={(section) => openModal(section, "create")}
-        >
-          <AdminDataTable
-            activeSection={activeSection}
+        {activeSection === "apprendre" ? (
+          <ApprendreManagement />
+        ) : (
+          <AdminWorkspace
             activeMeta={activeMeta}
-            rows={currentRows}
-            currentUser={user}
-            onEdit={(section, item) => openModal(section, "edit", item)}
-            onDelete={(section, item) => setConfirmTarget({ section, item })}
-            onApprove={handleApproveComment}
-          />
-        </AdminWorkspace>
+            activeSection={activeSection}
+            rowCount={currentRows.length}
+            query={query}
+            onQueryChange={setQuery}
+            onAdd={(section) => openModal(section, "create")}
+          >
+            <AdminDataTable
+              activeSection={activeSection}
+              activeMeta={activeMeta}
+              rows={currentRows}
+              currentUser={user}
+              onEdit={(section, item) => openModal(section, "edit", item)}
+              onDelete={(section, item) => setConfirmTarget({ section, item })}
+              onApprove={handleApproveComment}
+            />
+          </AdminWorkspace>
+        )}
       </main>
 
       <AdminEntityModal
