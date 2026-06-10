@@ -221,6 +221,14 @@
   margin-bottom: 22px;
 }
 
+.admin-topbar-actions {
+  display: flex;
+  align-items: center;
+  color: var(--admin-primary);
+  gap: 10px;
+  font-size: 16px;
+}
+
 .admin-kicker {
   display: inline-flex;
   align-items: center;

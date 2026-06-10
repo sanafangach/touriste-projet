@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart3, RefreshCw } from "lucide-react";
+import { BarChart3, Home, RefreshCw } from "lucide-react";
 
 const getLocale = (lang) => {
   if (lang === "FR") return "fr-FR";
@@ -7,7 +7,7 @@ const getLocale = (lang) => {
   return "en-US";
 };
 
-function AdminHeader({ lang, refreshing, onRefresh }) {
+function AdminHeader({ lang, refreshing, onHome, onRefresh }) {
   const formattedDate = new Date().toLocaleDateString(getLocale(lang), {
     weekday: "long",
     month: "long",
@@ -15,7 +15,7 @@ function AdminHeader({ lang, refreshing, onRefresh }) {
     year: "numeric",
   });
 
-  return (
+return (
     <header className="admin-topbar">
       <div>
         <span className="admin-kicker">
@@ -26,15 +26,22 @@ function AdminHeader({ lang, refreshing, onRefresh }) {
         <p>{formattedDate}</p>
       </div>
 
-      <button
-        type="button"
-        className="admin-secondary-btn"
-        onClick={onRefresh}
-        disabled={refreshing}
-      >
-        <RefreshCw size={17} className={refreshing ? "spin" : ""} />
-        Refresh
-      </button>
+      <div className="admin-topbar-actions">
+        <button type="button" className="admin-secondary-btn" onClick={onHome}>
+          <Home size={17} />
+          Home
+        </button>
+
+        <button
+          type="button"
+          className="admin-secondary-btn"
+          onClick={onRefresh}
+          disabled={refreshing}
+        >
+          <RefreshCw size={17} className={refreshing ? "spin" : ""} />
+          Refresh
+        </button>
+      </div>
     </header>
   );
 }

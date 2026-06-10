@@ -30,7 +30,7 @@ import ConfirmDialog from "../components/common/ConfirmDialog";
 import "../components/css/AdminDashboard.css";
 
 function AdminDashboard() {
-  const { user, logout, isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { lang, isRTL } = useLanguage();
   const navigate = useNavigate();
 
@@ -45,7 +45,6 @@ function AdminDashboard() {
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [confirmTarget, setConfirmTarget] = useState(null);
-  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   const activeMeta = useMemo(
     () => adminSections.find((section) => section.key === activeSection) || adminSections[0],
@@ -259,20 +258,6 @@ function AdminDashboard() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await api.post("/logout");
-    } catch (error) {
-      console.error(error);
-    }
-
-    setLogoutConfirmOpen(false);
-    logout();
-    navigate("/");
-  };
-
-
-
   return (
     <div className={`admin-dashboard ${isRTL ? "rtl" : ""}`}>
       <AdminSidebar
@@ -281,11 +266,15 @@ function AdminDashboard() {
         activeSection={activeSection}
         collections={collections}
         onSectionChange={handleSectionChange}
-        onLogout={() => setLogoutConfirmOpen(true)}
       />
 
       <main className="admin-main">
-        <AdminHeader lang={lang} refreshing={loading || refreshing} onRefresh={() => fetchData(false)} />
+        <AdminHeader
+          lang={lang}
+          refreshing={loading || refreshing}
+          onHome={() => navigate("/")}
+          onRefresh={() => fetchData(false)}
+        />
 
         <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
 
@@ -334,16 +323,6 @@ function AdminDashboard() {
         isRTL={isRTL}
       />
 
-      <ConfirmDialog
-        open={logoutConfirmOpen}
-        title="Confirm logout"
-        message="Are you sure you want to log out?"
-        cancelLabel="Cancel"
-        confirmLabel="Log out"
-        onCancel={() => setLogoutConfirmOpen(false)}
-        onConfirm={handleLogout}
-        isRTL={isRTL}
-      />
     </div>
   );
 }
