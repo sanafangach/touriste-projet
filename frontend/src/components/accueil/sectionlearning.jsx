@@ -18,7 +18,7 @@ Bslama = Au revoir
 Afak = S'il vous plaît
 Smah lia = Pardon
 Zwin = Beau/Belle
-Nss = Oublier`,
+Nssa = Oublier`,
       tifinaghTitle: " Exemples de Tifinagh",
       tifinaghExamples: `ⴰⵎⴰⵣⵉⵖ = Amazigh (Homme berbère)
 ⴰⵎⴰⵏ = Aman (eau)
@@ -42,7 +42,7 @@ Bslama = Goodbye
 Afak = Please
 Smah lia = Sorry
 Zwin = Beautiful
-Nss = Forget`,
+Nssa = Forget`,
       tifinaghTitle: " Tifinagh Examples",
       tifinaghExamples: `ⴰⵎⴰⵣⵉⵖ = Amazigh (Berber man)
 ⴰⵎⴰⵏ = Aman (water)
@@ -66,7 +66,7 @@ Nss = Forget`,
 عفاك = من فضلك
 سمح ليا = آسف
 زوين = جميل
-نسّ = نسيان`,
+نسا = نسيان`,
       tifinaghTitle: " أمثلة التيفيناغ",
       tifinaghExamples: `ⴰⵎⴰⵣⵉⵖ = أمازيغي
 ⴰⵎⴰⵏ = ماء
