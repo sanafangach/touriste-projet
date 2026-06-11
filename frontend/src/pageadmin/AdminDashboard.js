@@ -260,6 +260,15 @@ function AdminDashboard() {
 
   return (
     <div className={`admin-dashboard ${isRTL ? "rtl" : ""}`}>
+      <AdminHeader
+        user={user}
+        lang={lang}
+        refreshing={loading || refreshing}
+        onHome={() => navigate("/")}
+        onRefresh={() => fetchData(false)}
+        className="admin-topbar-mobile"
+      />
+
       <AdminSidebar
         user={user}
         sections={adminSections}
@@ -270,10 +279,12 @@ function AdminDashboard() {
 
       <main className="admin-main">
         <AdminHeader
+          user={user}
           lang={lang}
           refreshing={loading || refreshing}
           onHome={() => navigate("/")}
           onRefresh={() => fetchData(false)}
+          className="admin-topbar-desktop"
         />
 
         <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
