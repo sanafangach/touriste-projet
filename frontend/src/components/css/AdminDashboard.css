@@ -211,7 +211,17 @@
 
 .admin-main {
   min-width: 0;
-  padding: 28px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-main-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 22px 28px 28px;
 }
 
 .admin-topbar {
@@ -220,6 +230,14 @@
   justify-content: space-between;
   gap: 20px;
   margin-bottom: 22px;
+}
+
+.admin-topbar-desktop {
+  flex-shrink: 0;
+  padding: 28px 28px 18px;
+  margin-bottom: 0;
+  background: var(--admin-bg);
+  border-bottom: 1px solid var(--admin-border);
 }
 
 .admin-topbar-mobile {
@@ -1035,7 +1053,15 @@
   }
 
   .admin-main {
+    height: auto;
+    display: block;
+    overflow: visible;
     padding: 14px 20px;
+  }
+
+  .admin-main-scroll {
+    overflow: visible;
+    padding: 0;
   }
 
   .admin-topbar,

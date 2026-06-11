@@ -301,30 +301,32 @@ function AdminDashboard() {
           className="admin-topbar-desktop"
         />
 
-        <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
+        <div className="admin-main-scroll">
+          <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
 
-        {activeMeta.view === "statistics" ? (
-          <StatisticsView stats={stats} collections={collections} />
-        ) : (
-          <AdminWorkspace
-            activeMeta={activeMeta}
-            activeSection={activeSection}
-            rowCount={currentRows.length}
-            query={query}
-            onQueryChange={setQuery}
-            onAdd={(section) => openModal(section, "create")}
-          >
-            <AdminDataTable
-              activeSection={activeSection}
+          {activeMeta.view === "statistics" ? (
+            <StatisticsView stats={stats} collections={collections} />
+          ) : (
+            <AdminWorkspace
               activeMeta={activeMeta}
-              rows={currentRows}
-              currentUser={user}
-              onEdit={(section, item) => openModal(section, "edit", item)}
-              onDelete={(section, item) => setConfirmTarget({ section, item })}
-              onApprove={handleApproveComment}
-            />
-          </AdminWorkspace>
-        )}
+              activeSection={activeSection}
+              rowCount={currentRows.length}
+              query={query}
+              onQueryChange={setQuery}
+              onAdd={(section) => openModal(section, "create")}
+            >
+              <AdminDataTable
+                activeSection={activeSection}
+                activeMeta={activeMeta}
+                rows={currentRows}
+                currentUser={user}
+                onEdit={(section, item) => openModal(section, "edit", item)}
+                onDelete={(section, item) => setConfirmTarget({ section, item })}
+                onApprove={handleApproveComment}
+              />
+            </AdminWorkspace>
+          )}
+        </div>
       </main>
 
       <AdminEntityModal
