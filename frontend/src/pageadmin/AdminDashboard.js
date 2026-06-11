@@ -15,6 +15,7 @@ import {
 import AdminEntityModal from "../components/admin/forms/AdminEntityModal";
 import AdminDataTable from "../components/admin/tables/AdminDataTable";
 import {
+  applyPersistedSuffixes,
   buildAdminFormData,
   getEmptyForm,
   getErrorMessage,
@@ -212,7 +213,7 @@ function AdminDashboard() {
           await api.put(`${adminEndpoints.users}/${item.id}`, payload);
         }
       } else {
-        const payload = buildAdminFormData(form);
+        const payload = buildAdminFormData(applyPersistedSuffixes(section, form));
 
         if (mode === "create") {
           await api.post(adminEndpoints[section], payload);
