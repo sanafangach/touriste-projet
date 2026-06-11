@@ -42,6 +42,13 @@ function AdminDashboard() {
   const [saving, setSaving] = useState(false);
   const [query, setQuery] = useState("");
   const [notice, setNotice] = useState(null);
+
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timer = setTimeout(() => setNotice(null), 15000);
+    return () => clearTimeout(timer);
+  }, [notice]);
+
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [confirmTarget, setConfirmTarget] = useState(null);
