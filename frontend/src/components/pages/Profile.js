@@ -113,6 +113,13 @@ function Profile({ embedded = false }) {
 
   return (
     <div className={`profile-container ${embedded ? "embedded" : ""}`}>
+      {saved && (
+        <div className="profile-save-toast" role="status">
+          <CheckCircle size={18} />
+          <span>{t.savedMsg}</span>
+        </div>
+      )}
+
       {!embedded && (
         <>
           <div className="bg-shape-1" />
@@ -173,14 +180,8 @@ function Profile({ embedded = false }) {
               )}
             </div>
 
-            <div className="profile-sub">{t.subtitle}</div>
 
-            {/* Success / Error banners */}
-            {saved && (
-              <div className="profile-alert success">
-                <CheckCircle size={16} /> {t.savedMsg}
-              </div>
-            )}
+            {/* Error banner */}
             {error && (
               <div className="profile-alert danger">
                 <AlertCircle size={16} /> {error}
@@ -249,7 +250,7 @@ function Profile({ embedded = false }) {
               {/* Save button */}
               {isEditing && (
                 <button className="save-button" onClick={handleSave} disabled={loading}>
-                  {loading ? <Loader2 size={20} className="spinner" /> : <Save size={18} />}
+                  {loading ? <Loader2 className="spinner" />:<Save className="save" size={20} />}
                   <span>{t.save}</span>
                 </button>
               )}
