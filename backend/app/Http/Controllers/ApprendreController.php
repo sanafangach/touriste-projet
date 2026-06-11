@@ -6,6 +6,7 @@ use App\Models\ApprendreFavorite;
 use App\Models\ApprendreMission;
 use App\Models\ApprendreProgress;
 use App\Models\ApprendreSavedContent;
+use App\Services\CertificateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,6 +63,19 @@ class ApprendreController extends Controller
                 'completed_at' => now(),
             ]
         );
+
+        // Automatically issue a certificate when this completion finishes the
+        // track. Reuses the existing CertificateService (idempotent — never
+        // creates duplicates) and is fully isolated: any failure here must not
+        // affect saving progress, which is the contract of this endpoint.
+        try {
+            $mission = ApprendreMission::find($data['mission_id']);
+            if ($mission && CertificateService::isValidTrack($mission->track)) {
+                app(CertificateService::class)->issueIfEligible(auth()->user(), $mission->track);
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
 
         return response()->json([
             'message' => 'Progress saved',

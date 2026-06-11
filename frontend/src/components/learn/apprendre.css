@@ -399,6 +399,165 @@ html.dark .card-status.coming-soon {
   transform: rotate(180deg);
 }
 
+/* ── My Certificates ─────────────────────────────────── */
+.apprendre-certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.apprendre-certificate-card {
+  position: relative;
+  background-color: var(--apprendre-surface);
+  border: 1px solid var(--apprendre-border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--apprendre-shadow-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.apprendre-certificate-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--apprendre-shadow-hover);
+  border-color: var(--cert-color);
+}
+
+/* Themed top accent bar */
+.apprendre-certificate-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--cert-color);
+}
+
+.apprendre-certificate-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  margin-bottom: 18px;
+}
+
+.apprendre-certificate-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apprendre-certificate-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  color: var(--cert-color);
+  background: color-mix(in srgb, var(--cert-color) 12%, transparent);
+}
+
+.apprendre-certificate-title {
+  margin: 0 0 18px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--apprendre-text-primary);
+}
+
+.apprendre-certificate-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+  flex-grow: 1;
+}
+
+.apprendre-certificate-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.apprendre-certificate-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--apprendre-text-secondary);
+}
+
+.apprendre-certificate-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--apprendre-text-primary);
+  text-align: right;
+}
+
+.apprendre-foundation.rtl .apprendre-certificate-value {
+  text-align: left;
+}
+
+.apprendre-certificate-number {
+  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--cert-color);
+}
+
+.apprendre-certificate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #ffffff;
+  background: var(--cert-color);
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+.apprendre-certificate-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.apprendre-certificate-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.apprendre-certificate-spin {
+  animation: apprendre-cert-spin 0.8s linear infinite;
+}
+
+@keyframes apprendre-cert-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .apprendre-certificates-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .apprendre-certificate-card {
+    padding: 20px;
+  }
+}
+
 /* Responsive Layout */
 @media (max-width: 768px) {
   .apprendre-foundation {

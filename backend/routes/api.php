@@ -8,6 +8,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\ApprendreController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ProfilController;
 
 
@@ -105,6 +106,10 @@ Route::middleware('auth:sanctum')->group(function () {
         // Delete by natural key (mission_id + content) — must be declared before /{id}
         Route::delete('/saved', [ApprendreController::class, 'destroySavedByContent']);
         Route::delete('/saved/{id}', [ApprendreController::class, 'destroySaved']);
+
+        // Learning certificates (issued automatically for fully-completed tracks)
+        Route::get('/certificates', [CertificateController::class, 'index']);
+        Route::get('/certificates/{track}/download', [CertificateController::class, 'download']);
     });
 });
 
