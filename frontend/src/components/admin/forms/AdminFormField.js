@@ -53,7 +53,7 @@ function AdminFormField({ field, value, onChange }) {
     );
   }
 
-  return (
+  const inputEl = (
     <input
       id={field.name}
       type={field.type}
@@ -66,6 +66,18 @@ function AdminFormField({ field, value, onChange }) {
       onChange={(event) => onChange(field, event.target.value)}
     />
   );
+
+  if (field.prefix || field.suffix) {
+    return (
+      <div className="admin-input-affix">
+        {field.prefix && <span className="admin-input-prefix">{field.prefix}</span>}
+        {inputEl}
+        {field.suffix && <span className="admin-input-suffix">{field.suffix}</span>}
+      </div>
+    );
+  }
+
+  return inputEl;
 }
 
 export default AdminFormField;

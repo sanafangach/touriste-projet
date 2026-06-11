@@ -1,5 +1,5 @@
 import React from "react";
-import { Clock, DollarSign } from "lucide-react";
+import { Clock } from "lucide-react";
 
 import { AdminImageThumb, AdminRating } from "./AdminTableCells";
 import AdminRowActions from "./AdminRowActions";
@@ -35,8 +35,7 @@ function ActivitiesTable({ rows, currentUser, onEdit, onDelete }) {
             </td>
             <td>
               <span className="admin-inline-icon">
-                <DollarSign size={14} />
-                {Number(item.price || 0).toFixed(2)}
+                {Number(item.price || 0).toFixed(2)} MAD
               </span>
             </td>
             <td>

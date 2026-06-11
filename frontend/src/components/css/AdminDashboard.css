@@ -838,6 +838,52 @@
   opacity: 0.65;
 }
 
+.admin-input-affix {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  background: var(--admin-panel-soft);
+  overflow: hidden;
+}
+
+.admin-input-affix:focus-within {
+  outline: 2px solid rgba(255, 122, 0, 0.22);
+  border-color: var(--admin-primary);
+}
+
+.admin-input-prefix,
+.admin-input-suffix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  background: var(--admin-panel);
+  color: var(--admin-muted);
+  font-weight: 900;
+  font-size: 13px;
+  user-select: none;
+}
+
+.admin-input-prefix {
+  border-right: 1px solid var(--admin-border);
+}
+
+.admin-input-suffix {
+  border-left: 1px solid var(--admin-border);
+}
+
+.admin-input-affix input {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-input-affix input:focus {
+  outline: none;
+}
+
 .admin-file-input {
   min-height: 42px;
   display: flex;

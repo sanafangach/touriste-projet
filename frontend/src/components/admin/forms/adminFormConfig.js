@@ -55,7 +55,7 @@ export const getFieldConfig = (section, mode, cities = [], isSelf = false) => {
     ],
     activities: [
       ...sharedContentFields.slice(0, 3),
-      { name: "price", label: "Price", type: "number", min: "0", step: "0.01" },
+      { name: "price", label: "Price", type: "number", min: "0", step: "0.01", suffix: "MAD" },
       { name: "duration", label: "Duration", type: "text" },
       ...sharedContentFields.slice(3),
     ],
