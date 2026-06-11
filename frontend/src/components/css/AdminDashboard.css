@@ -918,10 +918,7 @@
   }
 
   .admin-topbar-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    display: block;
   }
 
   .admin-header-user {
