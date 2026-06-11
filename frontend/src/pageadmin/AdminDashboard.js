@@ -5,8 +5,7 @@ import AdminHeader from "../components/admin/AdminHeader";
 import AdminNotice from "../components/admin/AdminNotice";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminWorkspace from "../components/admin/AdminWorkspace";
-import StatsCards from "../components/admin/StatsCards";
-import ApprendreAnalytics from "../components/admin/ApprendreAnalytics";
+import StatisticsView from "../components/admin/StatisticsView";
 import {
   adminEndpoints,
   adminSections,
@@ -35,7 +34,7 @@ function AdminDashboard() {
   const { lang, isRTL } = useLanguage();
   const navigate = useNavigate();
 
-  const [activeSection, setActiveSection] = useState("users");
+  const [activeSection, setActiveSection] = useState("statistics");
   const [collections, setCollections] = useState(() => createEmptyCollections());
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
@@ -304,28 +303,28 @@ function AdminDashboard() {
 
         <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
 
-        <StatsCards stats={stats} collections={collections} />
-
-        <ApprendreAnalytics />
-
-        <AdminWorkspace
-          activeMeta={activeMeta}
-          activeSection={activeSection}
-          rowCount={currentRows.length}
-          query={query}
-          onQueryChange={setQuery}
-          onAdd={(section) => openModal(section, "create")}
-        >
-          <AdminDataTable
-            activeSection={activeSection}
+        {activeMeta.view === "statistics" ? (
+          <StatisticsView stats={stats} collections={collections} />
+        ) : (
+          <AdminWorkspace
             activeMeta={activeMeta}
-            rows={currentRows}
-            currentUser={user}
-            onEdit={(section, item) => openModal(section, "edit", item)}
-            onDelete={(section, item) => setConfirmTarget({ section, item })}
-            onApprove={handleApproveComment}
-          />
-        </AdminWorkspace>
+            activeSection={activeSection}
+            rowCount={currentRows.length}
+            query={query}
+            onQueryChange={setQuery}
+            onAdd={(section) => openModal(section, "create")}
+          >
+            <AdminDataTable
+              activeSection={activeSection}
+              activeMeta={activeMeta}
+              rows={currentRows}
+              currentUser={user}
+              onEdit={(section, item) => openModal(section, "edit", item)}
+              onDelete={(section, item) => setConfirmTarget({ section, item })}
+              onApprove={handleApproveComment}
+            />
+          </AdminWorkspace>
+        )}
       </main>
 
       <AdminEntityModal

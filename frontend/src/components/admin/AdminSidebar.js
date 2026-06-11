@@ -33,7 +33,7 @@ function AdminSidebar({
             >
               <Icon size={18} />
               <span>{section.label}</span>
-              <b>{collections[section.key]?.length || 0}</b>
+              {!section.view && <b>{collections[section.key]?.length || 0}</b>}
             </button>
           );
         })}

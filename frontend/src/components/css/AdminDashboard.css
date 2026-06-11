@@ -1306,3 +1306,74 @@
   margin-right: 8px;
   vertical-align: middle;
 }
+
+.admin-statistics {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.admin-pie-card {
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  background: var(--admin-panel);
+  box-shadow: var(--admin-shadow);
+  padding: 16px 18px;
+}
+
+.admin-pie-card h3 {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--admin-strong);
+}
+
+.admin-pie-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+}
+
+.admin-pie-svg {
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+}
+
+.admin-pie-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px 18px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.admin-pie-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--admin-strong);
+}
+
+.admin-pie-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.admin-pie-legend-label {
+  font-weight: 700;
+}
+
+.admin-pie-legend-value {
+  margin-left: auto;
+  color: var(--admin-muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
