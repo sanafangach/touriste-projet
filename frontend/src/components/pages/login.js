@@ -124,15 +124,11 @@ function Login() {
                 setAuthSuccess(true);
                 // Wait briefly so the user sees the Amudux loader before entering
                 setTimeout(() => {
-                    if (user.role === 'admin') {
-                        navigate('/admin');
-                    } else {
-                        navigate('/', {
-                            state: {
-                                authMessage: lt[lang].loggedIn
-                            }
-                        });
-                    }
+                    navigate('/', {
+                        state: {
+                            authMessage: lt[lang].loggedIn
+                        }
+                    });
                 }, 1500);
                 return; // Return early so finally doesn't set loading false immediately if we want to keep things stable, though authSuccess covers the screen.
             }

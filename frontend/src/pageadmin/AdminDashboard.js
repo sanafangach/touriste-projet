@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import AdminHeader from "../components/admin/AdminHeader";
-import AdminLoading from "../components/admin/AdminLoading";
 import AdminNotice from "../components/admin/AdminNotice";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminWorkspace from "../components/admin/AdminWorkspace";
@@ -31,7 +30,7 @@ import ConfirmDialog from "../components/common/ConfirmDialog";
 import "../components/css/AdminDashboard.css";
 
 function AdminDashboard() {
-  const { user, logout, isAdmin } = useAuth();
+  const { user, isAdmin, refreshUser } = useAuth();
   const { lang, isRTL } = useLanguage();
   const navigate = useNavigate();
 
@@ -46,7 +45,6 @@ function AdminDashboard() {
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [confirmTarget, setConfirmTarget] = useState(null);
-  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   const activeMeta = useMemo(
     () => adminSections.find((section) => section.key === activeSection) || adminSections[0],
@@ -155,6 +153,13 @@ function AdminDashboard() {
     setQuery("");
   };
 
+  const handleRefresh = useCallback(async () => {
+    await Promise.all([
+      refreshUser().catch(() => null),
+      fetchData(false),
+    ]);
+  }, [fetchData, refreshUser]);
+
   const openModal = (section, mode, item = null) => {
     const isSelf = section === "users" && item?.id === user?.id;
     const cities = collections.cities || [];
@@ -260,33 +265,34 @@ function AdminDashboard() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await api.post("/logout");
-    } catch (error) {
-      console.error(error);
-    }
-
-    setLogoutConfirmOpen(false);
-    logout();
-    navigate("/");
-  };
-
-
-
   return (
     <div className={`admin-dashboard ${isRTL ? "rtl" : ""}`}>
+      <AdminHeader
+        user={user}
+        lang={lang}
+        refreshing={loading || refreshing}
+        onHome={() => navigate("/")}
+        onRefresh={handleRefresh}
+        className="admin-topbar-mobile"
+      />
+
       <AdminSidebar
         user={user}
         sections={adminSections}
         activeSection={activeSection}
         collections={collections}
         onSectionChange={handleSectionChange}
-        onLogout={() => setLogoutConfirmOpen(true)}
       />
 
       <main className="admin-main">
-        <AdminHeader lang={lang} refreshing={loading || refreshing} onRefresh={() => fetchData(false)} />
+        <AdminHeader
+          user={user}
+          lang={lang}
+          refreshing={loading || refreshing}
+          onHome={() => navigate("/")}
+          onRefresh={handleRefresh}
+          className="admin-topbar-desktop"
+        />
 
         <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
 
@@ -335,16 +341,6 @@ function AdminDashboard() {
         isRTL={isRTL}
       />
 
-      <ConfirmDialog
-        open={logoutConfirmOpen}
-        title="Confirm logout"
-        message="Are you sure you want to log out?"
-        cancelLabel="Cancel"
-        confirmLabel="Log out"
-        onCancel={() => setLogoutConfirmOpen(false)}
-        onConfirm={handleLogout}
-        isRTL={isRTL}
-      />
     </div>
   );
 }
