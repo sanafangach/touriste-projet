@@ -226,6 +226,118 @@ function Pack() {
     return expandedDays[dayIndex] !== false; // expanded by default
   };
 
+  const getActivityForDay = (dayIndex, dayPlan) => {
+    if (dbItems?.activities?.length > 0) {
+      const act = dbItems.activities[dayIndex % dbItems.activities.length];
+      return {
+        type: "activity",
+        name: act.name,
+        details: act.description || "",
+        price: act.price ? `${act.price} MAD` : t("free") || "Gratuit",
+        image_url: act.image ? getUploadUrl(act.image) : getMoroccoImageByText(formData.location, act.name),
+        rating: "4.8"
+      };
+    }
+    const act = dayPlan?.plan?.find(p => {
+      const text = p.place?.toLowerCase() || "";
+      const details = p.details?.toLowerCase() || "";
+      return !text.includes("restau") && !text.includes("cafe") && !details.includes("eat") && !details.includes("diner");
+    }) || dayPlan?.plan?.[0];
+    return {
+      type: "activity",
+      name: act?.place || "",
+      details: act?.details || "",
+      price: act?.ticket_pricing || t("free") || "Gratuit",
+      image_url: act?.image_url || getMoroccoImageByText(formData.location, act?.place || ""),
+      rating: act?.rating || "4.5"
+    };
+  };
+
+  const getPlaceForDay = (dayIndex, dayPlan) => {
+    if (dbItems?.places?.length > 0) {
+      const place = dbItems.places[dayIndex % dbItems.places.length];
+      return {
+        type: "place",
+        name: place.name,
+        details: place.description || "",
+        price: place.entry_price ? `${place.entry_price} MAD` : t("free") || "Gratuit",
+        image_url: place.image ? getUploadUrl(place.image) : getMoroccoImageByText(formData.location, place.name),
+        rating: "4.7"
+      };
+    }
+    const act = dayPlan?.plan?.find(p => {
+      const text = p.place?.toLowerCase() || "";
+      const details = p.details?.toLowerCase() || "";
+      return (text.includes("museum") || text.includes("palace") || text.includes("mosque") || text.includes("kasbah") || text.includes("ruins")) &&
+             !text.includes("restau") && !text.includes("cafe");
+    }) || dayPlan?.plan?.[2] || dayPlan?.plan?.[0];
+    return {
+      type: "place",
+      name: act?.place || "",
+      details: act?.details || "",
+      price: act?.ticket_pricing || t("free") || "Gratuit",
+      image_url: act?.image_url || getMoroccoImageByText(formData.location, act?.place || ""),
+      rating: act?.rating || "4.6"
+    };
+  };
+
+  const getRestaurantForDay = (dayIndex, dayPlan) => {
+    if (dbItems?.restaurants?.length > 0) {
+      const rest = dbItems.restaurants[dayIndex % dbItems.restaurants.length];
+      return {
+        type: "restaurant",
+        name: rest.name,
+        details: rest.description || "",
+        price: rest.price_range || "Varie",
+        cuisine: rest.cuisine || "Marocain",
+        image_url: rest.image ? getUploadUrl(rest.image) : getMoroccoImageByText(formData.location, rest.name),
+        rating: rest.rating ? String(rest.rating) : "4.7"
+      };
+    }
+    const act = dayPlan?.plan?.find(p => {
+      const text = p.place?.toLowerCase() || "";
+      const details = p.details?.toLowerCase() || "";
+      return text.includes("restau") || text.includes("cafe") || text.includes("diner") || details.includes("eat") || details.includes("diner") || details.includes("food");
+    }) || dayPlan?.plan?.[1] || dayPlan?.plan?.[0];
+    return {
+      type: "restaurant",
+      name: act?.place || "",
+      details: act?.details || "",
+      price: act?.ticket_pricing || "Varie",
+      cuisine: "Marocain",
+      image_url: act?.image_url || getMoroccoImageByText(formData.location, act?.place || ""),
+      rating: act?.rating || "4.6"
+    };
+  };
+
+  const getHiddenGemForDay = (dayIndex, dayPlan) => {
+    if (dbItems?.hidden_gems?.length > 0) {
+      const gem = dbItems.hidden_gems[dayIndex % dbItems.hidden_gems.length];
+      return {
+        type: "hidden_gem",
+        name: gem.name,
+        details: gem.description || "",
+        location: gem.location || "",
+        best_time: gem.best_time || "",
+        image_url: gem.image ? getUploadUrl(gem.image) : getMoroccoImageByText(formData.location, gem.name),
+        rating: "4.9"
+      };
+    }
+    const act = dayPlan?.plan?.find(p => {
+      const text = p.place?.toLowerCase() || "";
+      const details = p.details?.toLowerCase() || "";
+      return (text.includes("gem") || text.includes("secret") || text.includes("panoramic") || text.includes("view") || text.includes("sunset") || text.includes("garden")) &&
+             !text.includes("restau") && !text.includes("cafe");
+    }) || dayPlan?.plan?.[3] || dayPlan?.plan?.[0];
+    return {
+      type: "hidden_gem",
+      name: act?.place || "",
+      details: act?.details || "",
+      image_url: act?.image_url || getMoroccoImageByText(formData.location, act?.place || ""),
+      rating: act?.rating || "4.8"
+    };
+  };
+
   // Horizontal scroll helper
   const scrollContainer = (ref, direction) => {
     if (ref.current) {
@@ -877,49 +989,101 @@ function Pack() {
                           
                           {expanded && (
                             <div className="timeline-activities-list animate-slide-down">
-                              {dayPlan.plan?.map((act, actIndex) => (
-                                <div 
-                                  key={actIndex} 
-                                  className="timeline-activity-card pack-card" 
-                                  style={{ "--delay": `${actIndex * 0.1}s` }}
-                                >
-                                  <div className="activity-img-wrapper">
-                                    <img src={act.image_url || getMoroccoImageByText(formData.location, act.place)} alt={act.place} />
-                                    <span className={`time-pill-badge ${getTimeBadgeClass(act.time)}`}>
-                                      <span className="time-pill-emoji">{getTimeEmoji(act.time)}</span>
-                                      <span>{act.time}</span>
-                                    </span>
-                                  </div>
-                                   <div className="activity-details">
-                                    <div className="activity-title-row">
-                                      <h4>{act.place}</h4>
-                                      <div className="activity-rating">
-                                        <Star size={12} fill="currentColor" />
-                                        <span>{act.rating}</span>
+                              {[
+                                {
+                                  label: t("dailyActivity"),
+                                  icon: <Compass size={14} />,
+                                  badgeClass: "activity-badge-blue",
+                                  data: getActivityForDay(dayIndex, dayPlan)
+                                },
+                                {
+                                  label: t("dailyPlace"),
+                                  icon: <Landmark size={14} />,
+                                  badgeClass: "activity-badge-green",
+                                  data: getPlaceForDay(dayIndex, dayPlan)
+                                },
+                                {
+                                  label: t("dailyRestaurant"),
+                                  icon: <UtensilsCrossed size={14} />,
+                                  badgeClass: "activity-badge-orange",
+                                  data: getRestaurantForDay(dayIndex, dayPlan)
+                                },
+                                {
+                                  label: t("dailyHiddenGem"),
+                                  icon: <Sparkles size={14} />,
+                                  badgeClass: "activity-badge-purple",
+                                  data: getHiddenGemForDay(dayIndex, dayPlan)
+                                }
+                              ].map((categoryItem, actIndex) => {
+                                const item = categoryItem.data;
+                                if (!item || !item.name) return null;
+                                return (
+                                  <div 
+                                    key={actIndex} 
+                                    className="timeline-activity-card pack-card" 
+                                    style={{ "--delay": `${actIndex * 0.1}s` }}
+                                  >
+                                    <div className="activity-img-wrapper">
+                                      <img src={item.image_url} alt={item.name} />
+                                    </div>
+                                    <div className="activity-details">
+                                      <div className="activity-category-badge-wrapper">
+                                        <span className={`activity-category-badge ${categoryItem.badgeClass}`}>
+                                          {categoryItem.icon}
+                                          <span style={{ marginLeft: "6px", marginRight: "6px" }}>{categoryItem.label}</span>
+                                        </span>
+                                      </div>
+                                      <div className="activity-title-row">
+                                        <h4>{item.name}</h4>
+                                        <div className="activity-rating">
+                                          <Star size={12} fill="currentColor" />
+                                          <span>{item.rating}</span>
+                                        </div>
+                                      </div>
+                                      <p className="activity-desc">{item.details}</p>
+                                      
+                                      {item.cuisine && (
+                                        <p className="activity-meta-text" style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "6px" }}>
+                                          <strong>{t("cuisineLabel")}:</strong> {item.cuisine}
+                                        </p>
+                                      )}
+                                      {item.location && (
+                                        <p className="activity-meta-text" style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "6px" }}>
+                                          <strong>{t("locationLabel")}:</strong> {item.location}
+                                        </p>
+                                      )}
+                                      {item.best_time && (
+                                        <p className="activity-meta-text" style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "6px" }}>
+                                          <strong>{t("bestTimeLabel")}:</strong> {item.best_time}
+                                        </p>
+                                      )}
+
+                                      <div className="activity-footer">
+                                        {item.price && (
+                                          <span className="entry-price-chip">
+                                            <span className="entry-price-icon" aria-hidden="true">
+                                              <Coins size={15} strokeWidth={2.4} />
+                                            </span>
+                                            <span className="entry-price-copy">
+                                              <span className="entry-price-label">
+                                                {categoryItem.label === t("dailyRestaurant") ? t("priceLabel") : t("ticketPrice").replace(/\s*[:：]\s*$/, "")}
+                                              </span>
+                                              <strong className="entry-price-value" style={{ marginLeft: "4px" }}>{item.price}</strong>
+                                            </span>
+                                          </span>
+                                        )}
+                                        <button 
+                                          className="maps-redirect-btn mini"
+                                          onClick={() => openGoogleMaps(`${item.name}, ${formData.location}, Morocco`)}
+                                        >
+                                          <ExternalLink size={12} />
+                                          <span>{t("viewOnMap")}</span>
+                                        </button>
                                       </div>
                                     </div>
-                                    <p className="activity-desc">{act.details}</p>
-                                    <div className="activity-footer">
-                                      <span className="entry-price-chip">
-                                        <span className="entry-price-icon" aria-hidden="true">
-                                          <Coins size={15} strokeWidth={2.4} />
-                                        </span>
-                                        <span className="entry-price-copy">
-                                          <span className="entry-price-label">{t("ticketPrice").replace(/\s*[:：]\s*$/, "")}</span>
-                                          <strong className="entry-price-value">{act.ticket_pricing}</strong>
-                                        </span>
-                                      </span>
-                                      <button 
-                                        className="maps-redirect-btn mini"
-                                        onClick={() => openGoogleMaps(`${act.place}, ${formData.location}, Morocco`)}
-                                      >
-                                        <ExternalLink size={12} />
-                                        <span>{t("viewOnMap")}</span>
-                                      </button>
-                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           )}
                         </div>
