@@ -71,7 +71,6 @@ function PopularDestination() {
               <button
                 className="card-btn"
                 onClick={(e) => {
-                  e.preventDefault();
                   e.stopPropagation();
                 }}
               >
