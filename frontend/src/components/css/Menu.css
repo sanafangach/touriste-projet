@@ -67,6 +67,36 @@ body {
   color: white;
 }
 
+/* LEARN PAGE TOP MENU (transparent background but dark text/logo) */
+.menu.learn-page-top .logo {
+  filter: brightness(0);
+}
+
+.menu.learn-page-top .menu-links li a {
+  color: #333;
+  text-shadow: none;
+}
+
+.menu.learn-page-top .mobile-icon {
+  color: #333;
+}
+
+.menu.learn-page-top .settings-btn {
+  color: #333;
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.menu.learn-page-top .settings-btn:hover,
+.menu.learn-page-top .settings-btn.active {
+  color: white;
+}
+
+.menu.learn-page-top .user-greeting {
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.1), rgba(255, 77, 0, 0.05));
+  color: #ff7a00;
+}
+
 /* DARK MODE MENU */
 .dark .menu {
   background: rgba(0, 0, 0, 0.45);

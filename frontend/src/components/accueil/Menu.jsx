@@ -179,7 +179,7 @@ function Menu() {
     return (
         <>
             <nav
-                className={`menu ${scrolled ? "scrolled" : ""} ${isRTL ? "rtl" : ""
+                className={`menu ${scrolled ? "scrolled" : ""} ${(location.pathname.startsWith("/languages") || location.pathname.startsWith("/contact")) && !dark && !scrolled ? "learn-page-top" : ""} ${isRTL ? "rtl" : ""
                     }`}
             >
                 <div className="menu-left">

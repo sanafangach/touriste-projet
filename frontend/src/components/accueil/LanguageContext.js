@@ -86,6 +86,14 @@ const translations = {
     familyDesc: "Souvenirs inoubliables pour toute la famille",
     friendsDesc: "Partage, fun et découvertes de groupe",
     noKeyAlert: "Aucune clé API configurée. Utilisation du planificateur de simulation premium.",
+    dailyActivity: "Activité proposée",
+    dailyPlace: "Lieu d'intérêt",
+    dailyRestaurant: "Restaurant conseillé",
+    dailyHiddenGem: "Trésor caché (Hidden Gem)",
+    cuisineLabel: "Cuisine",
+    locationLabel: "Localisation",
+    bestTimeLabel: "Meilleur moment",
+    priceLabel: "Prix",
 
     // Apprendre Hub Translations
     learnHeroTitle: "Préparez votre voyage émotionnellement.",
@@ -1429,6 +1437,14 @@ const translations = {
     familyDesc: "Unforgettable memories for the whole family",
     friendsDesc: "Group fun, sharing, and adventures",
     noKeyAlert: "No API key configured. Utilizing premium simulation planner.",
+    dailyActivity: "Recommended Activity",
+    dailyPlace: "Place to Visit",
+    dailyRestaurant: "Recommended Restaurant",
+    dailyHiddenGem: "Hidden Gem",
+    cuisineLabel: "Cuisine",
+    locationLabel: "Location",
+    bestTimeLabel: "Best Time",
+    priceLabel: "Price",
 
     // Apprendre Hub Translations
     learnHeroTitle: "Prepare your journey emotionally.",
@@ -2772,6 +2788,14 @@ const translations = {
     familyDesc: "\u0630\u0643\u0631\u064a\u0627\u062a \u0644\u0627 \u062a\u064f\u0646\u0633\u0649 \u0644\u062c\u0645\u064a\u0639 \u0623\u0641\u0631\u0627\u062f \u0627\u0644\u0639\u0627\u0626\u0644\u0629",
     friendsDesc: "\u0645\u0634\u0627\u0631\u0643\u0629 \u0648\u0645\u062a\u0639\u0629 \u0648\u0645\u063a\u0627\u0645\u0631\u0629 \u062c\u0645\u0627\u0639\u064a\u0629",
     noKeyAlert: "\u0644\u0645 \u064a\u062a\u0645 \u062a\u0643\u0648\u064a\u0646 \u0645\u0641\u062a\u0627\u062d API. \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0645\u062e\u0637\u0637 \u0627\u0644\u0645\u062d\u0627\u0643\u0627\u0629 \u0627\u0644\u0641\u0627\u062e\u0631.",
+    dailyActivity: "\u0627\u0644\u0646\u0634\u0627\u0637 \u0627\u0644\u0645\u0642\u062a\u0631\u062d",
+    dailyPlace: "\u0627\u0644\u0645\u0643\u0627\u0646 \u0644\u0644\u0632\u064a\u0627\u0631\u0629",
+    dailyRestaurant: "\u0627\u0644\u0645\u0637\u0639\u0645 \u0627\u0644\u0645\u0642\u062a\u0631\u062d",
+    dailyHiddenGem: "\u0627\u0644\u062c\u0648\u0647\u0631\u0629 \u0627\u0644\u062e\u0641\u064a\u0629",
+    cuisineLabel: "\u0627\u0644\u0645\u0637\u0628\u062e",
+    locationLabel: "\u0627\u0644\u0645\u0648\u0642\u0639",
+    bestTimeLabel: "\u0623\u0641\u0636\u0644 \u0648\u0642\u062a",
+    priceLabel: "\u0627\u0644\u0633\u0639\u0631",
 
     // Apprendre Hub Translations
     learnHeroTitle: "استعد لرحلتك عاطفياً.",

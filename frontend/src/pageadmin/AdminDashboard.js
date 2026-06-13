@@ -5,6 +5,7 @@ import AdminHeader from "../components/admin/AdminHeader";
 import AdminNotice from "../components/admin/AdminNotice";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminWorkspace from "../components/admin/AdminWorkspace";
+import ApprendreManagement from "../components/admin/ApprendreManagement";
 import StatisticsView from "../components/admin/StatisticsView";
 import {
   adminEndpoints,
@@ -37,6 +38,7 @@ function AdminDashboard() {
   const [activeSection, setActiveSection] = useState("statistics");
   const [collections, setCollections] = useState(() => createEmptyCollections());
   const [stats, setStats] = useState({});
+  const [apprendreCount, setApprendreCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -77,6 +79,7 @@ function AdminDashboard() {
         hotelsRes,
         favoritesRes,
         commentsRes,
+        apprendreStatsRes,
       ] = await Promise.all([
         api.get(adminEndpoints.users),
         api.get("/admin/stats"),
@@ -88,6 +91,7 @@ function AdminDashboard() {
         api.get(adminEndpoints.hotels),
         api.get(adminEndpoints.favorites),
         api.get(adminEndpoints.comments),
+        api.get("/admin/apprendre-stats"),
       ]);
 
       setCollections({
@@ -102,6 +106,14 @@ function AdminDashboard() {
         comments: normalizeList(commentsRes.data, "comments"),
       });
       setStats(statsRes.data || {});
+
+      // Sidebar badge: total Apprendre records = completions + favorites + saved.
+      const apprendreTotals = apprendreStatsRes.data?.totals || {};
+      setApprendreCount(
+        (apprendreTotals.completions || 0) +
+        (apprendreTotals.favorites || 0) +
+        (apprendreTotals.saved_content || 0)
+      );
     } catch (error) {
       setNotice({ type: "error", message: getErrorMessage(error) });
     } finally {
@@ -261,9 +273,8 @@ function AdminDashboard() {
       setConfirmTarget(null);
       setNotice({
         type: "success",
-        message: `${
-          adminSections.find((entry) => entry.key === section)?.singular || "Record"
-        } deleted successfully.`,
+        message: `${adminSections.find((entry) => entry.key === section)?.singular || "Record"
+          } deleted successfully.`,
       });
       fetchData(false);
     } catch (error) {
@@ -288,6 +299,7 @@ function AdminDashboard() {
         sections={adminSections}
         activeSection={activeSection}
         collections={collections}
+        badgeCounts={{ apprendre: apprendreCount }}
         onSectionChange={handleSectionChange}
       />
 
@@ -304,7 +316,9 @@ function AdminDashboard() {
         <div className="admin-main-scroll">
           <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
 
-          {activeMeta.view === "statistics" ? (
+          {activeSection === "apprendre" ? (
+            <ApprendreManagement />
+          ) : activeMeta.view === "statistics" ? (
             <StatisticsView stats={stats} collections={collections} />
           ) : (
             <AdminWorkspace

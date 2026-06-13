@@ -194,6 +194,54 @@ describe("Fix 4 — write failures are logged and the cache is reverted", () => 
   });
 });
 
+describe("Bug #1 — mission completion persists correctly (DB is source of truth)", () => {
+  test("a successful completion writes the local flag and POSTs the resolved id", async () => {
+    api.post.mockResolvedValue({ data: { message: "Progress saved" } });
+
+    await progress.completeMission("darija", 2);
+
+    expect(progress.isMissionCompleted("darija", 2)).toBe(true);
+    expect(api.post).toHaveBeenCalledWith("/apprendre/progress", { mission_id: 102 });
+  });
+
+  test("a failed completion reverts the optimistic local flag (no cache drift)", async () => {
+    await progress.loadMissionMap();
+    api.post.mockRejectedValue(new Error("500"));
+
+    await progress.completeMission("darija", 1);
+
+    // The DB never recorded it, so the cache must not claim it.
+    expect(progress.isMissionCompleted("darija", 1)).toBe(false);
+    expect(console.error).toHaveBeenCalled();
+  });
+
+  test("a concurrent authoritative sync does NOT drop an in-flight completion", async () => {
+    await progress.loadMissionMap();
+
+    // Hold the completion POST open so the write is still in flight.
+    let resolvePost;
+    api.post.mockImplementation(() => new Promise((res) => { resolvePost = res; }));
+
+    // The GET reflects the DB snapshot BEFORE the POST has landed (mission absent).
+    api.get.mockImplementation((url) => {
+      if (url === "/apprendre/progress") return Promise.resolve({ data: [] });
+      if (url === "/apprendre/missions") return Promise.resolve({ data: MISSIONS });
+      return Promise.resolve({ data: [] });
+    });
+
+    const completing = progress.completeMission("darija", 1);
+    // Hub mounts and runs the authoritative sync while the POST is still pending.
+    await progress.syncProgressFromDb();
+
+    // The just-finished mission must survive the sync.
+    expect(progress.isMissionCompleted("darija", 1)).toBe(true);
+
+    resolvePost({ data: { message: "Progress saved" } });
+    await completing;
+    expect(progress.isMissionCompleted("darija", 1)).toBe(true);
+  });
+});
+
 describe("Login-time hydration — database is the source of truth", () => {
   test("syncApprendreFromDb rewrites the cache from the DB and notifies listeners", async () => {
     // DB returns authoritative state for this user across all three datasets.

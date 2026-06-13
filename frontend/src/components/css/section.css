@@ -154,7 +154,7 @@ body {
   font-size: 24px;
   font-weight: 800;
   margin-bottom: 6px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.6);
 }
 
 .card-info p {
@@ -164,36 +164,47 @@ body {
   margin-bottom: 0; /* HNA: Ma kaynch margin ltaht */
 }
 
-/* ================= EXPLORER - YBAN FACH HOVER ================= */
+/* ================= EXPLORER - YBAN FACH HOVER (bhal activite btn) ================= */
 .card-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  
-  padding: 10px 20px;
+  margin-top: 12px;
+  padding: 10px 22px;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
   border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
   
+  background: transparent;
   color: white;
-  font-size: 14px;
-  font-weight: 600;
   
-  /* HNA: Hidden by default */
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  
+  /* Hidden by default - slide up on hover */
   opacity: 0;
   transform: translateY(15px);
-  transition: all 0.4s ease;
   
-  margin-top: 12px; /* HNA: Margin mn lfo9 */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 4;
 }
 
-/* HNA: Yban fach hover */
+/* Yban fach hover */
 .popular-card:hover .card-btn {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Hover button itself: Solid orange gradient */
+.card-btn:hover {
+  background: linear-gradient(135deg, #ff7a00, #ff5100);
+  border-color: transparent;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 122, 0, 0.25);
 }
 
 /* Icon */
@@ -201,7 +212,7 @@ body {
   transition: transform 0.3s ease;
 }
 
-.popular-card:hover .card-btn svg {
+.card-btn:hover svg {
   transform: translateX(4px);
 }
 
