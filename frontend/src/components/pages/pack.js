@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { 
-  Sparkles, 
-  MapPin, 
-  Calendar, 
-  Check, 
+import {
+  Sparkles,
+  MapPin,
+  Calendar,
+  Check,
   ExternalLink,
   TrendingUp,
   Coins,
@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "../accueil/LanguageContext";
 import { generateTripData } from "../../services/aiService";
-import { MOROCCO_CITIES, getMoroccoImageByText, CITY_CATEGORIES, getGoogleMapsHotelOptions, getRealGoogleMapsOptions } from "../../services/moroccoData";
+import { MOROCCO_CITIES, getMoroccoImageByText, CITY_CATEGORIES, getGoogleMapsHotelOptions, getRealGoogleMapsOptions, guessCategoryFromText, CONTEXT_IMAGE_MAP } from "../../services/moroccoData";
 import api from "../../services/api";
 import { getUploadUrl } from "../../services/config";
 import "../css/pack.css";
@@ -55,7 +55,7 @@ function Pack() {
   const locationState = useLocation();
   const today = formatDateInput(new Date());
   const defaultEndDate = formatDateInput(addDays(new Date(), 2));
-  
+
   // Form State
   const [formData, setFormData] = useState({
     location: locationState.state?.city || "Marrakech",
@@ -93,16 +93,35 @@ function Pack() {
   });
 
   // DB cities & items fetched from backend
-  const [dbCities, setDbCities]   = useState([]);
-  const [dbItems, setDbItems]     = useState(null);  // { activities, restaurants, places, hidden_gems }
-  const [dbHotels, setDbHotels]   = useState([]);     // Hotels from /hotels?city=
+  const [dbCities, setDbCities] = useState([]);
+  const [dbItems, setDbItems] = useState(null);  // { activities, restaurants, places, hidden_gems }
+  const [dbHotels, setDbHotels] = useState([]);     // Hotels from /hotels?city=
 
-  // Merged city list: static MOROCCO_CITIES + any extra DB city names
+  // Get city-specific image, checking DB first, then fallback contexts, then static map
+  const getCityImage = (cityName = "", contextText = "") => {
+    if (!cityName) return getMoroccoImageByText("", contextText);
+    const category = guessCategoryFromText(`${cityName} ${contextText}`);
+    if (category && CONTEXT_IMAGE_MAP[category]) return CONTEXT_IMAGE_MAP[category];
+
+    const match = dbCities.find(
+      c => c.name.toLowerCase() === cityName.toLowerCase()
+    );
+    if (match && match.image) {
+      return getUploadUrl(match.image);
+    }
+
+    return getMoroccoImageByText(cityName, contextText);
+  };
+
+  // City list: comes exclusively from DB (admin controls add/remove).
+  // Falls back to static MOROCCO_CITIES only if the API returns nothing.
   const allCities = useMemo(() => {
-    const dbNames = dbCities.map(c => c.name);
-    const extras  = dbNames.filter(n => !MOROCCO_CITIES.includes(n));
-    return [...MOROCCO_CITIES, ...extras];
+    if (dbCities.length > 0) {
+      return dbCities.map(c => c.name);
+    }
+    return MOROCCO_CITIES; // fallback while API loads or on error
   }, [dbCities]);
+
 
   // Fetch cities from backend on mount
   useEffect(() => {
@@ -124,14 +143,14 @@ function Pack() {
     api.get(`/cities/${match.slug}`)
       .then(res => {
         setDbItems({
-          activities:   Array.isArray(res.data?.activities)   ? res.data.activities   : [],
-          restaurants:  Array.isArray(res.data?.restaurants)  ? res.data.restaurants  : [],
-          places:       Array.isArray(res.data?.places)        ? res.data.places        : [],
-          hidden_gems:  Array.isArray(res.data?.hidden_gems)   ? res.data.hidden_gems  : [],
+          activities: Array.isArray(res.data?.activities) ? res.data.activities : [],
+          restaurants: Array.isArray(res.data?.restaurants) ? res.data.restaurants : [],
+          places: Array.isArray(res.data?.places) ? res.data.places : [],
+          hidden_gems: Array.isArray(res.data?.hidden_gems) ? res.data.hidden_gems : [],
         });
       })
       .catch(() => setDbItems(null));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.location, dbCities]);
 
   // When the selected city changes, fetch DB hotels for it
@@ -157,7 +176,7 @@ function Pack() {
       reviews: h.reviews || '',
       address: h.city?.name ? `${h.city.name}, Maroc` : `${formData.location}, Maroc`,
       description: h.description || '',
-      image_url: h.image || getMoroccoImageByText(formData.location, 'hotel'),
+      image_url: h.image ? getUploadUrl(h.image) : getCityImage(formData.location, 'hotel'),
       maps_query: h.maps_query || `${h.name}, ${formData.location}, Morocco`,
       source: h.source || 'Base de données',
     }));
@@ -173,11 +192,38 @@ function Pack() {
       cuisine: r.cuisine || 'Marocain',
       address: r.address || formData.location,
       description: r.description || '',
-      image_url: r.image ? getUploadUrl(r.image) : getMoroccoImageByText(formData.location, 'restaurant'),
+      image_url: r.image ? getUploadUrl(r.image) : getCityImage(formData.location, 'restaurant'),
       maps_query: `${r.name}, ${formData.location}, Morocco`,
       source: 'Base de données',
     }));
   }, [dbItems, formData.location]);
+
+  // ─── Helper: extract numeric price from a hotel object ───────────────────
+  const getHotelPriceValue = (hotel) => {
+    const raw = String(hotel.price || hotel.pricePerNight || '');
+    const match = raw.replace(/[\s,]/g, '').match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+  };
+
+  // ─── Classify a hotel into Cheap / Moderate / Luxury ─────────────────────
+  const classifyHotel = (hotel) => {
+    const name = (hotel.name || '').toLowerCase();
+    const desc = (hotel.description || '').toLowerCase();
+    const combined = name + ' ' + desc;
+
+    const cheapKw = ['hostel', 'auberge', 'camping', 'backpacker', 'shared', 'dorm', 'youth', 'budget', 'économique'];
+    const luxKw = ['luxury', 'luxe', 'palace', 'resort', 'spa', 'grand', '5-star', '5 star', 'five star', 'riad', 'royal'];
+
+    const isCheapKw = cheapKw.some(k => combined.includes(k));
+    const isLuxKw = luxKw.some(k => combined.includes(k));
+
+    const price = getHotelPriceValue(hotel);
+
+    if (isCheapKw || (price !== null && price < 500)) return 'Cheap';
+    if (isLuxKw || (price !== null && price > 1300)) return 'Luxury';
+    return 'Moderate';
+  };
+
 
   const stepTimerRef = useRef(null);
   const progressTimerRef = useRef(null);
@@ -234,7 +280,7 @@ function Pack() {
         name: act.name,
         details: act.description || "",
         price: act.price ? `${act.price} MAD` : t("free") || "Gratuit",
-        image_url: act.image ? getUploadUrl(act.image) : getMoroccoImageByText(formData.location, act.name),
+        image_url: act.image ? getUploadUrl(act.image) : getCityImage(formData.location, act.name),
         rating: "4.8"
       };
     }
@@ -248,7 +294,7 @@ function Pack() {
       name: act?.place || "",
       details: act?.details || "",
       price: act?.ticket_pricing || t("free") || "Gratuit",
-      image_url: act?.image_url || getMoroccoImageByText(formData.location, act?.place || ""),
+      image_url: act?.image_url || getCityImage(formData.location, act?.place || ""),
       rating: act?.rating || "4.5"
     };
   };
@@ -261,7 +307,7 @@ function Pack() {
         name: place.name,
         details: place.description || "",
         price: place.entry_price ? `${place.entry_price} MAD` : t("free") || "Gratuit",
-        image_url: place.image ? getUploadUrl(place.image) : getMoroccoImageByText(formData.location, place.name),
+        image_url: place.image ? getUploadUrl(place.image) : getCityImage(formData.location, place.name),
         rating: "4.7"
       };
     }
@@ -269,14 +315,14 @@ function Pack() {
       const text = p.place?.toLowerCase() || "";
       const details = p.details?.toLowerCase() || "";
       return (text.includes("museum") || text.includes("palace") || text.includes("mosque") || text.includes("kasbah") || text.includes("ruins")) &&
-             !text.includes("restau") && !text.includes("cafe");
+        !text.includes("restau") && !text.includes("cafe");
     }) || dayPlan?.plan?.[2] || dayPlan?.plan?.[0];
     return {
       type: "place",
       name: act?.place || "",
       details: act?.details || "",
       price: act?.ticket_pricing || t("free") || "Gratuit",
-      image_url: act?.image_url || getMoroccoImageByText(formData.location, act?.place || ""),
+      image_url: act?.image_url || getCityImage(formData.location, act?.place || ""),
       rating: act?.rating || "4.6"
     };
   };
@@ -290,7 +336,7 @@ function Pack() {
         details: rest.description || "",
         price: rest.price_range || "Varie",
         cuisine: rest.cuisine || "Marocain",
-        image_url: rest.image ? getUploadUrl(rest.image) : getMoroccoImageByText(formData.location, rest.name),
+        image_url: rest.image ? getUploadUrl(rest.image) : getCityImage(formData.location, rest.name),
         rating: rest.rating ? String(rest.rating) : "4.7"
       };
     }
@@ -305,7 +351,7 @@ function Pack() {
       details: act?.details || "",
       price: act?.ticket_pricing || "Varie",
       cuisine: "Marocain",
-      image_url: act?.image_url || getMoroccoImageByText(formData.location, act?.place || ""),
+      image_url: act?.image_url || getCityImage(formData.location, act?.place || ""),
       rating: act?.rating || "4.6"
     };
   };
@@ -319,7 +365,7 @@ function Pack() {
         details: gem.description || "",
         location: gem.location || "",
         best_time: gem.best_time || "",
-        image_url: gem.image ? getUploadUrl(gem.image) : getMoroccoImageByText(formData.location, gem.name),
+        image_url: gem.image ? getUploadUrl(gem.image) : getCityImage(formData.location, gem.name),
         rating: "4.9"
       };
     }
@@ -327,13 +373,13 @@ function Pack() {
       const text = p.place?.toLowerCase() || "";
       const details = p.details?.toLowerCase() || "";
       return (text.includes("gem") || text.includes("secret") || text.includes("panoramic") || text.includes("view") || text.includes("sunset") || text.includes("garden")) &&
-             !text.includes("restau") && !text.includes("cafe");
+        !text.includes("restau") && !text.includes("cafe");
     }) || dayPlan?.plan?.[3] || dayPlan?.plan?.[0];
     return {
       type: "hidden_gem",
       name: act?.place || "",
       details: act?.details || "",
-      image_url: act?.image_url || getMoroccoImageByText(formData.location, act?.place || ""),
+      image_url: act?.image_url || getCityImage(formData.location, act?.place || ""),
       rating: act?.rating || "4.8"
     };
   };
@@ -549,10 +595,33 @@ function Pack() {
   const realRestaurantOptions = getRealGoogleMapsOptions(formData.location, lang, formData.budget, "restaurants");
   const mapsLabel = "Google Maps";
 
+  // ─── Filtered + de-duplicated hotel list for the selected budget ──────────
+  const hotelsForSelectedBudget = useMemo(() => {
+    const budget = formData.budget; // 'Cheap' | 'Moderate' | 'Luxury'
+    const merged = [...dbHotelCards, ...googleHotelOptions];
+
+    // Filter strictly by budget classification
+    const filtered = merged.filter(h => classifyHotel(h) === budget);
+
+    // If no hotel matches (e.g. DB has no cheap hotels), show all rather than empty
+    const source = filtered.length > 0 ? filtered : merged;
+
+    // De-duplicate by name (case-insensitive)
+    const seen = new Set();
+    return source.filter(h => {
+      const key = (h.name || '').toLowerCase().trim();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dbHotelCards, googleHotelOptions, formData.budget]);
+
+
   const renderRealPlaceCard = (item, index, fallbackContext = "hotel") => (
     <div key={`${item.name}-${index}`} className="h-scroll-card pack-card" style={{ "--delay": `${index * 0.12}s` }}>
       <div className="h-scroll-img-wrapper">
-        <img src={item.image_url || getMoroccoImageByText(formData.location, fallbackContext)} alt={item.name} />
+        <img src={item.image_url || getCityImage(formData.location, fallbackContext)} alt={item.name} />
         <div className="h-scroll-price-badge">{item.price}</div>
         {item.cuisine && (
           <div className="h-scroll-cuisine-badge">{item.cuisine}</div>
@@ -595,15 +664,15 @@ function Pack() {
             <h2>{title}</h2>
           </div>
           <div className="scroll-nav-arrows">
-            <button 
-              className="scroll-arrow-btn" 
+            <button
+              className="scroll-arrow-btn"
               onClick={() => scrollContainer(scrollRef, "left")}
               aria-label="Scroll left"
             >
               <ChevronLeft size={18} />
             </button>
-            <button 
-              className="scroll-arrow-btn" 
+            <button
+              className="scroll-arrow-btn"
               onClick={() => scrollContainer(scrollRef, "right")}
               aria-label="Scroll right"
             >
@@ -641,7 +710,7 @@ function Pack() {
           <div className="pack-form-side animate-slide-up" style={{ "--delay": "0.1s" }}>
             <div className="pack-form-scroll-wrapper">
               <div className="pack-card form-card">
-                
+
                 {/* Destination Input - Custom Search Autocomplete Dropdown */}
                 <div className="form-group animate-slide-up" style={{ "--delay": "0.15s" }}>
                   <label className="form-label">
@@ -649,7 +718,7 @@ function Pack() {
                     <span>{t("searchPlaceholder")}</span>
                   </label>
                   <div className="premium-city-selector-wrapper" ref={cityDropdownRef}>
-                    <div 
+                    <div
                       className={`premium-city-trigger ${cityDropdownOpen ? "active" : ""}`}
                       onClick={() => setCityDropdownOpen(!cityDropdownOpen)}
                     >
@@ -660,12 +729,12 @@ function Pack() {
                       </div>
                       <Compass size={16} className={`chevron-indicator ${cityDropdownOpen ? "open" : ""}`} />
                     </div>
-                    
+
                     {cityDropdownOpen && (
                       <div className="premium-city-dropdown animate-slide-down">
-                        <input 
-                          type="text" 
-                          placeholder={lang === "AR" ? "ابحث عن مدينة..." : lang === "FR" ? "Rechercher une ville..." : "Search a city..."} 
+                        <input
+                          type="text"
+                          placeholder={lang === "AR" ? "ابحث عن مدينة..." : lang === "FR" ? "Rechercher une ville..." : "Search a city..."}
                           value={citySearch}
                           onChange={(e) => setCitySearch(e.target.value)}
                           className="dropdown-search-input"
@@ -673,10 +742,10 @@ function Pack() {
                           autoFocus
                         />
                         <div className="dropdown-options-list">
-                          {allCities.filter(city => 
+                          {allCities.filter(city =>
                             city.toLowerCase().includes(citySearch.toLowerCase())
                           ).map((city) => (
-                            <div 
+                            <div
                               key={city}
                               className={`dropdown-option-item ${formData.location === city ? "selected" : ""}`}
                               onClick={() => {
@@ -693,13 +762,13 @@ function Pack() {
                               {formData.location === city && <Check size={14} className="option-check" />}
                             </div>
                           ))}
-                          {allCities.filter(city => 
+                          {allCities.filter(city =>
                             city.toLowerCase().includes(citySearch.toLowerCase())
                           ).length === 0 && (
-                            <div className="dropdown-no-results">
-                              {lang === "AR" ? "لا توجد نتائج" : lang === "FR" ? "Aucun résultat" : "No results found"}
-                            </div>
-                          )}
+                              <div className="dropdown-no-results">
+                                {lang === "AR" ? "لا توجد نتائج" : lang === "FR" ? "Aucun résultat" : "No results found"}
+                              </div>
+                            )}
                         </div>
                       </div>
                     )}
@@ -749,24 +818,24 @@ function Pack() {
                     {budgetOptions.map((opt) => {
                       const BudgetIcon = opt.icon;
                       return (
-                      <button
-                        type="button"
-                        key={opt.value}
-                        className={`budget-pill ${formData.budget === opt.value ? "active" : ""}`}
-                        onClick={() => handleInputChange("budget", opt.value)}
-                      >
-                        <span className="budget-icon-wrap">
-                          <BudgetIcon size={20} strokeWidth={2.3} />
-                        </span>
-                        <span className="budget-pill-text">
-                          <h3>{opt.label}</h3>
-                          <small>{opt.summary}</small>
-                        </span>
-                        <span className="budget-check-dot">
-                          <Check size={11} strokeWidth={3} />
-                        </span>
-                      </button>
-                    );
+                        <button
+                          type="button"
+                          key={opt.value}
+                          className={`budget-pill ${formData.budget === opt.value ? "active" : ""}`}
+                          onClick={() => handleInputChange("budget", opt.value)}
+                        >
+                          <span className="budget-icon-wrap">
+                            <BudgetIcon size={20} strokeWidth={2.3} />
+                          </span>
+                          <span className="budget-pill-text">
+                            <h3>{opt.label}</h3>
+                            <small>{opt.summary}</small>
+                          </span>
+                          <span className="budget-check-dot">
+                            <Check size={11} strokeWidth={3} />
+                          </span>
+                        </button>
+                      );
                     })}
                   </div>
                 </div>
@@ -781,7 +850,7 @@ function Pack() {
                     {travelerOptions.map((opt) => {
                       const TravelerIcon = opt.icon;
                       return (
-                        <div 
+                        <div
                           key={opt.value}
                           className={`selector-card ${formData.traveler === opt.value ? "active" : ""}`}
                           onClick={() => handleInputChange("traveler", opt.value)}
@@ -800,8 +869,8 @@ function Pack() {
                 </div>
 
                 {/* Action Button */}
-                <button 
-                  className={`generate-btn ${loading ? "loading" : ""} animate-slide-up`} 
+                <button
+                  className={`generate-btn ${loading ? "loading" : ""} animate-slide-up`}
                   style={{ "--delay": "0.35s" }}
                   onClick={handleGenerate}
                   disabled={loading}
@@ -818,8 +887,8 @@ function Pack() {
                   <h2>{t("saved")}</h2>
                   <div className="saved-trips-list">
                     {savedTrips.map((trip) => (
-                      <div 
-                        key={trip.id} 
+                      <div
+                        key={trip.id}
                         className="saved-trip-item"
                         onClick={() => selectSavedTrip(trip)}
                       >
@@ -827,7 +896,7 @@ function Pack() {
                           <h3>{trip.formData.location}</h3>
                           <p>{trip.formData.noOfDays} {t("duration")} • {trip.date}</p>
                         </div>
-                        <button 
+                        <button
                           className="delete-saved-btn"
                           onClick={(e) => deleteSavedTrip(trip.id, e)}
                         >
@@ -843,7 +912,7 @@ function Pack() {
 
           {/* Right Panel: Premium Loading & Results */}
           <div className="pack-display-side" id="trip-results-anchor">
-            
+
             {/* ========== PREMIUM AI LOADING DASHBOARD ========== */}
             {loading && (
               <div className="ai-loader-dashboard pack-card">
@@ -916,10 +985,10 @@ function Pack() {
             {/* Generated Trip Plan Result */}
             {tripResult && !loading && (
               <div className="itinerary-results animate-fade-in">
-                
+
                 {/* Result Hero Info */}
                 <div className="itinerary-header-card pack-card">
-                  <div className="itinerary-header-bg" style={{ backgroundImage: `url(${getMoroccoImageByText(formData.location)})` }}></div>
+                  <div className="itinerary-header-bg" style={{ backgroundImage: `url(${getCityImage(formData.location)})` }}></div>
                   <div className="itinerary-header-overlay"></div>
                   <div className="itinerary-header-text">
                     <div className="trip-meta-chips">
@@ -940,7 +1009,7 @@ function Pack() {
                 {renderHorizontalSection(
                   sectionLabels.hotels,
                   <Hotel size={20} className="section-icon" />,
-                  [...dbHotelCards, ...googleHotelOptions],
+                  hotelsForSelectedBudget,
                   hotelsScrollRef,
                   renderGoogleHotelCard
                 )}
@@ -964,7 +1033,7 @@ function Pack() {
                       const expanded = isDayExpanded(dayIndex);
                       return (
                         <div key={dayIndex} className={`timeline-day-block ${expanded ? "expanded" : "collapsed"}`}>
-                          <button 
+                          <button
                             className="timeline-day-header"
                             onClick={() => toggleDayExpansion(dayIndex)}
                             type="button"
@@ -986,7 +1055,7 @@ function Pack() {
                               <ChevronDown size={18} />
                             </span>
                           </button>
-                          
+
                           {expanded && (
                             <div className="timeline-activities-list animate-slide-down">
                               {[
@@ -1018,9 +1087,9 @@ function Pack() {
                                 const item = categoryItem.data;
                                 if (!item || !item.name) return null;
                                 return (
-                                  <div 
-                                    key={actIndex} 
-                                    className="timeline-activity-card pack-card" 
+                                  <div
+                                    key={actIndex}
+                                    className="timeline-activity-card pack-card"
                                     style={{ "--delay": `${actIndex * 0.1}s` }}
                                   >
                                     <div className="activity-img-wrapper">
@@ -1041,7 +1110,7 @@ function Pack() {
                                         </div>
                                       </div>
                                       <p className="activity-desc">{item.details}</p>
-                                      
+
                                       {item.cuisine && (
                                         <p className="activity-meta-text" style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "6px" }}>
                                           <strong>{t("cuisineLabel")}:</strong> {item.cuisine}
@@ -1072,7 +1141,7 @@ function Pack() {
                                             </span>
                                           </span>
                                         )}
-                                        <button 
+                                        <button
                                           className="maps-redirect-btn mini"
                                           onClick={() => openGoogleMaps(`${item.name}, ${formData.location}, Morocco`)}
                                         >
