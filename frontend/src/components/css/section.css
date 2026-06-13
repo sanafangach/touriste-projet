@@ -154,7 +154,7 @@ body {
   font-size: 24px;
   font-weight: 800;
   margin-bottom: 6px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.6);
 }
 
 .card-info p {
@@ -164,30 +164,32 @@ body {
   margin-bottom: 0; /* HNA: Ma kaynch margin ltaht */
 }
 
-/* ================= EXPLORER - YBAN FACH HOVER ================= */
+/* ================= EXPLORER - YBAN FACH HOVER (bhal activite btn) ================= */
 .card-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   
-  background: transparent;
-  
+  margin-top: 12px;
   padding: 10px 22px;
-  border-radius: 50px;
   border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
   
+  background: transparent;
   color: white;
+  
   font-size: 13px;
   font-weight: 600;
-  
-  /* Hidden by default */
-  opacity: 0;
-  transform: translateY(15px);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   
-  margin-top: 12px;
+  /* Hidden by default - slide up on hover */
+  opacity: 0;
+  transform: translateY(15px);
+  
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 4;
 }
 
 /* Yban fach hover */
@@ -201,7 +203,7 @@ body {
   background: linear-gradient(135deg, #ff7a00, #ff5100);
   border-color: transparent;
   color: white;
-  transform: translateY(-3px) !important;
+  transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(255, 122, 0, 0.25);
 }
 

@@ -68,10 +68,16 @@ function PopularDestination() {
             <div className="card-info">
               <h3>{item.place}</h3>
               <p>{item.city}</p>
-              <span className="card-btn">
+              <button
+                className="card-btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              >
                 {lang === "FR" ? "Explorer" : lang === "AR" ? "استكشف" : "Explore"}
                 <ArrowRight size={16} />
-              </span>
+              </button>
             </div>
           </Link>
         ))}

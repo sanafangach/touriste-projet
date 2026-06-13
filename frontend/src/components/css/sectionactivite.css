@@ -45,6 +45,19 @@
   color: #999;
 }
 
+/* Ensure button not black in dark mode */
+.dark .activite-card__btn {
+  background: transparent;
+  color: white;
+  border-color: rgba(255,255,255,0.6);
+}
+
+.dark .activite-card__btn:hover {
+  background: linear-gradient(135deg, #ff7a00, #ff5100);
+  border-color: transparent;
+  color: white;
+}
+
 /* ================= HEADER ================= */
 .activite-header {
   display: flex;
