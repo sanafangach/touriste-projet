@@ -315,9 +315,150 @@ body:has(.card-page) .menu .settings-btn {
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 768px) {
-  .card-page { flex-direction: column; padding-top: 75px; }
-  .card-sidebar { width: 100%; min-width: 0; height: 46%; border-right: none; border-bottom: 1px solid #eaedf3; box-shadow: 0 4px 14px rgba(0,0,0,0.04); }
-  .card-page.rtl .card-sidebar { border-left: none; }
-  .card-map-wrap { height: 54%; }
-  .detail-card { bottom: 10px; right: 10px; left: 10px; width: auto; }
+  /* Full page: column layout — sidebar list on TOP, map BELOW */
+  .card-page {
+    flex-direction: column;
+    padding-top: 70px;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* SIDEBAR takes top 42% of screen — list always visible */
+  .card-sidebar {
+    width: 100%;
+    min-width: 0;
+    height: 42%;
+    max-height: 42%;
+    border-right: none;
+    border-bottom: 2px solid #eaedf3;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .card-page.rtl .card-sidebar {
+    border-left: none;
+    border-right: none;
+  }
+
+  /* Compact the header on mobile */
+  .sidebar-header {
+    padding: 10px 12px 8px;
+  }
+
+  .sidebar-icon-wrap {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sidebar-title {
+    font-size: 13px;
+  }
+
+  .sidebar-sub {
+    font-size: 10px;
+  }
+
+  /* Slim search bar */
+  .search-wrap {
+    margin: 6px 10px 0;
+    padding: 7px 10px;
+  }
+
+  /* Radius slider: hide on mobile to save space */
+  .radius-wrap {
+    display: none;
+  }
+
+  /* Category pills: compact horizontal scroll */
+  .cats-scroll {
+    padding: 5px 10px;
+    gap: 5px;
+  }
+
+  .cat-pill {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+
+  .res-count {
+    padding: 2px 10px 3px;
+    font-size: 10px;
+  }
+
+  /* Destination list: takes remaining space inside sidebar and scrolls */
+  .dest-list {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 4px 6px;
+  }
+
+  /* Compact destination rows */
+  .dest-row {
+    padding: 8px 8px;
+    border-radius: 10px;
+    margin-bottom: 2px;
+  }
+
+  .dest-name {
+    font-size: 12px;
+  }
+
+  .dest-city {
+    font-size: 10px;
+  }
+
+  /* Hide category/rating/duration tags on mobile to keep rows tight */
+  .dest-tags {
+    display: none;
+  }
+
+  .dest-km b {
+    font-size: 11px;
+  }
+
+  .dest-km small {
+    font-size: 8px;
+  }
+
+  /* MAP takes the remaining 58% of screen */
+  .card-map-wrap {
+    flex: 1;
+    height: 58%;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Detail card overlay — positioned inside the map area */
+  .detail-card {
+    bottom: 12px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+    padding: 14px;
+    border-radius: 16px;
+    z-index: 1005;
+  }
+
+  .detail-name {
+    font-size: 15px;
+    margin: 6px 0 3px;
+  }
+
+  .detail-city {
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+
+  .detail-stats {
+    gap: 10px;
+  }
+
+  .d-stat {
+    font-size: 12px;
+  }
 }

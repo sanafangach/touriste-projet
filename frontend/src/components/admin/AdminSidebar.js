@@ -1,5 +1,5 @@
 import React from "react";
-import { Crown, LogOut } from "lucide-react";
+import { Crown } from "lucide-react";
 
 function AdminSidebar({
   user,
@@ -8,7 +8,6 @@ function AdminSidebar({
   collections,
   badgeCounts,
   onSectionChange,
-  onLogout,
 }) {
   return (
     <aside className="admin-sidebar">
@@ -18,7 +17,7 @@ function AdminSidebar({
         </div>
         <div>
           <strong>AMUDUX</strong>
-          <span>Admin Panel</span>
+          <span>{user?.name || "Admin"}</span>
         </div>
       </div>
 
@@ -36,24 +35,11 @@ function AdminSidebar({
             >
               <Icon size={18} />
               <span>{section.label}</span>
-              <b>{count}</b>
+              {section.key !== "statistics" && <b>{count}</b>}
             </button>
           );
         })}
       </nav>
-
-      <div className="admin-sidebar-user">
-        <div className="admin-avatar large">{user?.name?.[0]?.toUpperCase() || "A"}</div>
-        <div>
-          <strong>{user?.name}</strong>
-          <span>{user?.role}</span>
-        </div>
-      </div>
-
-      <button type="button" className="admin-logout" onClick={onLogout}>
-        <LogOut size={18} />
-        Log out
-      </button>
     </aside>
   );
 }

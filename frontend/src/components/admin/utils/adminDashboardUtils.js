@@ -2,6 +2,10 @@ import {
   favoriteRelationByType,
   uploadsBaseUrl,
 } from "../config/adminDashboardConfig";
+import { getFieldConfig } from "../forms/adminFormConfig";
+
+const getPersistedSuffixFields = (section) =>
+  getFieldConfig(section).filter((field) => field.persistSuffix && field.suffix);
 
 const isResolvedImage = (image) =>
   typeof image === "string" &&
@@ -167,6 +171,26 @@ export const getFormFromItem = (section, item, cities = []) => {
     next.source = toFormValue(item.source);
     next.maps_query = toFormValue(item.maps_query);
   }
+
+  getPersistedSuffixFields(section).forEach((field) => {
+    const raw = toFormValue(next[field.name]);
+    next[field.name] = raw.endsWith(field.suffix)
+      ? raw.slice(0, -field.suffix.length).trim()
+      : raw;
+  });
+
+  return next;
+};
+
+export const applyPersistedSuffixes = (section, form) => {
+  const next = { ...form };
+
+  getPersistedSuffixFields(section).forEach((field) => {
+    const raw = toFormValue(next[field.name]).trim();
+    next[field.name] = raw && !raw.endsWith(field.suffix)
+      ? `${raw}${field.suffix}`
+      : raw;
+  });
 
   return next;
 };

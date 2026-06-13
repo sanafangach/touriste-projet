@@ -6,6 +6,7 @@ import {
   Heart,
   Hotel,
   MapPin,
+  PieChart,
   Users,
   Utensils,
   MessageSquare,
@@ -35,6 +36,7 @@ export const apprendreEndpoints = {
 };
 
 export const adminSections = [
+  { key: "statistics", label: "Statistics", singular: "Statistics", icon: PieChart, view: "statistics" },
   { key: "users", label: "Users", singular: "User", icon: Users },
   { key: "cities", label: "Cities", singular: "City", icon: MapPin },
   { key: "activities", label: "Activities", singular: "Activity", icon: Activity },

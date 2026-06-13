@@ -2,12 +2,11 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import AdminHeader from "../components/admin/AdminHeader";
-import AdminLoading from "../components/admin/AdminLoading";
 import AdminNotice from "../components/admin/AdminNotice";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminWorkspace from "../components/admin/AdminWorkspace";
-import StatsCards from "../components/admin/StatsCards";
 import ApprendreManagement from "../components/admin/ApprendreManagement";
+import StatisticsView from "../components/admin/StatisticsView";
 import {
   adminEndpoints,
   adminSections,
@@ -16,6 +15,7 @@ import {
 import AdminEntityModal from "../components/admin/forms/AdminEntityModal";
 import AdminDataTable from "../components/admin/tables/AdminDataTable";
 import {
+  applyPersistedSuffixes,
   buildAdminFormData,
   getEmptyForm,
   getErrorMessage,
@@ -31,11 +31,11 @@ import ConfirmDialog from "../components/common/ConfirmDialog";
 import "../components/css/AdminDashboard.css";
 
 function AdminDashboard() {
-  const { user, logout, isAdmin } = useAuth();
+  const { user, isAdmin, refreshUser } = useAuth();
   const { lang, isRTL } = useLanguage();
   const navigate = useNavigate();
 
-  const [activeSection, setActiveSection] = useState("users");
+  const [activeSection, setActiveSection] = useState("statistics");
   const [collections, setCollections] = useState(() => createEmptyCollections());
   const [stats, setStats] = useState({});
   const [apprendreCount, setApprendreCount] = useState(0);
@@ -44,10 +44,16 @@ function AdminDashboard() {
   const [saving, setSaving] = useState(false);
   const [query, setQuery] = useState("");
   const [notice, setNotice] = useState(null);
+
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timer = setTimeout(() => setNotice(null), 15000);
+    return () => clearTimeout(timer);
+  }, [notice]);
+
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [confirmTarget, setConfirmTarget] = useState(null);
-  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   const activeMeta = useMemo(
     () => adminSections.find((section) => section.key === activeSection) || adminSections[0],
@@ -105,8 +111,8 @@ function AdminDashboard() {
       const apprendreTotals = apprendreStatsRes.data?.totals || {};
       setApprendreCount(
         (apprendreTotals.completions || 0) +
-          (apprendreTotals.favorites || 0) +
-          (apprendreTotals.saved_content || 0)
+        (apprendreTotals.favorites || 0) +
+        (apprendreTotals.saved_content || 0)
       );
     } catch (error) {
       setNotice({ type: "error", message: getErrorMessage(error) });
@@ -166,6 +172,13 @@ function AdminDashboard() {
     setQuery("");
   };
 
+  const handleRefresh = useCallback(async () => {
+    await Promise.all([
+      refreshUser().catch(() => null),
+      fetchData(false),
+    ]);
+  }, [fetchData, refreshUser]);
+
   const openModal = (section, mode, item = null) => {
     const isSelf = section === "users" && item?.id === user?.id;
     const cities = collections.cities || [];
@@ -211,7 +224,7 @@ function AdminDashboard() {
           await api.put(`${adminEndpoints.users}/${item.id}`, payload);
         }
       } else {
-        const payload = buildAdminFormData(form);
+        const payload = buildAdminFormData(applyPersistedSuffixes(section, form));
 
         if (mode === "create") {
           await api.post(adminEndpoints[section], payload);
@@ -260,9 +273,8 @@ function AdminDashboard() {
       setConfirmTarget(null);
       setNotice({
         type: "success",
-        message: `${
-          adminSections.find((entry) => entry.key === section)?.singular || "Record"
-        } deleted successfully.`,
+        message: `${adminSections.find((entry) => entry.key === section)?.singular || "Record"
+          } deleted successfully.`,
       });
       fetchData(false);
     } catch (error) {
@@ -271,22 +283,17 @@ function AdminDashboard() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await api.post("/logout");
-    } catch (error) {
-      console.error(error);
-    }
-
-    setLogoutConfirmOpen(false);
-    logout();
-    navigate("/");
-  };
-
-
-
   return (
     <div className={`admin-dashboard ${isRTL ? "rtl" : ""}`}>
+      <AdminHeader
+        user={user}
+        lang={lang}
+        refreshing={loading || refreshing}
+        onHome={() => navigate("/")}
+        onRefresh={handleRefresh}
+        className="admin-topbar-mobile"
+      />
+
       <AdminSidebar
         user={user}
         sections={adminSections}
@@ -294,38 +301,46 @@ function AdminDashboard() {
         collections={collections}
         badgeCounts={{ apprendre: apprendreCount }}
         onSectionChange={handleSectionChange}
-        onLogout={() => setLogoutConfirmOpen(true)}
       />
 
       <main className="admin-main">
-        <AdminHeader lang={lang} refreshing={loading || refreshing} onRefresh={() => fetchData(false)} />
+        <AdminHeader
+          user={user}
+          lang={lang}
+          refreshing={loading || refreshing}
+          onHome={() => navigate("/")}
+          onRefresh={handleRefresh}
+          className="admin-topbar-desktop"
+        />
 
-        <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
+        <div className="admin-main-scroll">
+          <AdminNotice notice={notice} onDismiss={() => setNotice(null)} />
 
-        <StatsCards stats={stats} collections={collections} />
-
-        {activeSection === "apprendre" ? (
-          <ApprendreManagement />
-        ) : (
-          <AdminWorkspace
-            activeMeta={activeMeta}
-            activeSection={activeSection}
-            rowCount={currentRows.length}
-            query={query}
-            onQueryChange={setQuery}
-            onAdd={(section) => openModal(section, "create")}
-          >
-            <AdminDataTable
-              activeSection={activeSection}
+          {activeSection === "apprendre" ? (
+            <ApprendreManagement />
+          ) : activeMeta.view === "statistics" ? (
+            <StatisticsView stats={stats} collections={collections} />
+          ) : (
+            <AdminWorkspace
               activeMeta={activeMeta}
-              rows={currentRows}
-              currentUser={user}
-              onEdit={(section, item) => openModal(section, "edit", item)}
-              onDelete={(section, item) => setConfirmTarget({ section, item })}
-              onApprove={handleApproveComment}
-            />
-          </AdminWorkspace>
-        )}
+              activeSection={activeSection}
+              rowCount={currentRows.length}
+              query={query}
+              onQueryChange={setQuery}
+              onAdd={(section) => openModal(section, "create")}
+            >
+              <AdminDataTable
+                activeSection={activeSection}
+                activeMeta={activeMeta}
+                rows={currentRows}
+                currentUser={user}
+                onEdit={(section, item) => openModal(section, "edit", item)}
+                onDelete={(section, item) => setConfirmTarget({ section, item })}
+                onApprove={handleApproveComment}
+              />
+            </AdminWorkspace>
+          )}
+        </div>
       </main>
 
       <AdminEntityModal
@@ -349,16 +364,6 @@ function AdminDashboard() {
         isRTL={isRTL}
       />
 
-      <ConfirmDialog
-        open={logoutConfirmOpen}
-        title="Confirm logout"
-        message="Are you sure you want to log out?"
-        cancelLabel="Cancel"
-        confirmLabel="Log out"
-        onCancel={() => setLogoutConfirmOpen(false)}
-        onConfirm={handleLogout}
-        isRTL={isRTL}
-      />
     </div>
   );
 }

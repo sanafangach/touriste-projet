@@ -15,10 +15,12 @@ import {
     Bookmark,
     Menu as MenuIcon,
     X,
+    LayoutDashboard,
 } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 import { useAuth } from "../../context/AuthContext"
 import ConfirmDialog from "../common/ConfirmDialog";
+import Profile from "../pages/Profile";
 import logo from "../../assets/logo12.png";
 import "../css/Menu.css";
 
@@ -35,9 +37,10 @@ function Menu() {
     const [mobile, setMobile] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+    const [profileOpen, setProfileOpen] = useState(false);
 
     const { lang, setLang, t, isRTL } = useLanguage();
-    const { user, isAuthenticated, logout } = useAuth();
+    const { user, isAuthenticated, logout, isAdmin } = useAuth();
 
     // Dark mode initialization
     useEffect(() => {
@@ -85,6 +88,32 @@ function Menu() {
         setLang(newLang);
     };
 
+    const openProfile = () => {
+        setOpen(false);
+        setMobile(false);
+        setProfileOpen(true);
+    };
+
+    useEffect(() => {
+        if (!profileOpen) return undefined;
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") setProfileOpen(false);
+        };
+        document.addEventListener("keydown", handleKeyDown);
+
+        const root = document.documentElement;
+        const previousRootOverflow = root.style.overflow;
+        const previousBodyOverflow = document.body.style.overflow;
+        root.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+            root.style.overflow = previousRootOverflow;
+            document.body.style.overflow = previousBodyOverflow;
+        };
+    }, [profileOpen]);
+
     const requestLogout = () => {
         setOpen(false);
         setLogoutConfirmOpen(true);
@@ -97,6 +126,12 @@ function Menu() {
         navigate("/");
     };
 
+    const getDashboardLabel = () => {
+        if (lang === "AR") return "لوحة التحكم";
+        if (lang === "FR") return "Dashboard";
+        return "Dashboard";
+    };
+
     const getNavLinks = () => {
         const links = [
             { to: "/", icon: <Home size={18} />, label: t("home") },
@@ -105,6 +140,15 @@ function Menu() {
             { to: "/languages", icon: <Globe size={18} />, label: t("languages") },
             { to: "/pack", icon: <Box size={18} />, label: t("pack") },
         ];
+
+        if (isAdmin()) {
+            links.push({
+                to: "/admin",
+                icon: <LayoutDashboard size={18} />,
+                label: getDashboardLabel(),
+            });
+        }
+
         return isRTL ? links.reverse() : links;
     };
 
@@ -135,7 +179,7 @@ function Menu() {
     return (
         <>
             <nav
-                className={`menu ${scrolled ? "scrolled" : ""} ${isRTL ? "rtl" : ""
+                className={`menu ${scrolled ? "scrolled" : ""} ${(location.pathname.startsWith("/languages") || location.pathname.startsWith("/contact")) && !dark && !scrolled ? "learn-page-top" : ""} ${isRTL ? "rtl" : ""
                     }`}
             >
                 <div className="menu-left">
@@ -147,10 +191,10 @@ function Menu() {
                 <ul className={mobile ? "menu-links active" : "menu-links"}>
                     <li className="mobile-menu-header">
                         {isAuthenticated && user ? (
-                            <Link 
-                                to="/profile" 
-                                className="mobile-greeting" 
-                                onClick={() => setMobile(false)}
+                            <button
+                                type="button"
+                                className="mobile-greeting"
+                                onClick={openProfile}
                             >
                                 <User size={18} />
                                 <span>
@@ -161,7 +205,7 @@ function Menu() {
                                             : "Hello"}{" "}
                                     {user.name}
                                 </span>
-                            </Link>
+                            </button>
                         ) : (
                             <div className="mobile-greeting-placeholder"></div>
                         )}
@@ -205,7 +249,11 @@ function Menu() {
 
                 <div className="menu-right">
                     {isAuthenticated && user && (
-                        <Link to="/profile" className="user-greeting">
+                        <button
+                            type="button"
+                            className="user-greeting"
+                            onClick={openProfile}
+                        >
                             <User size={16} />
                             <span>
                                 {lang === "AR"
@@ -215,7 +263,7 @@ function Menu() {
                                         : "Hello"}{" "}
                                 {user.name}
                             </span>
-                        </Link>
+                        </button>
                     )}
 
                     {!mobile && (
@@ -288,10 +336,9 @@ function Menu() {
 
 
                             {isAuthenticated && (
-                                <Link
-                                    to="/profile"
+                                <div
                                     className="dropdown-item"
-                                    onClick={() => setOpen(false)}
+                                    onClick={openProfile}
                                 >
                                     <UserCircle2 size={18} />
                                     <span>
@@ -301,7 +348,7 @@ function Menu() {
                                                 ? "Profil"
                                                 : "Profile"}
                                     </span>
-                                </Link>
+                                </div>
                             )}
                             <Link
                                 to="/saved"
@@ -356,6 +403,32 @@ function Menu() {
                     )}
                 </div>
             </nav>
+
+            {profileOpen && (
+                <div
+                    className="profile-modal-backdrop"
+                    role="presentation"
+                    onMouseDown={() => setProfileOpen(false)}
+                >
+                    <div
+                        className={`profile-modal ${isRTL ? "rtl" : ""}`}
+                        role="dialog"
+                        aria-modal="true"
+                        dir={isRTL ? "rtl" : "ltr"}
+                        onMouseDown={(event) => event.stopPropagation()}
+                    >
+                        <button
+                            type="button"
+                            className="profile-modal-close"
+                            onClick={() => setProfileOpen(false)}
+                            aria-label="Close"
+                        >
+                            <X size={20} />
+                        </button>
+                        <Profile embedded />
+                    </div>
+                </div>
+            )}
 
             <ConfirmDialog
                 open={logoutConfirmOpen}

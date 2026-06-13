@@ -18,7 +18,7 @@ body {
 
 /* ========== MODE CLAIR ========== */
 :root {
-  --orange-primary: #f97316;
+  --orange-primary: #e36911;
   --orange-deep: #ea580c;
   --orange-glow: rgba(249, 115, 22, 0.35);
 
@@ -179,11 +179,9 @@ html.dark {
   position: relative;
   overflow: hidden;
 
-  background: linear-gradient(
-    135deg,
-    var(--orange-primary),
-    var(--orange-deep)
-  );
+  background: linear-gradient(135deg,
+      var(--orange-primary),
+      var(--orange-deep));
 }
 
 .profile-left::before {
@@ -192,13 +190,11 @@ html.dark {
   position: absolute;
   inset: 0;
 
-  background: repeating-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.04) 0px,
-    rgba(255, 255, 255, 0.04) 2px,
-    transparent 2px,
-    transparent 10px
-  );
+  background: repeating-linear-gradient(45deg,
+      rgba(255, 255, 255, 0.04) 0px,
+      rgba(255, 255, 255, 0.04) 2px,
+      transparent 2px,
+      transparent 10px);
 }
 
 /* Photo */
@@ -330,11 +326,9 @@ html.dark {
   font-size: 2.3rem;
   font-weight: 800;
 
-  background: linear-gradient(
-    135deg,
-    var(--orange-primary),
-    #ffb36b
-  );
+  background: linear-gradient(135deg,
+      var(--orange-primary),
+      #ffb36b);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -495,12 +489,11 @@ html.dark .readonly-field {
   align-items: center;
   justify-content: center;
   gap: 0.7rem;
+  height: 50px;
 
-  background: linear-gradient(
-    135deg,
-    var(--orange-primary),
-    var(--orange-deep)
-  );
+  background: linear-gradient(135deg,
+      var(--orange-primary),
+      var(--orange-deep));
 
   box-shadow: 0 10px 25px var(--orange-glow);
 
@@ -521,9 +514,20 @@ html.dark .readonly-field {
   cursor: not-allowed;
 }
 
-/* Spinner */
-.spinner {
+.save-button span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.save-button .spinner {
   animation: spin 0.8s linear infinite;
+  margin-top: 13px;
+  width: 25px;
+  height: 25px;
+}
+
+.save-button .save {
+  margin-top: -3px;
 }
 
 @keyframes spin {
@@ -579,10 +583,12 @@ html.dark .readonly-field {
   .profile-card-inner {
     flex-direction: column;
   }
+
   .profile-left,
   .profile-right {
     width: 100%;
   }
+
   .profile-photo-wrapper {
     width: 150px;
     height: 150px;
@@ -616,5 +622,288 @@ html.dark .readonly-field {
     padding: 0.3rem 1rem;
 
     font-size: 0.8rem;
+  }
+}
+
+/* Error banner inside the form */
+.profile-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+
+  border-radius: 0.9rem;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.profile-alert.danger {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+html.dark .profile-alert.danger {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Floating "changes saved" confirmation toast */
+.profile-save-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3000;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.75rem 1.4rem;
+
+  border-radius: 999px;
+
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+
+  background: linear-gradient(135deg,
+      var(--orange-primary),
+      var(--orange-deep));
+  box-shadow: 0 12px 30px var(--orange-glow);
+
+  animation: profileToastIn 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.profile-save-toast svg {
+  flex-shrink: 0;
+}
+
+@keyframes profileToastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ========== PROFILE AS MODAL OVERLAY ========== */
+.profile-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2900;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  background: rgba(10, 10, 10, 0.58);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  animation: profileModalFade 0.18s ease;
+}
+
+html.dark .profile-modal-backdrop {
+  background: rgba(2, 6, 23, 0.72);
+}
+
+.profile-modal {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  border-radius: 2.5rem;
+  animation: profileModalPop 0.2s ease;
+}
+
+.profile-modal-close {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: auto;
+  z-index: 5;
+
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  transition: background 0.2s ease;
+}
+
+.profile-modal.rtl .profile-modal-close {
+  left: auto;
+  right: 20px;
+}
+
+.profile-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Neutralize the full-page layout when embedded in the modal */
+.profile-container.embedded {
+  min-height: 0;
+  width: 100%;
+  padding: 0;
+  background: none;
+  overflow: visible;
+}
+
+.profile-container.embedded .profile-card {
+  max-width: 100%;
+  border-radius: 2.5rem;
+}
+
+/* Compact layout so the modal fits without its own scroll */
+.profile-container.embedded .profile-left {
+  flex: 0.9;
+  min-width: 240px;
+  padding: 1.6rem 1.4rem;
+}
+
+.profile-container.embedded .profile-photo-wrapper {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 1rem;
+}
+
+.profile-container.embedded .profile-quote {
+  font-size: 0.85rem;
+}
+
+.profile-container.embedded .profile-right {
+  padding: 1.6rem 1.6rem;
+}
+
+.profile-container.embedded .profile-title {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.profile-container.embedded .profile-form {
+  gap: 0.85rem;
+}
+
+.profile-container.embedded .form-group {
+  gap: 0.3rem;
+}
+
+.profile-container.embedded .profile-form textarea {
+  min-height: 56px;
+}
+
+.profile-container.embedded .save-button {
+  margin-top: 0.2rem;
+  padding: 0.7rem 1.5rem;
+}
+
+.profile-container.embedded .profile-header {
+  margin-bottom: 0.25rem;
+}
+
+/* Tighten field vertical rhythm so the whole card fits without scrolling,
+   even in edit mode when the Save button is visible */
+.profile-container.embedded .input-icon-wrapper input,
+.profile-container.embedded .input-icon-wrapper textarea {
+  padding: 0.6rem 1rem 0.6rem 0;
+  font-size: 0.95rem;
+}
+
+.profile-container.embedded .input-icon {
+  margin-top: 0.6rem;
+}
+
+.profile-container.embedded .form-group label {
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+}
+
+.profile-container.embedded .email-hint {
+  margin-top: 0.1rem;
+}
+
+/* ---- Fix style bleed from Login.css (.form-group input) ----
+   Both stylesheets are global; Login's input rule has equal specificity
+   and was rendering a bordered white box INSIDE the profile pill.
+   These higher-specificity rules keep the wrapper as the single clean field. */
+.profile-card .input-icon-wrapper input,
+.profile-card .input-icon-wrapper textarea {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.profile-card .input-icon-wrapper input:focus,
+.profile-card .input-icon-wrapper textarea:focus {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.profile-card .readonly-field {
+  background-color: transparent;
+}
+
+html.dark .profile-card .input-icon-wrapper input,
+html.dark .profile-card .input-icon-wrapper textarea,
+html.dark .profile-card .readonly-field {
+  background-color: transparent;
+}
+
+@keyframes profileModalFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes profileModalPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-modal-backdrop {
+    padding: 12px;
+  }
+
+  .profile-modal {
+    border-radius: 1.5rem;
   }
 }

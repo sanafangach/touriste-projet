@@ -29,6 +29,24 @@ export function AuthProvider({ children }) {
         localStorage.removeItem('user');
     }, []);
 
+    const refreshUser = useCallback(async () => {
+        if (!localStorage.getItem('token')) return null;
+
+        const res = await api.get('/profile');
+
+        if (res.data?.success && res.data?.data) {
+            const fresh = {
+                ...(JSON.parse(localStorage.getItem('user') || '{}')),
+                ...res.data.data,
+            };
+            setUser(fresh);
+            localStorage.setItem('user', JSON.stringify(fresh));
+            return fresh;
+        }
+
+        return null;
+    }, []);
+
     // Initial mount check (in case localStorage was cleared between ticks or we need side effects)
     useEffect(() => {
         if (!localStorage.getItem('token') || !localStorage.getItem('user')) {
@@ -44,16 +62,9 @@ export function AuthProvider({ children }) {
     // After token is set, refresh profile from backend to get latest data (image, bio, ville)
     useEffect(() => {
         if (!token) return;
-        api.get('/profile')
-            .then(res => {
-                if (res.data?.success && res.data?.data) {
-                    const fresh = { ...(JSON.parse(localStorage.getItem('user') || '{}')), ...res.data.data };
-                    setUser(fresh);
-                    localStorage.setItem('user', JSON.stringify(fresh));
-                }
-            })
+        refreshUser()
             .catch(() => {/* silent — token may have expired */});
-    }, [token]);
+    }, [token, refreshUser]);
 
     const login = useCallback((userData, userToken) => {
         if (!userData || !userToken) {
@@ -108,6 +119,7 @@ export function AuthProvider({ children }) {
             isAuthenticated,
             isAdmin,
             updateUser,
+            refreshUser,
         }}>
             {children}
         </AuthContext.Provider>

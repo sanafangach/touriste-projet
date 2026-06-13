@@ -640,9 +640,13 @@
   }
 }
 
-/* Dark Mode */
+/* ================= DARK MODE ================= */
 .dark .commentaire-section {
-  background: #0f0f23;
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+}
+
+.dark .section-tag {
+  color: #ff7a00;
 }
 
 .dark .section-title {
@@ -651,8 +655,9 @@
 
 .dark .comment-card,
 .dark .add-comment-section {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .dark .comment-text {
@@ -663,18 +668,95 @@
   color: #fff;
 }
 
+.dark .user-info span {
+  color: #888;
+}
+
+.dark .card-footer {
+  border-top-color: rgba(255,255,255,0.08);
+}
+
+.dark .like-btn {
+  color: #888;
+}
+
 .dark .comment-input {
   background: rgba(255,255,255,0.05);
   border-color: rgba(255,255,255,0.1);
   color: #fff;
 }
 
+.dark .comment-input::placeholder {
+  color: #666;
+}
+
 .dark .comment-input:focus {
   background: rgba(255,255,255,0.08);
+  border-color: rgba(255,122,0,0.5);
+}
+
+.dark .rating-area span {
+  color: #aaa;
+}
+
+.dark .publish-btn {
+  background: rgba(255,255,255,0.08);
+  color: #888;
 }
 
 .dark .carousel-arrow {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: #ccc;
+}
+
+.dark .carousel-arrow:hover {
+  background: #ff7a00;
+  border-color: #ff7a00;
+  color: #fff;
+}
+
+.dark .empty-state p {
+  color: #aaa;
+}
+
+.dark .empty-state span {
+  color: #666;
+}
+
+.dark .loading-state p {
+  color: #aaa;
+}
+
+.dark .login-modal {
+  background: #1a1a1a;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+}
+
+.dark .login-modal h3 {
+  color: #fff;
+}
+
+.dark .login-modal p {
+  color: #aaa;
+}
+
+.dark .modal-close {
   background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.2);
+  color: #ccc;
+}
+
+.dark .modal-close:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+.dark .modal-btn-secondary {
+  color: #aaa;
+  border-color: rgba(255,255,255,0.15);
+}
+
+.dark .modal-btn-secondary:hover {
+  border-color: rgba(255,255,255,0.3);
   color: #ccc;
 }

@@ -55,7 +55,7 @@ export const getFieldConfig = (section, mode, cities = [], isSelf = false) => {
     ],
     activities: [
       ...sharedContentFields.slice(0, 3),
-      { name: "price", label: "Price", type: "number", min: "0", step: "0.01" },
+      { name: "price", label: "Price", type: "number", min: "0", step: "0.01", suffix: "MAD" },
       { name: "duration", label: "Duration", type: "text" },
       ...sharedContentFields.slice(3),
     ],
@@ -69,7 +69,7 @@ export const getFieldConfig = (section, mode, cities = [], isSelf = false) => {
     places: [
       ...sharedContentFields.slice(0, 3),
       { name: "category", label: "Category", type: "text" },
-      { name: "entry_price", label: "Entry price", type: "number", min: "0", step: "0.01" },
+      { name: "entry_price", label: "Entry price", type: "number", min: "0", step: "0.01", suffix: "MAD" },
       ...sharedContentFields.slice(3),
     ],
     hiddenGems: [
@@ -80,8 +80,8 @@ export const getFieldConfig = (section, mode, cities = [], isSelf = false) => {
     ],
     hotels: [
       ...sharedContentFields.slice(0, 3),
-      { name: "price", label: "Price", type: "text", suffix: "MAD" },
-      { name: "reviews", label: "Reviews", type: "text", suffix: "k" },
+      { name: "price", label: "Price", type: "text", suffix: " MAD" },
+      { name: "reviews", label: "Reviews", type: "text", suffix: " k", persistSuffix: true },
       {
         name: "budget_level",
         label: "Budget level",

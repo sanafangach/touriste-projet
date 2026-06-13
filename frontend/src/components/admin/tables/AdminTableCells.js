@@ -20,8 +20,8 @@ export function AdminImageThumb({ item = {}, alt }) {
 export function AdminRating({ rating }) {
   return (
     <span className="admin-rating">
-      <Star size={14} fill="currentColor" />
       {Number(rating || 0).toFixed(1)}
+      <Star size={14} fill="currentColor" />
     </span>
   );
 }

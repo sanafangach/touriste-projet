@@ -17,7 +17,7 @@ import { getUploadUrl } from "../../services/config";
 
 import "../css/Profile.css";
 
-function Profile() {
+function Profile({ embedded = false }) {
   const { user, updateUser } = useAuth();
   const { lang } = useLanguage();
   const fileInputRef = useRef(null);
@@ -112,10 +112,21 @@ function Profile() {
   };
 
   return (
-    <div className="profile-container">
-      <div className="bg-shape-1" />
-      <div className="bg-shape-2" />
-      <div className="bg-shape-3" />
+    <div className={`profile-container ${embedded ? "embedded" : ""}`}>
+      {saved && (
+        <div className="profile-save-toast" role="status">
+          <CheckCircle size={18} />
+          <span>{t.savedMsg}</span>
+        </div>
+      )}
+
+      {!embedded && (
+        <>
+          <div className="bg-shape-1" />
+          <div className="bg-shape-2" />
+          <div className="bg-shape-3" />
+        </>
+      )}
 
       <div className="profile-card">
         <div className="profile-card-inner">
@@ -169,14 +180,8 @@ function Profile() {
               )}
             </div>
 
-            <div className="profile-sub">{t.subtitle}</div>
 
-            {/* Success / Error banners */}
-            {saved && (
-              <div className="profile-alert success">
-                <CheckCircle size={16} /> {t.savedMsg}
-              </div>
-            )}
+            {/* Error banner */}
             {error && (
               <div className="profile-alert danger">
                 <AlertCircle size={16} /> {error}
@@ -245,7 +250,7 @@ function Profile() {
               {/* Save button */}
               {isEditing && (
                 <button className="save-button" onClick={handleSave} disabled={loading}>
-                  {loading ? <Loader2 size={20} className="spinner" /> : <Save size={18} />}
+                  {loading ? <Loader2 className="spinner" />:<Save className="save" size={20} />}
                   <span>{t.save}</span>
                 </button>
               )}

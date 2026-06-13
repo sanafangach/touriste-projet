@@ -3190,3 +3190,264 @@
 .pack-page.rtl .timeline-day-subtitle {
   text-align: right;
 }
+
+/* ==========================================================================
+   DARK MODE OVERRIDES & DESIGN POLISHING
+   ========================================================================== */
+
+/* Date Input calendar picker icon invert */
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* Premium City Trigger Dropdown button */
+.dark .premium-city-trigger {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .premium-city-trigger:hover, 
+.dark .premium-city-trigger.active {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.2);
+}
+
+/* Premium City Dropdown */
+.dark .premium-city-dropdown {
+  background: rgba(13, 13, 22, 0.95);
+  border-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), var(--shadow-lg);
+}
+
+.dark .dropdown-search-input {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .dropdown-search-input:focus {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: var(--primary);
+}
+
+.dark .dropdown-option-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dark .dropdown-option-item.selected {
+  background: rgba(var(--primary-rgb), 0.15);
+}
+
+/* Date Field input fields */
+.dark .date-field input {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .date-field input:focus {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.2);
+}
+
+.dark .waiting-summary span {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Budget segmented controls & pills (FIX FOR WHITE ON WHITE TEXT/BACKGROUNDS) */
+.dark .budget-segmented-control {
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .budget-pill {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+}
+
+.dark .budget-pill:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  color: #ffffff;
+}
+
+.dark .budget-pill.active {
+  background: rgba(var(--primary-rgb), 0.12);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.25);
+}
+
+.dark .budget-pill.active::after {
+  background: var(--primary-gradient);
+}
+
+.dark .budget-icon-wrap {
+  background: rgba(var(--primary-rgb), 0.12);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  box-shadow: none;
+}
+
+.dark .budget-pill.active .budget-icon-wrap {
+  background: var(--primary-gradient);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.3);
+}
+
+/* Traveler Selector Cards */
+.dark .selector-card {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .selector-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(var(--primary-rgb), 0.25);
+}
+
+.dark .selector-card.active {
+  background: rgba(var(--primary-rgb), 0.12);
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.25);
+}
+
+.dark .selector-card.active::before {
+  background: var(--primary-gradient);
+}
+
+/* Quick Access Saved Trips list */
+.dark .saved-trip-item {
+  background: rgba(15, 23, 42, 0.4);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .saved-trip-item:hover {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(var(--primary-rgb), 0.3);
+}
+
+/* AI loader steps checkmarks / icons */
+.dark .ai-step-icon {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .ring-center {
+  background: #0d0d16;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Accommodation card redirect maps btn */
+.dark .maps-redirect-btn {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .maps-redirect-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+/* Scroll Arrow Navigation Buttons */
+.dark .scroll-arrow-btn {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .scroll-arrow-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   DAILY ITINERARY CATEGORY BADGES
+   ========================================================================== */
+
+.activity-category-badge-wrapper {
+  margin-bottom: 12px;
+}
+
+.activity-category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+/* Category Specific Colors - Light Mode */
+.activity-badge-blue {
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+  border: 1px solid rgba(37, 99, 235, 0.15);
+}
+
+.activity-badge-green {
+  background: rgba(5, 150, 105, 0.08);
+  color: #059669;
+  border: 1px solid rgba(5, 150, 105, 0.15);
+}
+
+.activity-badge-orange {
+  background: rgba(217, 119, 6, 0.08);
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.15);
+}
+
+.activity-badge-purple {
+  background: rgba(124, 58, 237, 0.08);
+  color: #7c3aed;
+  border: 1px solid rgba(124, 58, 237, 0.15);
+}
+
+/* Category Specific Colors - Dark Mode */
+.dark .activity-badge-blue {
+  background: rgba(96, 165, 250, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.dark .activity-badge-green {
+  background: rgba(52, 211, 153, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.dark .activity-badge-orange {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.dark .activity-badge-purple {
+  background: rgba(167, 139, 250, 0.12);
+  color: #a78bfa;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+/* Layout Adjustments for daily timeline cards */
+.timeline-activity-card .activity-img-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.timeline-activity-card .activity-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+

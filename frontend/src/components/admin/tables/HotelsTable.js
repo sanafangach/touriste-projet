@@ -1,6 +1,4 @@
 import React from "react";
-import { DollarSign } from "lucide-react";
-
 import { AdminImageThumb, AdminRating } from "./AdminTableCells";
 import AdminRowActions from "./AdminRowActions";
 
@@ -35,8 +33,7 @@ function HotelsTable({ rows, currentUser, onEdit, onDelete }) {
             </td>
             <td>
               <span className="admin-inline-icon">
-                <DollarSign size={14} />
-                {item.price || "-"}
+                {item.price ? `${item.price} MAD` : "-"}
               </span>
             </td>
             <td>

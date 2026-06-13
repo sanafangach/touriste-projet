@@ -1,6 +1,4 @@
 import React from "react";
-import { DollarSign } from "lucide-react";
-
 import { AdminImageThumb, AdminRating } from "./AdminTableCells";
 import AdminRowActions from "./AdminRowActions";
 
@@ -36,8 +34,7 @@ function PlacesTable({ rows, currentUser, onEdit, onDelete }) {
             </td>
             <td>
               <span className="admin-inline-icon">
-                <DollarSign size={14} />
-                {Number(item.entry_price || 0).toFixed(2)}
+                 {Number(item.entry_price || 0).toFixed(2)} MAD
               </span>
             </td>
             <td>
