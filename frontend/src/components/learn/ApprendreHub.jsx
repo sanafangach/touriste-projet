@@ -14,6 +14,7 @@ import { getSavedVocabCount, getFavoriteMissionsCount, syncApprendreFromDb } fro
 import MyVocabulary from "./common/MyVocabulary";
 import FavoriteMissions from "./common/FavoriteMissions";
 import RevisionMode from "./common/RevisionMode";
+import MyCertificates from "./common/MyCertificates";
 import "./apprendre.css";
 
 const tracks = [
@@ -614,13 +615,20 @@ const ApprendreHub = () => {
         </div>
       </motion.div>
 
+      {/* My Certificates — issued automatically when a full track is completed */}
+      <MyCertificates lang={lang} isRTL={isRTL} refreshKey={refreshKey} />
+
       {/* Learning Paths */}
+      {/* NOTE: intentionally NOT keyed on refreshKey. Using a changing `key` here
+          forced React to unmount/remount the whole block on every progress sync,
+          replaying the hidden→visible enter animation (cards vanish then reappear).
+          The cards already re-read progress from the cache on each re-render, so a
+          plain re-render keeps them accurate without the flicker. */}
       <motion.div
         className="apprendre-cards-container"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        key={refreshKey}
       >
         {tracks.map((track) => {
           const { completed, total, done, progress } = getStatusInfo(track);

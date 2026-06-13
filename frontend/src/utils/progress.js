@@ -21,6 +21,11 @@ function storageKey(track, missionNum) {
 let missionMapCache = null;     // { [track]: { [missionNum]: id } }
 let missionMapPromise = null;   // in-flight fetch, so concurrent callers share one request
 
+// Completion keys whose DB POST is currently in flight. An authoritative sync must
+// not erase a mission the user just finished while its write is still on the wire —
+// otherwise returning to the hub right after a mission visibly drops the completion.
+const pendingCompletions = new Set();
+
 function buildMissionMap(missions) {
   const map = {};
   for (const m of missions) {
@@ -73,12 +78,16 @@ export async function syncProgressFromDb() {
     const progressList = res.data;
 
     // Clear all existing completion keys for this user scope, then re-apply from DB.
+    // Exception: keys for completions whose DB write is still in flight are kept —
+    // the GET may have been issued before that POST landed, so the DB snapshot does
+    // not yet include them. Dropping them here makes a just-finished mission flicker
+    // away from the hub until the next sync.
     const scope = getUserScope();
     const prefix = `${STORAGE_PREFIX}${scope}_`;
     const stale = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key && key.startsWith(prefix) && key.endsWith("_completed")) {
+      if (key && key.startsWith(prefix) && key.endsWith("_completed") && !pendingCompletions.has(key)) {
         stale.push(key);
       }
     }
@@ -97,23 +106,37 @@ export async function syncProgressFromDb() {
 // ── Core progress functions ──────────────────────────
 
 export async function completeMission(track, missionNum) {
+  const key = storageKey(track, missionNum);
   try {
-    localStorage.setItem(storageKey(track, missionNum), "true");
+    localStorage.setItem(key, "true");
   } catch (e) {}
 
+  // Unauthenticated: local-only progress, nothing to persist or reconcile.
+  if (!localStorage.getItem("token")) return;
+
+  // Mark the write in flight so a concurrent authoritative sync (e.g. the hub
+  // mounting right after the mission) does not wipe this completion before its
+  // POST lands.
+  pendingCompletions.add(key);
+
   // Persist in DB. Awaited so failures are observable and consistency can be kept.
-  if (localStorage.getItem("token")) {
-    try {
-      const missionId = await resolveMissionId(track, missionNum);
-      if (!missionId) {
-        console.error(`[apprendre] completeMission: no mission id for ${track}/${missionNum}`);
-        return;
-      }
-      await api.post("/apprendre/progress", { mission_id: missionId });
-    } catch (e) {
-      console.error(`[apprendre] completeMission failed for ${track}/${missionNum}:`, e?.message || e);
-      // Keep the optimistic local value; the next authoritative sync reconciles it.
+  try {
+    const missionId = await resolveMissionId(track, missionNum);
+    if (!missionId) {
+      // No id means the write can never be persisted — drop the optimistic flag so
+      // the cache does not claim a completion the database will never have.
+      console.error(`[apprendre] completeMission: no mission id for ${track}/${missionNum}`);
+      try { localStorage.removeItem(key); } catch (e) {}
+      return;
     }
+    await api.post("/apprendre/progress", { mission_id: missionId });
+  } catch (e) {
+    console.error(`[apprendre] completeMission failed for ${track}/${missionNum}:`, e?.message || e);
+    // The database is the source of truth: if it did not record the completion,
+    // revert the optimistic local flag so the cache cannot drift out of sync.
+    try { localStorage.removeItem(key); } catch (err) {}
+  } finally {
+    pendingCompletions.delete(key);
   }
 }
 

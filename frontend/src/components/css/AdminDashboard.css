@@ -101,6 +101,12 @@
   flex-direction: column;
   gap: 8px;
   flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.admin-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .admin-nav-item,
@@ -1227,12 +1233,35 @@
   font-weight: 800;
 }
 
-.apprendre-stat-card.blue .apprendre-stat-icon { color: #1d4ed8; background: #dbeafe; }
-.apprendre-stat-card.green .apprendre-stat-icon { color: #047857; background: #d1fae5; }
-.apprendre-stat-card.amber .apprendre-stat-icon { color: #b45309; background: #fef3c7; }
-.apprendre-stat-card.rose .apprendre-stat-icon { color: #be123c; background: #ffe4e6; }
-.apprendre-stat-card.violet .apprendre-stat-icon { color: #6d28d9; background: #ede9fe; }
-.apprendre-stat-card.cyan .apprendre-stat-icon { color: #0e7490; background: #cffafe; }
+.apprendre-stat-card.blue .apprendre-stat-icon {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.apprendre-stat-card.green .apprendre-stat-icon {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.apprendre-stat-card.amber .apprendre-stat-icon {
+  color: #b45309;
+  background: #fef3c7;
+}
+
+.apprendre-stat-card.rose .apprendre-stat-icon {
+  color: #be123c;
+  background: #ffe4e6;
+}
+
+.apprendre-stat-card.violet .apprendre-stat-icon {
+  color: #6d28d9;
+  background: #ede9fe;
+}
+
+.apprendre-stat-card.cyan .apprendre-stat-icon {
+  color: #0e7490;
+  background: #cffafe;
+}
 
 .apprendre-chart-row {
   display: grid;
@@ -1333,6 +1362,8 @@
   vertical-align: middle;
 }
 
+/* ── Statistics view ── */
+
 .admin-statistics {
   display: flex;
   flex-direction: column;
@@ -1344,7 +1375,204 @@
   border-radius: 8px;
   background: var(--admin-panel);
   box-shadow: var(--admin-shadow);
+  overflow: hidden;
+}
+
+/* ── Apprendre management page (tabbed: Progress / Favorites / Saved / Analytics) ── */
+
+.apprendre-management {
   padding: 16px 18px;
+
+  .apprendre-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 10px 12px 0;
+    border-bottom: 1px solid var(--admin-border);
+    background: var(--admin-panel-soft);
+  }
+
+  .apprendre-tab {
+    padding: 11px 16px;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--admin-muted);
+    font: inherit;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .apprendre-tab:hover {
+    color: var(--admin-strong);
+  }
+
+  .apprendre-tab.active {
+    color: #1f7a5c;
+    border-bottom-color: #1f7a5c;
+  }
+
+  .apprendre-tab-panel {
+    padding: 16px 18px 20px;
+  }
+
+  .apprendre-list-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .apprendre-list-count {
+    color: var(--admin-muted);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .apprendre-table {
+    min-width: 720px;
+  }
+
+  /* Sortable column headers */
+  .apprendre-sortable {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .apprendre-sortable:hover {
+    color: var(--admin-strong);
+  }
+
+  .apprendre-th-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .apprendre-sort-idle {
+    opacity: 0.35;
+  }
+
+  .apprendre-track-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: capitalize;
+    color: #374151;
+    background: #e5e7eb;
+  }
+
+  .apprendre-track-badge.darija {
+    color: #b45309;
+    background: #fef3c7;
+  }
+
+  .apprendre-track-badge.tifinagh {
+    color: #0369a1;
+    background: #e0f2fe;
+  }
+
+  .apprendre-track-badge.culture {
+    color: #047857;
+    background: #d1fae5;
+  }
+
+  .apprendre-mission-cell strong {
+    color: var(--admin-strong);
+    margin-right: 4px;
+  }
+
+  .apprendre-word {
+    font-weight: 800;
+    color: var(--admin-strong);
+  }
+
+  .apprendre-muted {
+    color: var(--admin-muted);
+  }
+
+  /* Loading / empty / error states inside the table body */
+  .apprendre-state-cell {
+    text-align: center !important;
+    padding: 40px 16px !important;
+    color: var(--admin-muted);
+    font-weight: 700;
+  }
+
+  .apprendre-state-cell.error {
+    color: #be123c;
+  }
+
+  /* Pagination */
+  .apprendre-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .apprendre-pagination-info {
+    color: var(--admin-muted);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .apprendre-pagination-btns {
+    display: flex;
+    gap: 8px;
+  }
+
+  .apprendre-pagination-btns button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    background: var(--admin-panel);
+    color: var(--admin-text);
+    font: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s ease, opacity 0.15s ease;
+  }
+
+  .apprendre-pagination-btns button:hover:not(:disabled) {
+    background: var(--admin-panel-soft);
+  }
+
+  .apprendre-pagination-btns button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 640px) {
+    .apprendre-list-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .apprendre-list-toolbar .admin-search {
+      width: 100%;
+    }
+
+    .apprendre-pagination {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .apprendre-pagination-btns {
+      justify-content: space-between;
+    }
+  }
 }
 
 .admin-pie-card h3 {

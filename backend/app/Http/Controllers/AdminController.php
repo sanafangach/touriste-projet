@@ -299,6 +299,12 @@ class AdminController extends Controller
         return (int) min(max((int) $request->query('per_page', 10), 1), 100);
     }
 
+    // Normalise the sort direction param to 'asc' or 'desc' (defaults to 'desc').
+    private function apprendreSortDir(Request $request): string
+    {
+        return strtolower((string) $request->query('dir', 'desc')) === 'asc' ? 'asc' : 'desc';
+    }
+
     // Active learners: users with at least one completed mission, plus their counts.
     public function getApprendreLearners(Request $request)
     {
@@ -330,10 +336,13 @@ class AdminController extends Controller
     public function getApprendreCompletions(Request $request)
     {
         $search = trim((string) $request->query('search', ''));
+        $sort = (string) $request->query('sort', 'date');
+        $dir = $this->apprendreSortDir($request);
 
         $query = ApprendreProgress::query()
-            ->where('completed', true)
-            ->with(['user:id,name,email', 'mission:id,track,mission_number,title']);
+            ->where('apprendre_progress.completed', true)
+            ->with(['user:id,name,email', 'mission:id,track,mission_number,title'])
+            ->select('apprendre_progress.*');
 
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
@@ -342,9 +351,27 @@ class AdminController extends Controller
             });
         }
 
+        switch ($sort) {
+            case 'user':
+                $query->leftJoin('users', 'apprendre_progress.user_id', '=', 'users.id')
+                      ->orderBy('users.name', $dir);
+                break;
+            case 'track':
+                $query->leftJoin('apprendre_missions', 'apprendre_progress.mission_id', '=', 'apprendre_missions.id')
+                      ->orderBy('apprendre_missions.track', $dir)
+                      ->orderBy('apprendre_missions.mission_number', $dir);
+                break;
+            case 'mission':
+                $query->leftJoin('apprendre_missions', 'apprendre_progress.mission_id', '=', 'apprendre_missions.id')
+                      ->orderBy('apprendre_missions.mission_number', $dir);
+                break;
+            case 'date':
+            default:
+                $query->orderBy('apprendre_progress.completed_at', $dir)->orderBy('apprendre_progress.id', $dir);
+        }
+
         return response()->json(
-            $query->orderByDesc('completed_at')->orderByDesc('id')
-                ->paginate($this->apprendrePerPage($request))
+            $query->paginate($this->apprendrePerPage($request))
         );
     }
 
@@ -352,9 +379,12 @@ class AdminController extends Controller
     public function getApprendreFavoritesList(Request $request)
     {
         $search = trim((string) $request->query('search', ''));
+        $sort = (string) $request->query('sort', 'date');
+        $dir = $this->apprendreSortDir($request);
 
         $query = ApprendreFavorite::query()
-            ->with(['user:id,name,email', 'mission:id,track,mission_number,title']);
+            ->with(['user:id,name,email', 'mission:id,track,mission_number,title'])
+            ->select('apprendre_favorites.*');
 
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
@@ -363,8 +393,27 @@ class AdminController extends Controller
             });
         }
 
+        switch ($sort) {
+            case 'user':
+                $query->leftJoin('users', 'apprendre_favorites.user_id', '=', 'users.id')
+                      ->orderBy('users.name', $dir);
+                break;
+            case 'track':
+                $query->leftJoin('apprendre_missions', 'apprendre_favorites.mission_id', '=', 'apprendre_missions.id')
+                      ->orderBy('apprendre_missions.track', $dir)
+                      ->orderBy('apprendre_missions.mission_number', $dir);
+                break;
+            case 'mission':
+                $query->leftJoin('apprendre_missions', 'apprendre_favorites.mission_id', '=', 'apprendre_missions.id')
+                      ->orderBy('apprendre_missions.mission_number', $dir);
+                break;
+            case 'date':
+            default:
+                $query->orderBy('apprendre_favorites.created_at', $dir)->orderBy('apprendre_favorites.id', $dir);
+        }
+
         return response()->json(
-            $query->orderByDesc('id')->paginate($this->apprendrePerPage($request))
+            $query->paginate($this->apprendrePerPage($request))
         );
     }
 
@@ -372,21 +421,49 @@ class AdminController extends Controller
     public function getApprendreSavedList(Request $request)
     {
         $search = trim((string) $request->query('search', ''));
+        $sort = (string) $request->query('sort', 'date');
+        $dir = $this->apprendreSortDir($request);
 
         $query = ApprendreSavedContent::query()
-            ->with(['user:id,name,email', 'mission:id,track,mission_number,title']);
+            ->with(['user:id,name,email', 'mission:id,track,mission_number,title'])
+            ->select('apprendre_saved_content.*');
 
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
-                $q->where('content', 'like', "%{$search}%")
-                  ->orWhere('translation', 'like', "%{$search}%")
+                $q->where('apprendre_saved_content.content', 'like', "%{$search}%")
+                  ->orWhere('apprendre_saved_content.translation', 'like', "%{$search}%")
                   ->orWhereHas('user', fn ($u) => $u->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%"))
                   ->orWhereHas('mission', fn ($m) => $m->where('title', 'like', "%{$search}%")->orWhere('track', 'like', "%{$search}%"));
             });
         }
 
+        switch ($sort) {
+            case 'user':
+                $query->leftJoin('users', 'apprendre_saved_content.user_id', '=', 'users.id')
+                      ->orderBy('users.name', $dir);
+                break;
+            case 'word':
+                $query->orderBy('apprendre_saved_content.content', $dir);
+                break;
+            case 'translation':
+                $query->orderBy('apprendre_saved_content.translation', $dir);
+                break;
+            case 'track':
+                $query->leftJoin('apprendre_missions', 'apprendre_saved_content.mission_id', '=', 'apprendre_missions.id')
+                      ->orderBy('apprendre_missions.track', $dir)
+                      ->orderBy('apprendre_missions.mission_number', $dir);
+                break;
+            case 'mission':
+                $query->leftJoin('apprendre_missions', 'apprendre_saved_content.mission_id', '=', 'apprendre_missions.id')
+                      ->orderBy('apprendre_missions.mission_number', $dir);
+                break;
+            case 'date':
+            default:
+                $query->orderBy('apprendre_saved_content.created_at', $dir)->orderBy('apprendre_saved_content.id', $dir);
+        }
+
         return response()->json(
-            $query->orderByDesc('id')->paginate($this->apprendrePerPage($request))
+            $query->paginate($this->apprendrePerPage($request))
         );
     }
 

@@ -1,0 +1,2 @@
+- [DB environment quirks](db-environment-quirks.md) — touriste_db: MySQL 8.4 on port 3306 (service often stopped), MyISAM tables (no FK/transactions), missions seeded 4×
+- [Learning certificates feature](learning-certificates-feature.md) — Apprendre per-track PDF certificates; lazy generation, dompdf, DISTINCT mission_number completion
