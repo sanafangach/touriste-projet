@@ -1,13 +1,13 @@
 import React from "react";
 
 import StatsCards from "./StatsCards";
-import ContentPieChart from "./ContentPieChart";
+import ContentBarChart from "./ContentBarChart";
 
 function StatisticsView({ stats, collections }) {
   return (
     <section className="admin-statistics">
       <StatsCards stats={stats} collections={collections} />
-      <ContentPieChart stats={stats} collections={collections} />
+      <ContentBarChart stats={stats} collections={collections} />
     </section>
   );
 }

@@ -1370,12 +1370,17 @@
   gap: 18px;
 }
 
-.admin-pie-card {
+.admin-pie-card,
+.admin-bar-card {
   border: 1px solid var(--admin-border);
   border-radius: 8px;
   background: var(--admin-panel);
   box-shadow: var(--admin-shadow);
   overflow: hidden;
+}
+
+.admin-bar-card {
+  padding: 18px 20px;
 }
 
 /* ── Apprendre management page (tabbed: Progress / Favorites / Saved / Analytics) ── */
@@ -1575,59 +1580,56 @@
   }
 }
 
-.admin-pie-card h3 {
+.admin-pie-card h3,
+.admin-bar-card h3 {
   margin: 0 0 14px;
   font-size: 14px;
   font-weight: 800;
   color: var(--admin-strong);
 }
 
-.admin-pie-body {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 28px;
-}
-
-.admin-pie-svg {
-  width: 220px;
-  height: 220px;
-  flex-shrink: 0;
-}
-
-.admin-pie-legend {
+.admin-bar-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 8px 18px;
-  flex: 1;
-  min-width: 200px;
-}
-
-.admin-pie-legend li {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-bar-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 44px;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+}
+
+.admin-bar-label {
   font-size: 13px;
+  font-weight: 700;
   color: var(--admin-strong);
-}
-
-.admin-pie-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-
-.admin-pie-legend-label {
-  font-weight: 700;
-}
-
-.admin-pie-legend-value {
-  margin-left: auto;
-  color: var(--admin-muted);
-  font-weight: 700;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-bar-track {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--admin-panel-soft);
+  overflow: hidden;
+}
+
+.admin-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  min-width: 4px;
+  transition: width 0.4s ease;
+}
+
+.admin-bar-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--admin-muted);
+  text-align: right;
 }
