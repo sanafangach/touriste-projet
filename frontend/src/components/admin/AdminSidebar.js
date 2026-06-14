@@ -35,7 +35,7 @@ function AdminSidebar({
             >
               <Icon size={18} />
               <span>{section.label}</span>
-              {section.key !== "statistics" && <b>{count}</b>}
+              <b>{count}</b>
             </button>
           );
         })}

@@ -186,15 +186,15 @@ function MissionListModal({ track, lang, isRTL, onClose }) {
                   fontSize: "0.75rem", fontWeight: 600, padding: "3px 10px",
                   borderRadius: "999px", flexShrink: 0,
                   background: status === "completed" ? "rgba(16,185,129,0.12)" :
-                              status === "unlocked" ? "rgba(var(--learn-accent-rgb, 217,119,6),0.12)" :
-                              "rgba(0,0,0,0.05)",
+                    status === "unlocked" ? "rgba(var(--learn-accent-rgb, 217,119,6),0.12)" :
+                      "rgba(0,0,0,0.05)",
                   color: status === "completed" ? "var(--learn-success, #10b981)" :
-                         status === "unlocked" ? "var(--learn-accent, #d97706)" :
-                         "var(--apprendre-text-secondary)"
+                    status === "unlocked" ? "var(--learn-accent, #d97706)" :
+                      "var(--apprendre-text-secondary)"
                 }}>
                   {status === "completed" ? (isRTL ? "مكتمل" : "Completed") :
-                   status === "unlocked" ? (isRTL ? "متاح" : "Available") :
-                   (isRTL ? "مقفل" : "Locked")}
+                    status === "unlocked" ? (isRTL ? "متاح" : "Available") :
+                      (isRTL ? "مقفل" : "Locked")}
                 </div>
               </button>
             );
@@ -357,7 +357,7 @@ const ApprendreHub = () => {
                   marginBottom: "4px"
                 }}>
                   {isRTL ? `مسار ${continueInfo.track === "darija" ? "الدارجة" : continueInfo.track === "tifinagh" ? "تيفيناغ" : "الثقافة"}` :
-                   `${continueInfo.track === "darija" ? "Darija" : continueInfo.track === "tifinagh" ? "Tifinagh" : "Culture"} Path`}
+                    `${continueInfo.track === "darija" ? "Darija" : continueInfo.track === "tifinagh" ? "Tifinagh" : "Culture"} Path`}
                 </div>
                 <div style={{
                   fontSize: "1.1rem", fontWeight: 700,
@@ -639,8 +639,8 @@ const ApprendreHub = () => {
           const statusLabel = done
             ? (isRTL ? "مكتمل" : "Completed")
             : hasUnlocked
-            ? (isRTL ? "متاح" : "Available")
-            : (isRTL ? "مقفل" : "Locked");
+              ? (isRTL ? "متاح" : "Available")
+              : (isRTL ? "مقفل" : "Locked");
           const StatusIcon = done ? CheckCircle : (hasUnlocked ? LockOpen : Lock);
           const statusClass = done ? "completed" : (hasUnlocked ? "available" : "coming-soon");
 
@@ -694,8 +694,8 @@ const ApprendreHub = () => {
                   <span>{done
                     ? (isRTL ? "مراجعة" : "Review")
                     : hasUnlocked
-                    ? (isRTL ? "متابعة" : "Continue Journey")
-                    : (isRTL ? "مقفل" : "Locked")}
+                      ? (isRTL ? "متابعة" : "Continue Journey")
+                      : (isRTL ? "مقفل" : "Locked")}
                   </span>
                   {done ? <CheckCircle size={20} /> : hasUnlocked
                     ? <ArrowRight size={20} className={`transition-transform duration-300 ${isRTL ? "rotate-180 group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
